@@ -1,46 +1,73 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# IT 용병단
 
-In the project directory, you can run:
 
-### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `yarn test`
+## ****🤷‍♂️ 프로젝트 목적****
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## ****🍀 프로젝트 소개****
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## ****🗓 프로젝트 기간****
 
-### `yarn eject`
+- 2022.08.25~ 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## ****⭐️ 팀 구성****
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+| 이름   | 팀원 깃허브                     | 포지션    |
+| ------ | ------------------------------- | --------- |
+| 노진서 | https://github.com/bennoholik   | Front-end |
+| 원중희 | https://github.com/wndgml13     | Front-end |
+| 황태영 | https://github.com/dongkeon-lee | Front-end |
+| 전지만 | https://github.com/Camof1ow     | Back-end  |
+| 김진무 | https://github.com/kimjinmoo91  | Back-end  |
+| 이원규 | https://github.com/oneqrhee     | Back-end  |
+| 이동규 | https://github.com/dds1q        | Back-end  |
+| 윤정아 |                                 | UI/UX     |
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## ****🛠주요기술****
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### Front-end
+
+<div align=center> 
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=ffffff">
+  <img src="https://img.shields.io/badge/react-282C34?style=for-the-badge&logo=react&logoColor=61DAFB">
+<img src="https://img.shields.io/badge/PWA-5A0FC8?style=for-the-badge&logo=PWA&logoColor=white">
+  <br>
+  <img src="https://img.shields.io/badge/React Query-FF4154?style=for-the-badge&logo=React Query&logoColor=white">
+    <img src="https://img.shields.io/badge/Recoil-2E77BC?style=for-the-badge&logo=Recoil&logoColor=white"> 
+ 
+
+  <br>
+   <img src="https://img.shields.io/badge/GitHub%20Actions-232F3E?style=for-the-badge&logo=GitHubActions&logoColor=2088FF"/>
+  <img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white">
+  <br/>
+ <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=for-the-badge&logo=Amazon AWS&logoColor=white">
+ <img src="https://img.shields.io/badge/Amazon S3-569A31?style=for-the-badge&logo=Amazon S3&logoColor=white">
+<img src="https://img.shields.io/badge/CloudFront-D05C4B?style=for-the-badge&logo=Amazon AWS&logoColor=white">
+
+   
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
