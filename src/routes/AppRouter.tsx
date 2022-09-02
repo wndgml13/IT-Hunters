@@ -5,16 +5,15 @@ import { MainPage } from "../pages/MainPage";
 import { MyPage } from "../pages/MyPage";
 
 const AppRouter = () => {
- return (
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<MainPage />} />
-      <Route path="/signin" element={<SignInPage />} />
-      <Route path="/signup" element={<SignUpPage />} />
-      <Route path="/mypage" element={<MyPage />} />
-    </Routes>
-  </BrowserRouter>
- )
-
-}
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/signin" element={<SignInPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/mypage" element={<MyPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
 export default AppRouter;
