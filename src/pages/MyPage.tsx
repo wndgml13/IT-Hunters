@@ -1,30 +1,6 @@
 export const MyPage = () => {
-  function 내함수(a: "가위" | "바위" | "보"): ("가위" | "바위" | "보")[] {
-    return ["가위"];
-  }
-
-  type Member = {
-    name: string;
-    age: number;
-    plusOne: (x: number) => number;
-    changeName: () => void;
-  };
-
-  let 회원정보: Member = {
-    name: "kim",
-    age: 30,
-    plusOne(x) {
-      return x + 1;
-    },
-    changeName: () => {
-      console.log("안녕");
-    },
-  };
-  회원정보.plusOne(1);
-  회원정보.changeName();
-
   return (
-    <div className="w-auto max-w-md bg-orange-200 w-auto">
+    <div className="w-auto max-w-md bg-orange-200">
       <h1>마이페이지</h1>
       <p className="m-6 mt-10">프로필 수정</p>
       <div className="flex justify-start">
