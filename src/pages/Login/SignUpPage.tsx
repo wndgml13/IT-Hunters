@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { instance } from "../../config/axios";
 
 import {
@@ -21,6 +22,8 @@ export const SignUpPage = () => {
   const [passwordValid, setPasswordValid] = useState(false);
   const [passwordConfirmValid, setPasswordConfirmValid] = useState(false);
   const [nicknameValid, setNicknameValid] = useState(false);
+
+  const navigate = useNavigate();
 
   const emailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -72,6 +75,7 @@ export const SignUpPage = () => {
         setPassword("");
         setPasswordConfirm("");
         setNickname("");
+        navigate("/signin");
       } catch (error) {
         console.log(error);
       }

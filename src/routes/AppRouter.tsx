@@ -5,6 +5,7 @@ import { MainPage } from "../pages/MainPage";
 import { MyPage } from "../pages/MyPage";
 import { PostsDetail } from "../components/PostsDetail";
 import { AddPosts } from "../components/AddPosts";
+import { SearchPage } from "../pages/SearchPage";
 
 const AppRouter = () => {
   return (
@@ -16,6 +17,7 @@ const AppRouter = () => {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/posts" element={<PostsDetail />} />
         <Route path="/addposts" element={<AddPosts />} />
+        <Route path="/search" element={<SearchPage />} />
       </Routes>
     </BrowserRouter>
   );
