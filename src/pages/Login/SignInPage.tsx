@@ -1,18 +1,77 @@
-import React from "react";
-import { useInput } from "../../hooks/useInput";
+import axios from "axios";
+import React, { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { instance } from "../../config/axios";
+import { setAccessToken } from "../../config/cookies";
+import { loginInfoState } from "../../store/loginInfoState";
+import { LoginInfoType } from "../../types/loginInfoType";
+import {
+  buttonStyle,
+  inputStyle,
+  labelStyle,
+  validError,
+  validSuccess,
+} from "./formStyle";
 
 export const SignInPage = () => {
-  const [email, emailHandler] = useInput("");
-  const [password, passwordHandler] = useInput("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailValid, setEmailValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
 
-  const labelStyle = "mb-2 text-sm font-medium text-gray-900";
-  const inputStyle =
-    "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5";
-  const buttonStyle =
-    "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none";
+  const setLoginInfo = useSetRecoilState<LoginInfoType[]>(loginInfoState);
+
+  const emailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    if (email && emailRegex.test(email)) {
+      setEmailValid(true);
+    } else {
+      setEmailValid(false);
+    }
+  };
+  const passwordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    if (e.target.value.length > 7) {
+      setPasswordValid(true);
+    } else {
+      setPasswordValid(false);
+    }
+  };
+
+  const onSignin = async () => {
+    if (emailValid && passwordValid) {
+      try {
+        const data = await instance.post("api/members/login", {
+          email,
+          password,
+        });
+        console.log(data);
+
+        setAccessToken(data.headers.authorization);
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `${data.headers.authorization}`;
+
+        // const signInInfo = {
+        //   email,
+        // };
+        // setLoginInfo([signInInfo]);
+
+        alert("로그인 성공");
+        setEmail("");
+        setPassword("");
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("입력이 잘못되었습니다");
+    }
+  };
 
   return (
-    <div className="grid gap-6 mb-6 md:grid-cols-1">
+    <div className="grid gap-6 mb-6 md:grid-cols-1 p-10">
       <h1 className="text-3xl">
         IT용병단, 그 화려한 모험으로 당신을 초대합니다.
       </h1>
@@ -25,6 +84,13 @@ export const SignInPage = () => {
           className={inputStyle}
           placeholder="이메일을 입력해주세요"
         />
+        {email.length > 0 ? (
+          emailValid ? (
+            <p className={validSuccess}>올바른 이메일 형식입니다</p>
+          ) : (
+            <p className={validError}> 올바르지 않은 이메일 형식입니다</p>
+          )
+        ) : null}
       </div>
       <div>
         <label className="labelStyle">비밀번호</label>
@@ -35,9 +101,16 @@ export const SignInPage = () => {
           className={inputStyle}
           placeholder="비밀번호를 입력해주세요"
         />
+        {password.length > 0 ? (
+          passwordValid ? (
+            <p className={validSuccess}>올바른 비밀번호 형식입니다</p>
+          ) : (
+            <p className={validError}>비밀번호는 8자리 이상 입력해주세요</p>
+          )
+        ) : null}
       </div>
 
-      <button type="button" className={buttonStyle}>
+      <button type="button" className={buttonStyle} onClick={onSignin}>
         로그인
       </button>
 
