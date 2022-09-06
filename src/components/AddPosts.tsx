@@ -7,7 +7,7 @@ import {
   FullstackDropDown,
   DuraTionDropDown,
   Down,
-} from "../hooks/dropdown";
+} from "../hooks/DropDown";
 import { useState } from "react";
 import axios from "axios";
 import { instance } from "../config/axios";

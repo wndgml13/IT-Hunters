@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { instance } from "../../config/axios";
 import { setAccessToken } from "../../config/cookies";
@@ -20,6 +21,8 @@ export const SignInPage = () => {
   const [passwordValid, setPasswordValid] = useState(false);
 
   const setLoginInfo = useSetRecoilState<LoginInfoType[]>(loginInfoState);
+
+  const navigate = useNavigate();
 
   const emailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -62,6 +65,7 @@ export const SignInPage = () => {
         alert("로그인 성공");
         setEmail("");
         setPassword("");
+        navigate("/");
       } catch (error) {
         console.log(error);
       }
@@ -131,7 +135,9 @@ export const SignInPage = () => {
 
       <p>
         아직회원이 아니신가요?{" "}
-        <button className="text-blue-600">회원가입</button>
+        <button className="text-blue-600">
+          <Link to="/signup">회원가입</Link>
+        </button>
       </p>
     </div>
   );
