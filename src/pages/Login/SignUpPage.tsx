@@ -1,59 +1,165 @@
-import React from "react";
-import { useInput } from "../../hooks/useInput";
+import axios from "axios";
+import React, { useState } from "react";
+import { instance } from "../../config/axios";
+
+import {
+  buttonStyle,
+  inputFileStyle,
+  inputStyle,
+  labelStyle,
+  validSuccess,
+  validError,
+} from "./formStyle";
 
 export const SignUpPage = () => {
-  const [email, emailHandler] = useInput("");
-  const [password, passwordHandler] = useInput("");
-  const [passwordConfirm, passwordConfirmHandler] = useInput("");
-  const [nickname, nicknameHandler] = useInput("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [nickname, setNickname] = useState("");
 
-  const labelStyle = "mb-2 text-sm font-medium text-gray-900";
-  const inputStyle =
-    "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5";
-  const buttonStyle =
-    "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none";
-  const inputFileStyle =
-    "block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100";
+  const [emailValid, setEmailValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [passwordConfirmValid, setPasswordConfirmValid] = useState(false);
+  const [nicknameValid, setNicknameValid] = useState(false);
+
+  const emailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    if (email && emailRegex.test(email)) {
+      setEmailValid(true);
+    } else {
+      setEmailValid(false);
+    }
+  };
+
+  const passwordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    if (e.target.value.length > 7) {
+      setPasswordValid(true);
+    } else {
+      setPasswordValid(false);
+    }
+  };
+  const passwordConfirmHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPasswordConfirm(e.target.value);
+    if (e.target.value === password) {
+      setPasswordConfirmValid(true);
+    } else {
+      setPasswordConfirmValid(false);
+    }
+  };
+  const nicknameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNickname(e.target.value);
+    if (e.target.value.length > 2) {
+      setNicknameValid(true);
+    } else {
+      setNicknameValid(false);
+    }
+  };
+
+  const onSignup = async () => {
+    if (emailValid && passwordValid && passwordConfirmValid && nicknameValid) {
+      try {
+        const data = await instance.post("api/members/signup", {
+          email,
+          password,
+          nickname,
+        });
+        console.log(data);
+        alert("회원가입 성공");
+        setEmail("");
+        setPassword("");
+        setPasswordConfirm("");
+        setNickname("");
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("입력이 잘못되었습니다");
+    }
+  };
 
   return (
-    <div className="grid gap-6 mb-6 md:grid-cols-1">
+    <div className="grid gap-6 p-10 mb-6 md:grid-cols-1">
       <h1 className="text-3xl">용병님, 자기소개를 부탁해요!</h1>
-      <div>
+
+      <div className="relative">
         <label className={labelStyle}>이메일</label>
         <input
           type="email"
           value={email}
           onChange={emailHandler}
           className={inputStyle}
+          required
         />
-      </div>
-      <div>
-        <label className="labelStyle">비밀번호</label>
-        <input
-          type="password"
-          value={password}
-          onChange={passwordHandler}
-          className={inputStyle}
-        />
-      </div>
-      <div>
-        <label className="labelStyle">비밀번호 재확인</label>
-        <input
-          type="password"
-          value={passwordConfirm}
-          onChange={passwordConfirmHandler}
-          className={inputStyle}
-        />
+        <button
+          type="submit"
+          className=" absolute right-1 bottom-1 bg-gray-300 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-4 py-2 "
+        >
+          중복확인
+        </button>
+        {email.length > 0 ? (
+          emailValid ? (
+            <p className={validSuccess}>올바른 이메일 형식입니다</p>
+          ) : (
+            <p className={validError}> 올바르지 않은 이메일 형식입니다</p>
+          )
+        ) : null}
       </div>
 
       <div>
-        <label className="labelStyle">닉네임</label>
+        <label className={labelStyle}>닉네임</label>
         <input
           type="text"
           value={nickname}
           onChange={nicknameHandler}
           className={inputStyle}
+          required
         />
+        {nickname.length > 0 ? (
+          nicknameValid ? (
+            <p className={validSuccess}>올바른 닉네임입니다</p>
+          ) : (
+            <p className={validError}>닉네임은 2글자 이상으로 입력해주세요.</p>
+          )
+        ) : null}
+      </div>
+
+      <div>
+        <label className={labelStyle}>비밀번호</label>
+        <input
+          type="password"
+          value={password}
+          onChange={passwordHandler}
+          className={inputStyle}
+          required
+        />
+
+        {password.length > 0 ? (
+          passwordValid ? (
+            <p className={validSuccess}>올바른 비밀번호 형식입니다</p>
+          ) : (
+            <p className={validError}>비밀번호는 8자리 이상 입력해주세요</p>
+          )
+        ) : null}
+      </div>
+      <div>
+        <label className={labelStyle}>비밀번호 재확인</label>
+        <input
+          type="password"
+          value={passwordConfirm}
+          onChange={passwordConfirmHandler}
+          className={inputStyle}
+          required
+        />
+        {passwordConfirm.length > 0 ? (
+          passwordConfirmValid ? (
+            <p className={validSuccess}>동일한 비밀번호입니다.</p>
+          ) : (
+            <p className={validError}>비밀번호가 일치하지않습니다.</p>
+          )
+        ) : null}
       </div>
 
       <div className="grid grid-cols-3 gap-4 ">
@@ -69,7 +175,7 @@ export const SignUpPage = () => {
         </div>
       </div>
 
-      <button type="button" className={buttonStyle}>
+      <button type="button" className={buttonStyle} onClick={onSignup}>
         회원가입
       </button>
     </div>

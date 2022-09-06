@@ -1,6 +1,6 @@
-import { DropDown } from "../hooks/DropDown";
 import { useState } from "react";
 import axios from "axios";
+import { instance } from "../config/axios";
 
 interface PostsAdd {
   title: string;
@@ -18,6 +18,18 @@ export const PostsDetail = () => {
   const [frontend, setFrontEnd] = useState("");
   const [designer, setDeSigner] = useState("");
   const [fullstack, setFullStack] = useState("");
+
+  // const onSubmitHandler = async () => {
+  //   try {
+  //     let res = await axios({
+  //       method: 'POST',
+  //       url: "http://localhost:8080/api/quests",
+  //       data: {
+
+  //       }
+  //     })
+  //   }
+  // }
 
   return (
     <>
@@ -42,17 +54,18 @@ export const PostsDetail = () => {
         </div>
       </div>
       {/* 제목 입력 란 */}
-      <input
-        className="border-b-gray-200 border-t-transparent border-r-transparent border-l-transparent outline-none border-double border-4 border-gray-600 w-3/7 text-3xl placeholder:italic placeholder:text-slate-300 text-center"
-        placeholder="제목을 입력해주세요."
-      ></input>
-      {/* DropDown */}
-      <DropDown />
-      <div className="h-96 max-w-md bg-orange-200">
-        <p>TITLE: 현재 구상 중인 프로젝트에 페이지 같이 만들어 보실 분</p>
-        <p>content: 팀 구합니다.</p>
-      </div>
+      <h1>리액트 쿼리 사용자 모십니다.</h1>
+      <p>구인스택</p>
+      <p>프로젝트 예상 기간</p>
+      <p>-모집인원-</p>
+      <p>Backend</p>
+      <p>Frontend</p>
+      <p>Designer</p>
+      <p>Fullstack</p>
 
+      <div className="h-96 max-w-md bg-orange-200">
+        <p>끝까지 함께 하실 분 모십니다.</p>
+      </div>
       <button
         type="button"
         className="cursor-pointer bg-cyan-300 hover:bg-cyan-400 w-20 h-10 rounded-lg border-none"
@@ -69,6 +82,13 @@ export const PostsDetail = () => {
       <div className="mt-5 h-32 max-w-md bg-orange-200">
         <p>함께해요~~~</p>
       </div>
+      <button
+        type="button"
+        className="cursor-pointer bg-cyan-300 hover:bg-cyan-400 w-20 h-10 rounded-lg border-none
+          ml-96 mt-5"
+      >
+        댓글달기
+      </button>
     </>
   );
 };
