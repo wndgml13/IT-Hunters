@@ -3,6 +3,8 @@ import { SignInPage } from "../pages/Login/SignInPage";
 import { SignUpPage } from "../pages/Login/SignUpPage";
 import { MainPage } from "../pages/MainPage";
 import { MyPage } from "../pages/MyPage";
+import { PostsDetail } from "../components/PostsDetail";
+import { AddPosts } from "../components/AddPosts";
 
 const AppRouter = () => {
   return (
@@ -12,6 +14,8 @@ const AppRouter = () => {
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/posts" element={<PostsDetail />} />
+        <Route path="/addposts" element={<AddPosts />} />
       </Routes>
     </BrowserRouter>
   );
