@@ -15,11 +15,14 @@ import { ComponentProps } from "react";
 import { getCookieToken } from "../config/cookies";
 import { useMutation } from "@tanstack/react-query";
 
-interface PostsAdd {
-  title: string;
-  content: string;
-  frontend: number;
-  duration: number;
+export interface PostsAdd {
+  title: number & string;
+  content: number & string;
+  duration: number & string;
+  backend: number & string;
+  frontend: number & string;
+  designer: number & string;
+  fullstack: number & string;
 }
 
 export const AddPosts = () => {
@@ -43,10 +46,6 @@ export const AddPosts = () => {
   //   setBackEnd(e.target.value);
   // };
   // console.log(backend);
-
-  const durationbackend = useMutation(newbackend =>
-    instance.post("api/quests", newbackend),
-  );
 
   const onSubmitHandler = async () => {
     try {
