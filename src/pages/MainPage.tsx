@@ -1,14 +1,3 @@
-interface mainPage {
-  questId: number;
-  avatarImage: string;
-  title: string;
-  position: string;
-  minPrice: number;
-  maxPrice: number;
-  expiredDate: Date;
-  type: string;
-}
-
 export const MainPage = () => {
   return (
     <section className="w-[375px] m-auto overflow-hidden">
