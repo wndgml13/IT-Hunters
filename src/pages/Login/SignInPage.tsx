@@ -1,11 +1,11 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+// import { useSetRecoilState } from "recoil";
 import { instance } from "../../config/axios";
 import { setAccessToken } from "../../config/cookies";
-import { loginInfoState } from "../../store/loginInfoState";
-import { LoginInfoType } from "../../types/loginInfoType";
+// import { loginInfoState } from "../../store/loginInfoState";
+// import { LoginInfoType } from "../../types/loginInfoType";
 import {
   buttonStyle,
   inputStyle,
@@ -20,7 +20,7 @@ export const SignInPage = () => {
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
 
-  const setLoginInfo = useSetRecoilState<LoginInfoType[]>(loginInfoState);
+  // const setLoginInfo = useSetRecoilState<LoginInfoType[]>(loginInfoState);
 
   const navigate = useNavigate();
 

@@ -6,6 +6,7 @@ import { MyPage } from "../pages/MyPage";
 import { PostsDetail } from "../components/PostsDetail";
 import { AddPosts } from "../components/AddPosts";
 import { SearchPage } from "../pages/SearchPage";
+import { FooterNavBar } from "../components/FooterNavBar";
 
 const AppRouter = () => {
   return (
@@ -19,6 +20,7 @@ const AppRouter = () => {
         <Route path="/addposts" element={<AddPosts />} />
         <Route path="/search" element={<SearchPage />} />
       </Routes>
+      <FooterNavBar />
     </BrowserRouter>
   );
 };
