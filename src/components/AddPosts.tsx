@@ -10,21 +10,10 @@ import {
 import { useState } from "react";
 import axios from "axios";
 import { instance } from "../config/axios";
-import { ComponentProps } from "react";
 import { getCookieToken } from "../config/cookies";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-
-export interface PostsAdd {
-  title: string;
-  content: string;
-  duration: number;
-  stacks: string[];
-  backend: number;
-  frontend: number;
-  designer: number;
-  fullstack: number;
-}
+import { PostsAdd } from "../types/postsaddType";
 
 export const AddPosts = () => {
   const userToken = getCookieToken();
@@ -49,10 +38,10 @@ export const AddPosts = () => {
     fullstack,
   });
 
-  // const titleInputHandler: ComponentProps<"input">["onChange"] = e => {
-  //   setTiTle(e.target.value);
-  // };
-
+  const titleInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTiTle(e.target.value);
+  };
+  console.log(title);
   // const backendHandler: ComponentProps<"input">["onChange"] = e => {
   //   setBackEnd(e.target.value);
   // };
@@ -130,6 +119,8 @@ export const AddPosts = () => {
       <input
         className="border-b-gray-200 border-t-transparent border-r-transparent border-l-transparent outline-none border-double border-4 border-gray-600 w-3/7 text-3xl placeholder:italic placeholder:text-slate-300 text-center"
         placeholder="제목을 입력해주세요."
+        value={title}
+        onChange={titleInputHandler}
       ></input>
       {/* DropDown */}
       <div>
@@ -159,6 +150,35 @@ export const AddPosts = () => {
       >
         등록하기
       </button>
+      <li className="flex items-center mb-[62px] ">
+        <details className="relative w-[392px] text-[17px] h-[40px] ">
+          <summary>스택 선택</summary>
+          <ul className="absolute border-[1px] border-black w-full z-10">
+            <li className="pl-[20px] leading-[40px] cursor-pointer hover:bg-gray1 bg-white">
+              React
+            </li>
+            <li>Vue js</li>
+            <li>JavaScript</li>
+            <li>Typecript</li>
+            <li>Next js</li>
+            <li>Svelte</li>
+            <li>CSS3</li>
+            <li>Angular js</li>
+            <li>jQuery</li>
+            <li>Java</li>
+            <li>Spring Boot</li>
+            <li>Node js</li>
+            <li>Python</li>
+            <li>Django</li>
+            <li>PHP</li>
+            <li>C++</li>
+            <li>C#</li>
+            <li>AWS</li>
+            <li>MySQL</li>
+            <li>Oracle</li>
+          </ul>
+        </details>
+      </li>
     </>
   );
 };
