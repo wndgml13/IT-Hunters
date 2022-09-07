@@ -1,36 +1,4 @@
-import { useState } from "react";
-import axios from "axios";
-import { instance } from "../config/axios";
-
-interface PostsAdd {
-  title: string;
-  content: string;
-  frontend: number;
-  duration: number;
-}
-
 export const PostsDetail = () => {
-  const [nickname, setNickName] = useState("");
-  const [content, setConTent] = useState("");
-  const [stacklist, setStackList] = useState("");
-  const [duration, setDuraTion] = useState("");
-  const [backend, setBackEnd] = useState("");
-  const [frontend, setFrontEnd] = useState("");
-  const [designer, setDeSigner] = useState("");
-  const [fullstack, setFullStack] = useState("");
-
-  // const onSubmitHandler = async () => {
-  //   try {
-  //     let res = await axios({
-  //       method: 'POST',
-  //       url: "http://localhost:8080/api/quests",
-  //       data: {
-
-  //       }
-  //     })
-  //   }
-  // }
-
   return (
     <>
       <div className="flex justify-start">

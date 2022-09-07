@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { instance } from "../../config/axios";
 import { getCookieToken } from "../../config/cookies";
-import { inputStyle } from "../../pages/Login/formStyle";
 import { SearchResultCard } from "./SearchResultCard";
 
 // 검색화면의 리스트의 type들 -- types 폴더에 옮기거나 APIs에 같이 해도될듯
