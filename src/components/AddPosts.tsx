@@ -4,17 +4,7 @@ import { getCookieToken } from "../config/cookies";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useInput } from "../hooks/useInput";
-
-export interface PostsAdd {
-  title: string;
-  content: string;
-  duration: number;
-  stacks: string[];
-  backend: number;
-  frontend: number;
-  designer: number;
-  fullstack: number;
-}
+import { PostsAdd } from "../types/postsaddType";
 
 export const AddPosts = () => {
   const userToken = getCookieToken();
@@ -40,11 +30,9 @@ export const AddPosts = () => {
     fullstack,
   };
 
-  console.log(title);
-  console.log(duration);
-
   const contentHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
+    console.log(content);
   };
 
   const addStack = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -68,19 +56,16 @@ export const AddPosts = () => {
   const { mutateAsync } = addPostsMutation();
 
   const onSubmitHandler = async () => {
-    if (postInfo) {
-      try {
-        console.log("onSubmitHandler");
-        const responce = await mutateAsync(postInfo);
-        console.log(responce);
-        alert("게시글 작성 완료!");
-        navigate("/search");
-        return;
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      alert("내용을 전부 입력해주세요!!");
+    if (content) {
+      console.log("onSubmitHandler");
+      const responce = await mutateAsync(postInfo);
+      console.log(responce);
+      alert("게시글 작성 완료!");
+      navigate("/search");
+      return;
+    }
+    if (!content) {
+      return alert("프로젝트 내용을 입력 해주세요!!");
     }
   };
 
