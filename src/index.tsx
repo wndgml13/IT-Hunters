@@ -18,7 +18,7 @@ root.render(
       <RecoilRoot>
         <App />
       </RecoilRoot>
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </React.StrictMode>,
 );
