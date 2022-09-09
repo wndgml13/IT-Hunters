@@ -1,63 +1,71 @@
-import { useQuery } from "@tanstack/react-query";
-import { instance } from "../../config/axios";
-import { getCookieToken } from "../../config/cookies";
+import { useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { questApi } from "../../APIs/QuestApi";
+import { filterState } from "../../store/filterState";
+import { modalState } from "../../store/modalState";
+
+import { SearchFilter } from "./SearchFilter";
 import { SearchResultCard } from "./SearchResultCard";
 
-// 검색화면의 리스트의 type들 -- types 폴더에 옮기거나 APIs에 같이 해도될듯
-export interface IQuestlist {
-  backend: number | null;
-  bookmarkCnt: number;
-  commentCnt: number;
-  content: string;
-  createdAt: string;
-  designer: number | null;
-  duration: number;
-  frontend: number | null;
-  fullstack: number | null;
-  modifiedAt: string;
-  nickname: string;
-  questId: number;
-  status: boolean;
-  title: string;
-}
-
 export const SearchList = () => {
-  const userToken = getCookieToken();
+  const [modal, setModal] = useRecoilState(modalState);
+  const [filterParam, setFilterParam] = useRecoilState(filterState);
+  const [title, setTitle] = useState("");
 
-  //퀘스트 전체 보기 api -- APIs 폴더에 옮길예정
-  const getAllQuests = async () => {
-    const { data } = await instance.get<IQuestlist[]>("api/quests", {
-      headers: { authorization: userToken },
-    });
+  // const {
+  //   data: quests,
+  //   isError,
+  //   error,
+  //   isLoading,
+  // } = useQuery<IQuestlist[], Error>(["Searchlist"], questApi.getAllQuests);
 
-    return data;
+  // const {
+  //   data: quests,
+
+  //   isLoading,
+  // } = useQuery<IQuestlist[]>(
+  //   ["Searchlist", filterParam],
+  //   questApi.getFilteredQuests(filterParam),
+  // );
+
+  const { data, isLoading } = questApi.getFilteredQuests(filterParam);
+  console.log(filterParam);
+
+  const searchParam = filterParam + "&title=" + title;
+
+  const onEnterInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      console.log(searchParam);
+      setFilterParam(searchParam);
+    }
   };
 
-  const {
-    data: quests,
-    isError,
-    error,
-    isLoading,
-  } = useQuery<IQuestlist[], Error>(["Searchlist"], getAllQuests);
-
-  if (isError) {
-    <div>{error.message}</div>;
-  }
-
-  console.log(quests);
-
   return (
-    <div className="p-4">
-      <input className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 mb-3" />
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        quests?.map(quest => (
+    <div className="p-4 scrollbar-hide">
+      <input
+        value={title}
+        onChange={e => {
+          setTitle(e.target.value);
+        }}
+        onKeyPress={onEnterInput}
+        className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 mb-3"
+      />
+      <div>
+        <button
+          className="rounded-lg text-xl border border-black p-2"
+          onClick={() => {
+            setModal(true);
+          }}
+        >
+          검색 필터
+        </button>
+        {modal ? <SearchFilter /> : null}
+      </div>
+      <div>
+        {data?.map(quest => (
           <SearchResultCard key={quest.questId} quest={quest} />
-        ))
-      )}
-      {/* <SearchResultCard />
-      <SearchResultCard /> */}
+        ))}
+      </div>
     </div>
   );
 };
