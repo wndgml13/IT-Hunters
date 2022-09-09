@@ -70,7 +70,7 @@ export const AddPosts = () => {
   };
 
   return (
-    <div className="p-20">
+    <div className="w-full p-12">
       <div className="flex justify-start">
         <div className="m-5 overflow-hidden relative w-24 h-24 bg-gray-100 rounded-full">
           <svg
@@ -131,7 +131,7 @@ export const AddPosts = () => {
         </div>
         <div className="flex row">
           {stacks.map(s => (
-            <p className="mr-2 border border-black p-2"> {s} </p>
+            <p className="mr-2 border border-black p-2">#{s}</p>
           ))}
         </div>
         <div className="flex justify-between">
@@ -172,7 +172,7 @@ export const AddPosts = () => {
           </select>
         </div>{" "}
         <div className="flex justify-between ">
-          <p>Front</p>
+          <p>Frontend</p>
           <select
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-2.5"
             onChange={e => {
@@ -235,14 +235,16 @@ export const AddPosts = () => {
         value={content}
         onChange={contentHandler}
       />
-      <button
-        type="button"
-        className="cursor-pointer bg-cyan-300 hover:bg-cyan-400 w-20 h-10 rounded-lg border-none
-          ml-96 mt-5"
-        onClick={onSubmitHandler}
-      >
-        등록하기
-      </button>
+      <div className="flex flex-row-reverse">
+        <button
+          type="button"
+          className="cursor-pointer bg-cyan-300 hover:bg-cyan-400 w-20 h-10 rounded-lg border-none
+           mt-5"
+          onClick={onSubmitHandler}
+        >
+          등록하기
+        </button>
+      </div>
     </div>
   );
 };
