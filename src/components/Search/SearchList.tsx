@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { useRecoilState, useRecoilValue } from "recoil";
 import { questApi } from "../../APIs/QuestApi";
 import { filterState } from "../../store/filterState";
@@ -11,22 +12,6 @@ export const SearchList = () => {
   const [modal, setModal] = useRecoilState(modalState);
   const [filterParam, setFilterParam] = useRecoilState(filterState);
   const [title, setTitle] = useState("");
-
-  // const {
-  //   data: quests,
-  //   isError,
-  //   error,
-  //   isLoading,
-  // } = useQuery<IQuestlist[], Error>(["Searchlist"], questApi.getAllQuests);
-
-  // const {
-  //   data: quests,
-
-  //   isLoading,
-  // } = useQuery<IQuestlist[]>(
-  //   ["Searchlist", filterParam],
-  //   questApi.getFilteredQuests(filterParam),
-  // );
 
   const { data, isLoading } = questApi.getFilteredQuests(filterParam);
   console.log(filterParam);
@@ -48,11 +33,11 @@ export const SearchList = () => {
           setTitle(e.target.value);
         }}
         onKeyPress={onEnterInput}
-        className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 mb-3"
+        className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
       />
       <div>
         <button
-          className="rounded-lg text-xl border border-black p-2"
+          className="rounded-lg text-xl border border-black p-2 my-4"
           onClick={() => {
             setModal(true);
           }}
@@ -69,3 +54,19 @@ export const SearchList = () => {
     </div>
   );
 };
+
+// const {
+//   data: quests,
+//   isError,
+//   error,
+//   isLoading,
+// } = useQuery<IQuestlist[], Error>(["Searchlist"], questApi.getAllQuests);
+
+// const {
+//   data: quests,
+
+//   isLoading,
+// } = useQuery<IQuestlist[]>(
+//   ["Searchlist", filterParam],
+//   questApi.getFilteredQuests(filterParam),
+// );
