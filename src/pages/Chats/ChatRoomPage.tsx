@@ -1,7 +1,22 @@
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import SockJS from "sockjs-client";
+
+import { getCookieToken } from "../../config/cookies";
 
 export const ChatRoomPage = () => {
+  const client = useRef({});
   const navigate = useNavigate();
+  const usertoken = getCookieToken();
+
+  // useEffect(() => {
+  //   chatConnect();
+  // }, []);
+  // const chatConnect = () => {
+  //   const sockJS = new SockJS(`${process.env.REACT_APP_API_BASEURL}connect`);
+  //   const stompClient: Stomp.Client = Stomp.over(sockJS);
+  // };
+
   return (
     <div>
       {/* 채팅방 헤더 */}
