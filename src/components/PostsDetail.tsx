@@ -1,65 +1,76 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
-import {
-  IQuestDetail,
-  IQuestDetailPut,
-  CommentGet,
-} from "../types/postsDetailType";
-
-interface keyboardEvent {
-  target: HTMLInputElement;
-  key: string;
-}
+import { IQuestDetail, IQuestDetailPut } from "../types/postsDetailType";
 
 export const PostsDetail = () => {
   const { questId } = useParams();
   const userToken = getCookieToken();
+  const navigate = useNavigate();
 
-  // 댓글 기능 구현
-  const [review, setReview] = useState("");
-  const [reviewArray, setReviewArray] = useState([
-    { nickname: `항해99`, review: review },
-  ]);
+  const [postsTitle, setPostsTitle] = useState("");
+  const [postsContent, setPostsContent] = useState("");
+  const [postsFrontend, setPostsFrontend] = useState("");
+  const [postsBackend, setPostsBackend] = useState("");
+  const [postsFullstack, setPostsFullstack] = useState("");
+  const [postsDesigner, setPostsDesigner] = useState("");
+  const [postsDuration, setPostsDuration] = useState("");
+  const [postsStacks, setPostsStacks] = useState("");
+  const [postsResult, setPostsResult] = useState("");
+  const [postsPublished, setPostsPublished] = useState("");
 
-  const handleReviewInput = (event: keyboardEvent) => {
-    setReview(event.target.value);
+  const fortmatResponse = (res: IQuestDetailPut) => {
+    return JSON.stringify(res, null, 2);
   };
 
-  const handleTotalEnter = (event: keyboardEvent) => {
-    if (event.key === "Enter" && event.target.value !== "") {
-      // event.preventDefault();
-      const repoArray = [...reviewArray];
-      repoArray.push({ nickname: "익명", review: review });
-      setReviewArray(repoArray);
-      event.target.value = "";
-    }
-  };
+  const { isLoading: isUpdatingTutorial, mutate: updateTutorial } = useMutation<
+    IQuestDetailPut,
+    Error
+  >(
+    async () => {
+      return await putDetailPosts();
+    },
+    // {
+    //   onSuccess: res => {
+    //     setPostsResult(fortmatResponse(res));
+    //   },
+    //   onError: err => {
+    //     setPostsResult(fortmatResponse(err.responce?.data || err));
+    //   },
+    // },
+  );
 
-  const getComments = async () => {
-    const { data } = await instance.get<CommentGet>("api/quests/16/comments", {
+  const putDetailPosts = async () => {
+    const responce = await instance.put<IQuestDetailPut>("api/quests/15", {
       headers: { authorization: userToken },
     });
-    return data;
+    return responce.data;
   };
 
-  const { data: comments } = useQuery<CommentGet, Error>(
-    ["comments"],
-    getComments,
-  );
-  console.log(comments);
+  const deleteDetailPosts = async () => {
+    await instance.delete<IQuestDetail>("api/quests/15", {
+      headers: { authorization: userToken },
+    });
+  };
+
+  // 댓글 기능 구현
+  // const getComments = async () => {
+  //   const { data } = await instance.get<CommentGet>("api/quests/16/comments", {
+  //     headers: { authorization: userToken },
+  //   });
+  //   return data;
+  // };
+
+  // const { data: comments } = useQuery<CommentGet, Error>(
+  //   ["comments"],
+  //   getComments,
+  // );
+  // console.log(comments);
 
   const getDetailPosts = async () => {
     const { data } = await instance.get<IQuestDetail>("api/quests/15", {
-      headers: { authorization: userToken },
-    });
-    return data;
-  };
-
-  const putDetailPosts = async () => {
-    const { data } = await instance.put<IQuestDetailPut>("api/quests/15", {
       headers: { authorization: userToken },
     });
     return data;
@@ -78,6 +89,18 @@ export const PostsDetail = () => {
   // console.log(quest);
   return (
     <div className="w-full p-12">
+      <div className="flex flex-row-reverse">
+        <button
+          type="button"
+          className="cursor-pointer bg-cyan-300 hover:bg-cyan-400 h-10 mt-5 rounded-lg border-none"
+          onClick={() => {
+            deleteDetailPosts();
+            navigate("/search");
+          }}
+        >
+          게시글 삭제
+        </button>
+      </div>
       <div className="flex justify-start">
         <div className="m-5 overflow-hidden relative w-24 h-24 bg-gray-100 rounded-full dark:bg-gray-600">
           <svg
@@ -98,6 +121,7 @@ export const PostsDetail = () => {
           <p>직업:</p>
         </div>
       </div>
+
       {/* 제목 입력 란 */}
       <h1>{quest?.title}</h1>
       <p>구인스택 {quest?.stacks}</p>
@@ -129,24 +153,7 @@ export const PostsDetail = () => {
       <div className="mt-5 h-32  bg-orange-200">
         <p>함께해요~~~</p>
       </div>
-      {/* <div className="flex justify-between"> */}
-      {reviewArray.map(data => (
-        <li key={data.nickname}>
-          <span>{data.nickname}</span>
-          <span className="text"> {data.review}</span>
-        </li>
-      ))}
-      <input
-        className="review-input"
-        type="text"
-        placeholder="리뷰를 입력해주세요."
-        onKeyPress={(event: keyboardEvent) => {
-          handleTotalEnter(event);
-        }}
-        onKeyUp={(event: keyboardEvent) => {
-          handleReviewInput(event);
-        }}
-      />
+
       <div className="flex flex-row-reverse">
         <button
           type="button"
@@ -156,7 +163,6 @@ export const PostsDetail = () => {
           댓글달기
         </button>
       </div>
-      {/* </div> */}
     </div>
   );
 };

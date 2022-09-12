@@ -25,6 +25,7 @@ export interface IQuestDetailPut {
   backend: number | null;
   fullstack: number | null;
   designer: number | null;
+  duration: number;
   stacks: string[];
 }
 
