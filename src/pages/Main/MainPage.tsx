@@ -1,4 +1,20 @@
+import {
+  getRecentQuestsQuery,
+  getMonthMonsterQuery,
+  getPopularQuestsQuery,
+} from "../../hooks/useMainPageQuery";
+import { quests, monthMonster } from "../../types/mainpageType";
+
 export const MainPage = () => {
+  const { data: recentQuests }: { data: undefined | quests[] } =
+    getRecentQuestsQuery();
+
+  const { data: monthMonster }: { data: undefined | monthMonster[] } =
+    getMonthMonsterQuery();
+
+  const { data: popularQuests }: { data: undefined | quests[] } =
+    getPopularQuestsQuery();
+
   return (
     <section className="w-[375px] m-auto overflow-hidden">
       <ul className="flex border-1 border relative w-[400%]">
