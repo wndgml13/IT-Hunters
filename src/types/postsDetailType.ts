@@ -39,24 +39,20 @@ export interface CommentPost {
 }
 
 export interface CommentGet {
-  commentList: [
+  commentId: number;
+  nickname: string;
+  content: string;
+  createdAt: number;
+  modifiedAt: number;
+  profileImage: string;
+  subCommentList: [
     {
-      commentId: number;
+      subCommentId: number;
       nickname: string;
       content: string;
       createdAt: number;
       modifiedAt: number;
       profileImage: string;
-      subCommentList: [
-        {
-          subCommentId: number;
-          nickname: string;
-          content: string;
-          createdAt: number;
-          modifiedAt: number;
-          profileImage: string;
-        },
-      ];
     },
   ];
 }
