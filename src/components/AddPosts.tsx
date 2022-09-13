@@ -8,6 +8,7 @@ import { PostsAdd } from "../types/postsaddType";
 // import { useRecoilValue } from "recoil";
 // import { loginInfoState } from "../store/loginInfoState";
 
+
 export const AddPosts = () => {
   const userToken = getCookieToken();
   const navigate = useNavigate();
