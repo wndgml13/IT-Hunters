@@ -2,7 +2,6 @@
 // import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 // import SockJS from "sockjs-client";
-
 // import { getCookieToken } from "../../config/cookies";
 
 export const ChatRoomPage = () => {
