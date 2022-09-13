@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
 
-import { Quest, IQuestlist } from "../types/questInfoType";
+import { IQuestlist } from "../types/questInfoType";
 
 const userToken = getCookieToken();
 

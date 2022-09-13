@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { questApi } from "../../APIs/QuestApi";
 import { filterState } from "../../store/filterState";
 import { modalState } from "../../store/modalState";
@@ -13,7 +13,7 @@ export const SearchList = () => {
   const [filterParam, setFilterParam] = useRecoilState(filterState);
   const [title, setTitle] = useState("");
 
-  const { data, isLoading } = questApi.getFilteredQuests(filterParam);
+  const { data } = questApi.getFilteredQuests(filterParam);
   console.log(filterParam);
 
   const searchParam = filterParam + "&title=" + title;
