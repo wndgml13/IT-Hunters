@@ -5,6 +5,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useInput } from "../hooks/useInput";
 import { PostsAdd } from "../types/postsaddType";
+import { useRecoilValue } from "recoil";
+import { loginInfoState } from "../store/loginInfoState";
 
 export const AddPosts = () => {
   const userToken = getCookieToken();
@@ -69,13 +71,17 @@ export const AddPosts = () => {
     }
   };
 
+  // const userProfile = useRecoilValue(loginInfoState);
+  // console.log(userProfile);
+
   return (
     <div className="w-full p-4">
       <div className="flex justify-start">
-        <div className="m-5 overflow-hidden relative w-24 h-24 bg-gray-100 rounded-full"></div>
+        <div className="m-5 overflow-hidden relative w-24 h-24 bg-gray-100 rounded-full">
+          {/* <img src={userProfile[0].profileImage} /> */}
+        </div>
         <div className="grid justify-items-start mt-5 m-3">
-          <p>닉네임:</p>
-          <p>직업:</p>
+          {/* <p>닉네임:{userProfile[0].nickname}</p> */}
         </div>
       </div>
       {/* 제목 입력 란 */}
