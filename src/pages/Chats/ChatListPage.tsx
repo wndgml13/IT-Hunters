@@ -32,7 +32,7 @@ export const ChatListPage = () => {
   const { data: chat } = useQuery<chatlist[]>(["chatlist"], getChatlist);
 
   const getChat = async () => {
-    const { data } = await instance.get<chatData[]>(`/api/channels/7`, {
+    const { data } = await instance.get<chatData[]>(`/api/channels/3`, {
       headers: { authorization: userToken },
     });
     return data;
@@ -40,7 +40,7 @@ export const ChatListPage = () => {
 
   const { data: achat } = useQuery<chatData[]>(["chat"], getChat);
 
-  console.log(chat);
+  console.log(achat);
 
   return (
     <div>

@@ -18,6 +18,14 @@ jobs:
             - name: Setup node
               uses: actions/setup-node@v2
 
+            - name: Generate Environment Variables File for Production
+              run:
+              echo "REACT_APP_API_BASEURL=$REACT_APP_API_BASEURL" >> .env
+              
+              env:
+              REACT_APP_API_BASEURL: ${{ secrets.REACT_APP_API_BASEURL }}
+             
+
             - name: Install dependencies
               run: npm install
 
