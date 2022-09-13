@@ -19,7 +19,6 @@ const AppRouter = () => {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/posts/:id" element={<PostsDetail />} />
-
         <Route path="/addposts" element={<AddPosts />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/chats" element={<ChatListPage />} />

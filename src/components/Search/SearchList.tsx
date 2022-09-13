@@ -26,7 +26,7 @@ export const SearchList = () => {
   };
 
   return (
-    <div className="p-4 scrollbar-hide">
+    <div className="p-4 h-screen overflow-y-scroll pb-[3.5rem]">
       <input
         value={title}
         onChange={e => {

@@ -20,7 +20,7 @@ export const Main = () => {
     getPopularQuestsQuery();
 
   return (
-    <section className="w-[375px] m-auto overflow-hidden">
+    <section className="w-full m-auto overflow-hidden h-full">
       <ul className="flex border-1 border relative w-[400%]">
         <li className="w-full border h-[150px]">1</li>
         <li className="w-full border h-[150px]">2</li>
