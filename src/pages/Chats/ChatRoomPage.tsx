@@ -1,13 +1,13 @@
-import { useEffect, useRef } from "react";
+// import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import SockJS from "sockjs-client";
+// import SockJS from "sockjs-client";
 
-import { getCookieToken } from "../../config/cookies";
+// import { getCookieToken } from "../../config/cookies";
 
 export const ChatRoomPage = () => {
-  const client = useRef({});
+  // const client = useRef({});
   const navigate = useNavigate();
-  const usertoken = getCookieToken();
+  // const usertoken = getCookieToken();
 
   // useEffect(() => {
   //   chatConnect();

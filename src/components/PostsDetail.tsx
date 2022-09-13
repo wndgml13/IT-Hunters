@@ -1,15 +1,9 @@
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { instance } from "../config/axios";
-import { getCookieToken, setAccessToken } from "../config/cookies";
+import { getCookieToken } from "../config/cookies";
 import { IQuestDetail, CommentGet } from "../types/postsDetailType";
-import { EachComment } from "./EachComment";
 
 export const PostsDetail = () => {
   const userToken = getCookieToken();
@@ -17,8 +11,7 @@ export const PostsDetail = () => {
   const { id } = useParams();
 
   const [comment, setComment] = useState("");
-  const [edittext, setEditText] = useState<string>("");
-  const [editable, setEditable] = useState<boolean>(false);
+
   const [visible, setVisible] = useState(false);
 
   const navigate = useNavigate();
@@ -225,7 +218,7 @@ export const PostsDetail = () => {
             >
               Delete
             </a>
-            {visible && <EachComment />}
+            {/* {visible && <EachComment />} */}
           </div>
         </div>
       ))}
