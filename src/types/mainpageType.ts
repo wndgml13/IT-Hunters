@@ -1,4 +1,4 @@
-export interface quests {
+export interface IQuest {
   bookmarkCnt: number;
   classes: {
     frontend: number;
@@ -18,10 +18,10 @@ export interface quests {
   title: string;
 }
 
-export interface monthMonster {
+export interface IMonthMonster {
+  folioTitle: string;
   nickname: string;
   profileImage: string;
   stacks: [string];
   followCnt: number;
-  folioTitle: string;
 }

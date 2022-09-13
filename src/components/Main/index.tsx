@@ -1,6 +1,5 @@
 import { MonthMonster } from "./MonthMonster";
-import { PoplarQuest } from "./PoplarQuest";
-import { RecentQuest } from "./RecentQuest";
+import { Quest } from "../Quest";
 
 import {
   getRecentQuestsQuery,
@@ -8,16 +7,16 @@ import {
   getPopularQuestsQuery,
 } from "../../hooks/useMainPageQuery";
 
-import { quests, monthMonster } from "../../types/mainpageType";
+import { IQuest, IMonthMonster } from "../../types/mainpageType";
 
 export const Main = () => {
-  const { data: recentQuests }: { data: undefined | quests[] } =
+  const { data: recentQuests }: { data: undefined | IQuest[] } =
     getRecentQuestsQuery();
 
-  const { data: monthMonster }: { data: undefined | monthMonster[] } =
+  const { data: monthMonster }: { data: undefined | IMonthMonster[] } =
     getMonthMonsterQuery();
 
-  const { data: popularQuests }: { data: undefined | quests[] } =
+  const { data: popularQuests }: { data: undefined | IQuest[] } =
     getPopularQuestsQuery();
 
   return (
@@ -35,14 +34,69 @@ export const Main = () => {
         <li className="w-[23%] text-center h-[150px] border">기획자</li>
       </ul>
       <div>
-        <h3>현재 올라온 퀘스트</h3>
+        <div>
+          <h3>현재 인기 퀘스트</h3>
+        </div>
         <ul>
-          <li></li>
+          {popularQuests?.map((quest: IQuest) => (
+            <Quest
+              key={quest.questId}
+              bookmarkCnt={quest.bookmarkCnt}
+              classes={quest.classes}
+              commentCnt={quest.commentCnt}
+              content={quest.content}
+              createdAt={quest.createdAt}
+              duration={quest.duration}
+              modifiedAt={quest.modifiedAt}
+              nickname={quest.nickname}
+              questId={quest.questId}
+              stacks={quest.stacks}
+              status={quest.status}
+              title={quest.title}
+            />
+          ))}
         </ul>
       </div>
       <div>
-        <h3>이달의 용병단</h3>
-        <ul></ul>
+        <div>
+          <h3>현재 올라온 퀘스트</h3>
+        </div>
+        <ul>
+          {recentQuests?.map((quest: IQuest) => (
+            <Quest
+              key={quest.questId}
+              bookmarkCnt={quest.bookmarkCnt}
+              classes={quest.classes}
+              commentCnt={quest.commentCnt}
+              content={quest.content}
+              createdAt={quest.createdAt}
+              duration={quest.duration}
+              modifiedAt={quest.modifiedAt}
+              nickname={quest.nickname}
+              questId={quest.questId}
+              stacks={quest.stacks}
+              status={quest.status}
+              title={quest.title}
+            />
+          ))}
+        </ul>
+      </div>
+      <div>
+        <div>
+          <h3>이달의 몬스터</h3>
+        </div>
+        <ul>
+          {monthMonster?.map((monster: IMonthMonster) => (
+            <MonthMonster
+              key={monster.nickname}
+              folioTitle={monster.folioTitle}
+              followCnt={monster.followCnt}
+              nickname={monster.nickname}
+              profileImage={monster.profileImage}
+              stacks={monster.stacks}
+            />
+          ))}
+        </ul>
       </div>
     </section>
   );
