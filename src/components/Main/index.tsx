@@ -1,11 +1,16 @@
+import { MonthMonster } from "./MonthMonster";
+import { PoplarQuest } from "./PoplarQuest";
+import { RecentQuest } from "./RecentQuest";
+
 import {
   getRecentQuestsQuery,
   getMonthMonsterQuery,
   getPopularQuestsQuery,
 } from "../../hooks/useMainPageQuery";
+
 import { quests, monthMonster } from "../../types/mainpageType";
 
-export const MainPage = () => {
+export const Main = () => {
   const { data: recentQuests }: { data: undefined | quests[] } =
     getRecentQuestsQuery();
 
@@ -37,6 +42,7 @@ export const MainPage = () => {
       </div>
       <div>
         <h3>이달의 용병단</h3>
+        <ul></ul>
       </div>
     </section>
   );
