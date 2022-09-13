@@ -8,8 +8,8 @@ import { useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { instance } from "../config/axios";
 import { getCookieToken, setAccessToken } from "../config/cookies";
-import { IQuestDetail, CommentGet } from "../types/postsDetailType";
-import { EachComment } from "./EachComment";
+import { IQuestDetail, CommentGet, OffersPost } from "../types/postsDetailType";
+// import { EachComment } from "./EachComment";
 
 export const PostsDetail = () => {
   const userToken = getCookieToken();
@@ -22,7 +22,7 @@ export const PostsDetail = () => {
   const [visible, setVisible] = useState(false);
 
   const navigate = useNavigate();
-  // 댓글 조회 -- api파일로 옮겨야함!!
+  // 댓글, 대댓글 조회 -- api파일로 옮겨야함!!
   const getComments = async () => {
     const { data } = await instance.get<CommentGet[]>(
       `api/quests/${id}/comments`,
@@ -30,6 +30,7 @@ export const PostsDetail = () => {
         headers: { authorization: userToken },
       },
     );
+    console.log(data);
     return data;
   };
 
@@ -127,6 +128,7 @@ export const PostsDetail = () => {
     ["Postsdetail"],
     getDetailPosts,
   );
+
   // 게시글 삭제 -- api 파일로 옮겨야함!!
   const deleteposts = async () => {
     const { data } = await instance.delete(`/api/quests/${id}`, {
@@ -144,6 +146,20 @@ export const PostsDetail = () => {
   const onDeletepost = () => {
     delpost();
     navigate("/search");
+  };
+
+  const upDateComment = (comId: number) => {
+    console.log(comId);
+  };
+  // 신청하기 -- api 파일로 옮겨야함!!
+  const offersPosts = async () => {
+    const { data } = await instance.post<OffersPost>(
+      `/api/quests/${id}/offers`,
+      {
+        headers: { authorization: userToken },
+      },
+    );
+    return data;
   };
 
   // console.log(quest);
@@ -197,6 +213,9 @@ export const PostsDetail = () => {
           type="button"
           className=" cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 rounded-lg border-none
              mt-5"
+          // onClick={() => {
+          //   navigate(`/addposts/${nickname}`);
+          // }}
         >
           신청하기
         </button>
@@ -207,11 +226,14 @@ export const PostsDetail = () => {
         <div key={data.commentId} className="my-8 border-b-2">
           <span className="border border-black px-2 py-1">{data.nickname}</span>
           <span className="text"> {data.content}</span>
+
           <div className="ml-24 text-sm">
             <a
               type="button"
               className="cursor-pointer mr-1 text-blue-600/100"
               onClick={() => {
+                upDateComment(data.commentId);
+                console.log(data.commentId);
                 setVisible(!visible);
               }}
             >
@@ -220,12 +242,37 @@ export const PostsDetail = () => {
             |
             <a
               type="button"
-              className="cursor-pointer ml-1 text-blue-600/100"
+              className="cursor-pointer ml-1 mr-1 text-blue-600/100"
               onClick={() => onDeletecomment(data.commentId)}
             >
               Delete
             </a>
-            {visible && <EachComment />}
+            |
+            <a type="button" className="cursor-pointer ml-1 text-gray-400/100">
+              답글 달기
+            </a>
+            {visible && (
+              <div className="flex justify-between gap-2">
+                <textarea
+                  id="message"
+                  rows={2}
+                  className="mb-2 block p-2.5 mt-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
+                  placeholder="댓글 수정"
+                />
+                <button
+                  type="button"
+                  className="cursor-pointer bg-blue-200 hover:bg-blue-400 w-20 h-10 mt-12 rounded-lg border-none"
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  className="cursor-pointer bg-blue-200 hover:bg-blue-400 w-20 h-10 mt-12 rounded-lg border-none"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
           </div>
         </div>
       ))}

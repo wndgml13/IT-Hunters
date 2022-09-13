@@ -56,3 +56,10 @@ export interface CommentGet {
     },
   ];
 }
+
+export interface OffersPost {
+  BACKEND: number | null;
+  FRONTEND: number | null;
+  DESIGNER: number | null;
+  FULLSTACK: number | null;
+}
