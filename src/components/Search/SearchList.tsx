@@ -6,7 +6,7 @@ import { filterState } from "../../store/filterState";
 import { modalState } from "../../store/modalState";
 
 import { SearchFilter } from "./SearchFilter";
-import { SearchResultCard } from "./SearchResultCard";
+import { Quest } from "../Quest";
 
 export const SearchList = () => {
   const [modal, setModal] = useRecoilState(modalState);
@@ -48,7 +48,7 @@ export const SearchList = () => {
       </div>
       <div>
         {data?.map(quest => (
-          <SearchResultCard key={quest.questId} quest={quest} />
+          <Quest key={quest.questId} quest={quest} />
         ))}
       </div>
     </div>
