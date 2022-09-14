@@ -1,23 +1,19 @@
 import { MonthMonster } from "./MonthMonster";
 import { Quest } from "../Quest";
 
-import {
-  getRecentQuestsQuery,
-  getMonthMonsterQuery,
-  getPopularQuestsQuery,
-} from "../../hooks/useMainPageQuery";
+import { mainPageAPis } from "../../APIs/mainPageApis";
 
 import { IQuest, IMonthMonster } from "../../types/mainpageType";
 
 export const Main = () => {
   const { data: recentQuests }: { data: undefined | IQuest[] } =
-    getRecentQuestsQuery();
+    mainPageAPis.getRecentQuests();
 
   const { data: monthMonster }: { data: undefined | IMonthMonster[] } =
-    getMonthMonsterQuery();
+    mainPageAPis.getMonthMonter();
 
   const { data: popularQuests }: { data: undefined | IQuest[] } =
-    getPopularQuestsQuery();
+    mainPageAPis.getPopularQuests();
 
   return (
     <section className="w-full m-auto overflow-hidden h-full">
