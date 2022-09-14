@@ -27,8 +27,9 @@ export const ChatRoomPage = () => {
         client.subscribe(
           `${baseURL}sub/channels/3`,
           data => {
-            const newMessage = JSON.parse(data.body);
-            console.log("newMessage");
+            console.log(data);
+            // const newMessage = JSON.parse(data.body);
+            // console.log("newMessage");
           },
           usertoken,
         );
@@ -61,7 +62,7 @@ export const ChatRoomPage = () => {
         <p className="text-3xl">...</p>
       </div>
       {/* 채팅글들 */}
-      <div className="h-full w-full bottom-16 overflow-auto flex flex-col-reverse">
+      <div className="h-full w-full bottom-16 overflow-y-scroll scroll flex flex-col-reverse">
         {chatdata?.map(cD => (
           <div className="px-4 pt-4" key={cD.createdAt}>
             <div className="flex">
@@ -86,8 +87,8 @@ export const ChatRoomPage = () => {
       </div>
 
       {/* 채팅입력창 */}
-      <div className="fixed bottom-0 w-full h-16 z-50 bg-white pt-2">
-        <div className="flex">
+      <div className="w-full absolute bottom-0 left-0 right-0 z-50">
+        <div className="flex bg-white pb-2">
           <button className="cursor-pointer  hover:bg-gray-400  bg-white w-20 h-12 text-2xl border-none">
             +
           </button>
