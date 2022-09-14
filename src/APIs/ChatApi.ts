@@ -18,13 +18,17 @@ export const chatApi = {
     });
   },
   getChatData: () => {
-    return useQuery(["chat"], async () => {
-      const { data } = await instance.get<chatData[]>(
-        `/api/channels/3`,
-        userToken,
-      );
-      return data;
-    });
+    return useQuery(
+      ["chat"],
+      async () => {
+        const { data } = await instance.get<chatData[]>(
+          `/api/channels/3`,
+          userToken,
+        );
+        return data;
+      },
+      { refetchInterval: 500 },
+    );
   },
 };
 
