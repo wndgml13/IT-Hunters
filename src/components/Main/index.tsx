@@ -1,26 +1,23 @@
 import { MonthMonster } from "./MonthMonster";
 import { Quest } from "../Quest";
 
-import {
-  getRecentQuestsQuery,
-  getMonthMonsterQuery,
-  getPopularQuestsQuery,
-} from "../../hooks/useMainPageQuery";
+import { mainPageAPis } from "../../APIs/mainPageApis";
 
-import { IQuest, IMonthMonster } from "../../types/mainpageType";
+import { IMonthMonster } from "../../types/mainpageType";
+import { IQuest } from "../../types/questType";
 
 export const Main = () => {
   const { data: recentQuests }: { data: undefined | IQuest[] } =
-    getRecentQuestsQuery();
+    mainPageAPis.getRecentQuests();
 
   const { data: monthMonster }: { data: undefined | IMonthMonster[] } =
-    getMonthMonsterQuery();
+    mainPageAPis.getMonthMonter();
 
   const { data: popularQuests }: { data: undefined | IQuest[] } =
-    getPopularQuestsQuery();
+    mainPageAPis.getPopularQuests();
 
   return (
-    <section className="w-[375px] m-auto overflow-hidden">
+    <section className="w-full m-auto overflow-y-scroll h-full pb-[3.5rem] overflow-x-hidden">
       <ul className="flex border-1 border relative w-[400%]">
         <li className="w-full border h-[150px]">1</li>
         <li className="w-full border h-[150px]">2</li>
@@ -35,66 +32,61 @@ export const Main = () => {
       </ul>
       <div>
         <div>
-          <h3>현재 인기 퀘스트</h3>
+          <h3 className="mb-2 mt-5">현재 인기 퀘스트</h3>
         </div>
         <ul>
           {popularQuests?.map((quest: IQuest) => (
             <Quest
               key={quest.questId}
-              bookmarkCnt={quest.bookmarkCnt}
-              classes={quest.classes}
-              commentCnt={quest.commentCnt}
-              content={quest.content}
-              createdAt={quest.createdAt}
-              duration={quest.duration}
-              modifiedAt={quest.modifiedAt}
-              nickname={quest.nickname}
-              questId={quest.questId}
-              stacks={quest.stacks}
-              status={quest.status}
-              title={quest.title}
+              quest={quest}
+              // bookmarkCnt={quest.bookmarkCnt}
+              // classes={quest.classes}
+              // commentCnt={quest.commentCnt}
+              // content={quest.content}
+              // createdAt={quest.createdAt}
+              // duration={quest.duration}
+              // modifiedAt={quest.modifiedAt}
+              // nickname={quest.nickname}
+              // questId={quest.questId}
+              // stacks={quest.stacks}
+              // status={quest.status}
+              // title={quest.title}
             />
           ))}
         </ul>
       </div>
       <div>
         <div>
-          <h3>현재 올라온 퀘스트</h3>
+          <h3 className="mb-2 mt-5">현재 올라온 퀘스트</h3>
         </div>
         <ul>
           {recentQuests?.map((quest: IQuest) => (
             <Quest
               key={quest.questId}
-              bookmarkCnt={quest.bookmarkCnt}
-              classes={quest.classes}
-              commentCnt={quest.commentCnt}
-              content={quest.content}
-              createdAt={quest.createdAt}
-              duration={quest.duration}
-              modifiedAt={quest.modifiedAt}
-              nickname={quest.nickname}
-              questId={quest.questId}
-              stacks={quest.stacks}
-              status={quest.status}
-              title={quest.title}
+              quest={quest}
+              // bookmarkCnt={quest.bookmarkCnt}
+              // classes={quest.classes}
+              // commentCnt={quest.commentCnt}
+              // content={quest.content}
+              // createdAt={quest.createdAt}
+              // duration={quest.duration}
+              // modifiedAt={quest.modifiedAt}
+              // nickname={quest.nickname}
+              // questId={quest.questId}
+              // stacks={quest.stacks}
+              // status={quest.status}
+              // title={quest.title}
             />
           ))}
         </ul>
       </div>
       <div>
         <div>
-          <h3>이달의 몬스터</h3>
+          <h3 className="mb-2 mt-5">이달의 몬스터</h3>
         </div>
         <ul>
           {monthMonster?.map((monster: IMonthMonster) => (
-            <MonthMonster
-              key={monster.nickname}
-              folioTitle={monster.folioTitle}
-              followCnt={monster.followCnt}
-              nickname={monster.nickname}
-              profileImage={monster.profileImage}
-              stacks={monster.stacks}
-            />
+            <MonthMonster key={monster.nickname} monster={monster} />
           ))}
         </ul>
       </div>

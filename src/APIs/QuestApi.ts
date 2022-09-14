@@ -2,21 +2,21 @@ import { useQuery } from "@tanstack/react-query";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
 
-import { IQuestlist } from "../types/questInfoType";
+import { IQuest } from "../types/questType";
 
 const userToken = getCookieToken();
 
 export const questApi = {
   getAllQuests: async () => {
-    const { data } = await instance.get<IQuestlist[]>("api/quests", {
+    const { data } = await instance.get<IQuest[]>("api/quests", {
       headers: { authorization: userToken },
     });
     return data;
   },
   getFilteredQuests: (filterval: string) => {
-    return useQuery<IQuestlist[]>(["filterlist", filterval], () =>
+    return useQuery<IQuest[]>(["filterlist", filterval], () =>
       instance
-        .get<IQuestlist[]>(`api/quests/search?${filterval}`)
+        .get<IQuest[]>(`api/quests/search?${filterval}`)
         .then(res => res.data),
     );
   },
