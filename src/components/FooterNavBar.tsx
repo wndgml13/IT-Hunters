@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export const FooterNavBar = () => {
   return (
-    <section className="block fixed inset-x-0 bottom-0 z-10 bg-gray-300 h-16 shadow">
+    <footer className="absolute h-[3.5rem] inset-x-0 bottom-0 z-10 bg-gray-300 shadow w-full">
       <div className="flex justify-between content-center">
         <Link
           to="/search"
@@ -29,6 +29,6 @@ export const FooterNavBar = () => {
           <span className="tab tab-whishlist block text-2xl">게시글</span>
         </Link>
       </div>
-    </section>
+    </footer>
   );
 };
