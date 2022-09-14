@@ -60,19 +60,18 @@ export const SearchFilter = () => {
     "inline-flex justify-between items-center p-2 w-full  rounded-lg border border-gray-200 cursor-pointer peer-checked:ring-blue-500 peer-checked:ring-2 peer-checked:border-transparent";
 
   return (
-    <div className="h-screen w-full fixed top-0 right-0 left-0 z-50 flex justify-center items-center bg-black bg-opacity-70">
-      <div className="fixed inset-x-0 bottom-0 bg-white h-4/5 z-50 rounded-t-2xl">
-        <div className="fixed right-6 w-3">
+    <div className="h-full w-full absolute bottom-0 left-0 z-50 flex items-end bg-black bg-opacity-70">
+      <div className="w-full bg-white z-50 rounded-t-2xl">
+        <div className=" right-6 w-3">
           <button
             type="button"
-            className=" hover:bg-gray-200 text-2xl pt-6"
+            className=" hover:bg-gray-200 text-2xl p-6"
             onClick={() => setModal(false)}
           >
             <span>X</span>
           </button>
         </div>
-
-        <div className="p-6 space-y-6">
+        <div className="p-6 space-y-6 w-full ">
           <h1 className="text-3xl">직업군</h1>
           <ul className="grid gap-2 w-ful grid-cols-2">
             <li>
@@ -131,7 +130,7 @@ export const SearchFilter = () => {
         </div>
         <div className="p-6 pt-1 space-y-6">
           <h1 className="text-3xl">스택</h1>
-          <ul className="grid gap-1 w-ful grid-cols-3">
+          <ul className="grid gap-1 w-full grid-cols-3">
             {frontStackData?.map(fsd => (
               <li>
                 <input
@@ -161,10 +160,10 @@ export const SearchFilter = () => {
           />
         </div>
 
-        <div className="flex  items-center w-100  space-x-2 text-gray-200">
+        <div className="flex items-center w-full  space-x-2 text-gray-200">
           <button
             type="button"
-            className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium fixed bottom-0 w-full h-[3rem] text-sm px-5 py-2.5 text-center"
+            className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium bottom-0 w-full h-[3rem] text-sm px-5 py-2.5 text-center"
             onClick={onSubmitFilter}
           >
             필터적용
