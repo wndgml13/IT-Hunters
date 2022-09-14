@@ -18,26 +18,6 @@ export interface IQuestDetail {
   stacks: string[];
 }
 
-export interface IQuestDetailPut {
-  title: string;
-  content: string;
-  frontend: number | null;
-  backend: number | null;
-  fullstack: number | null;
-  designer: number | null;
-  duration: number;
-  stacks: string[];
-}
-
-export interface CommentPost {
-  commentId: number;
-  nickname: string;
-  content: string;
-  createdAt: number;
-  modifiedAt: number;
-  profileImage: string;
-}
-
 export interface CommentGet {
   commentId: number;
   nickname: string;
