@@ -89,7 +89,6 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
     e: React.KeyboardEvent<HTMLTextAreaElement>,
   ) => {
     if (e.key === "Enter") {
-      console.log(subComment);
       addSubcom(subComment);
       setSubcomment("");
     }
@@ -98,7 +97,6 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
   const onSubmitSubComment = () => {
     addSubcom(subComment);
     setSubcomment("");
-    console.log(subComment);
   };
 
   return (

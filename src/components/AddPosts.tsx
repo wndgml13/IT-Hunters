@@ -5,8 +5,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useInput } from "../hooks/useInput";
 import { PostsAdd } from "../types/postsaddType";
-// import { useRecoilValue } from "recoil";
-// import { loginInfoState } from "../store/loginInfoState";
+import { useRecoilValue } from "recoil";
+import { loginInfoState } from "../store/loginInfoState";
 
 export const AddPosts = () => {
   const userToken = getCookieToken();
@@ -73,8 +73,8 @@ export const AddPosts = () => {
     }
   };
 
-  // const userProfile = useRecoilValue(loginInfoState);
-  // console.log(userProfile);
+  const userProfile = useRecoilValue(loginInfoState);
+  console.log(userProfile);
 
   return (
     <div className="w-full h-full overflow-y-scroll pb-[3.5rem] p-4">

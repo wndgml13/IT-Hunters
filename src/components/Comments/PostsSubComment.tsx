@@ -15,7 +15,7 @@ export const PostsSubComment = ({
   const userToken = getCookieToken();
   const queryClient = useQueryClient();
   const { id } = useParams();
-  console.log(coId);
+
   const [editSubcomment, setEditsubComment] = useState(""); // 답글 수정
   const [editSubCommentToggle, setEditSubCommentToggle] = useState(false); // 답글 수정 토글
 
@@ -37,7 +37,7 @@ export const PostsSubComment = ({
       },
     },
   );
-  console.log(editSubcomment);
+
   const onEditsubComment = (commentId: number, subCommentId: number) => {
     editSubcom({ commentId, subCommentId });
     setEditsubComment("");

@@ -48,7 +48,6 @@ export const PostsDetail = () => {
 
   const onEnterComment = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      console.log(comment);
       addCom(comment);
       setComment("");
     }
@@ -91,18 +90,6 @@ export const PostsDetail = () => {
     navigate("/search");
   };
 
-  // 신청하기 -- api 파일로 옮겨야함!!
-  // const offersPosts = async () => {
-  //   const { data } = await instance.post<OffersPost>(
-  //     `/api/quests/${id}/offers`,
-  //     {
-  //       headers: { authorization: userToken },
-  //     },
-  //   );
-  //   return data;
-  // };
-
-  // console.log(quest);
   return (
     <div className="w-full h-full overflow-y-scroll pb-[3.5rem] p-4">
       <div className="flex flex-row-reverse">
