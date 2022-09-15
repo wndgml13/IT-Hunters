@@ -36,22 +36,7 @@ export const Main = () => {
         </div>
         <ul>
           {popularQuests?.map((quest: IQuest) => (
-            <Quest
-              key={quest.questId}
-              quest={quest}
-              // bookmarkCnt={quest.bookmarkCnt}
-              // classes={quest.classes}
-              // commentCnt={quest.commentCnt}
-              // content={quest.content}
-              // createdAt={quest.createdAt}
-              // duration={quest.duration}
-              // modifiedAt={quest.modifiedAt}
-              // nickname={quest.nickname}
-              // questId={quest.questId}
-              // stacks={quest.stacks}
-              // status={quest.status}
-              // title={quest.title}
-            />
+            <Quest key={quest.questId} quest={quest} />
           ))}
         </ul>
       </div>
@@ -61,22 +46,7 @@ export const Main = () => {
         </div>
         <ul>
           {recentQuests?.map((quest: IQuest) => (
-            <Quest
-              key={quest.questId}
-              quest={quest}
-              // bookmarkCnt={quest.bookmarkCnt}
-              // classes={quest.classes}
-              // commentCnt={quest.commentCnt}
-              // content={quest.content}
-              // createdAt={quest.createdAt}
-              // duration={quest.duration}
-              // modifiedAt={quest.modifiedAt}
-              // nickname={quest.nickname}
-              // questId={quest.questId}
-              // stacks={quest.stacks}
-              // status={quest.status}
-              // title={quest.title}
-            />
+            <Quest key={quest.questId} quest={quest} />
           ))}
         </ul>
       </div>
