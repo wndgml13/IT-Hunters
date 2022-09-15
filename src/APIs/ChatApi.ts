@@ -27,16 +27,7 @@ export const chatApi = {
         );
         return data;
       },
-      { refetchInterval: 500 },
+      // { refetchInterval: 500 },
     );
   },
 };
-
-// const getChat = async () => {
-//   const { data } = await instance.get<chatData[]>(`/api/channels/3`, {
-//     headers: { authorization: userToken },
-//   });
-//   return data;
-// };
-
-// const { data: achat } = useQuery<chatData[]>(["chat"], getChat);
