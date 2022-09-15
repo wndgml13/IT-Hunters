@@ -1,34 +1,22 @@
 import { Link } from "react-router-dom";
 
+import { HomeIcon, ChatIcon, WriteIcon, MyPageIcon } from "../assets/icons";
+
 export const FooterNavBar = () => {
   return (
-    <footer className="absolute h-[3.5rem] inset-x-0 bottom-0 z-10 bg-gray-300 shadow w-full">
-      <div className="flex justify-between content-center">
-        <Link
-          to="/search"
-          className="w-full focus:text-teal-500 hover:text-teal-500 justify-center inline-block text-center pt-2 pb-1"
-        >
-          <span className="tab tab-home block text-2xl">검색</span>
-        </Link>
-        <Link
-          to="/"
-          className="w-full focus:text-teal-500 hover:text-teal-500 justify-center inline-block text-center pt-2 pb-1"
-        >
-          <span className="tab tab-kategori block text-2xl">홈</span>
-        </Link>
-        <Link
-          to="/chats"
-          className="w-full focus:text-teal-500 hover:text-teal-500 justify-center inline-block text-center pt-2 pb-1"
-        >
-          <span className="tab tab-explore block text-2xl">메세지</span>
-        </Link>
-        <Link
-          to="/addposts"
-          className="w-full focus:text-teal-500 hover:text-teal-500 justify-center inline-block text-center pt-2 pb-1"
-        >
-          <span className="tab tab-whishlist block text-2xl">게시글</span>
-        </Link>
-      </div>
+    <footer className="absolute flex justify-around items-center h-[3.75rem] w-full left-0 bottom-0 z-10 shadow-[4px_0_30_1px_rgba(194,194,194,0.5)] bg-bgWhite">
+      <Link to="/mypage">
+        <MyPageIcon className="fill-black" />
+      </Link>
+      <Link to="/">
+        <HomeIcon className="fill-black" />
+      </Link>
+      <Link to="/chats">
+        <ChatIcon className="fill-black" />
+      </Link>
+      <Link to="/addposts">
+        <WriteIcon className="fill-black" />
+      </Link>
     </footer>
   );
 };
