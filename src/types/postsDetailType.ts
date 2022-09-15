@@ -17,6 +17,14 @@ export interface IQuestDetail {
   title: string;
   stacks: string[];
 }
+export interface SubCommentGet {
+  subCommentId: number;
+  nickname: string;
+  content: string;
+  createdAt: number;
+  modifiedAt: number;
+  profileImage: string;
+}
 
 export interface CommentGet {
   commentId: number;
@@ -25,16 +33,7 @@ export interface CommentGet {
   createdAt: number;
   modifiedAt: number;
   profileImage: string;
-  subCommentList: [
-    {
-      subCommentId: number;
-      nickname: string;
-      content: string;
-      createdAt: number;
-      modifiedAt: number;
-      profileImage: string;
-    },
-  ];
+  subCommentList: SubCommentGet[];
 }
 
 export interface OffersPost {

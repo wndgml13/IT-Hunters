@@ -1,19 +1,63 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { CommentApi } from "../APIs/CommentApi";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
 import { IQuestDetail, CommentGet } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
 
 export const PostsDetail = () => {
+  const navigate = useNavigate();
   const userToken = getCookieToken();
   const queryClient = useQueryClient();
   const { id } = useParams();
   const [comment, setComment] = useState("");
-  const [visible, setVisible] = useState(false);
 
-  const navigate = useNavigate();
+  // 댓글, 답글 조회
+  // const { data: comments } = CommentApi.getComments();
+  const getComments = async () => {
+    const { data } = await instance.get<CommentGet[]>(
+      `api/quests/${id}/comments`,
+      {
+        headers: { authorization: userToken },
+      },
+    );
+    return data;
+  };
+
+  const { data: comments } = useQuery<CommentGet[]>(["comments"], getComments);
+
+  // 댓글 작성 -- api파일로 옮겨야함!!
+  const addComment = async (comment: string) => {
+    const { data } = await instance.post(
+      `/api/quests/${id}/comments`,
+      { content: comment },
+      {
+        headers: { authorization: userToken },
+      },
+    );
+    return data;
+  };
+
+  const { mutate: addCom } = useMutation(addComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["comments"]);
+    },
+  });
+
+  const onEnterComment = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      console.log(comment);
+      addCom(comment);
+      setComment("");
+    }
+  };
+
+  const onSubmitComment = () => {
+    addCom(comment);
+    setComment("");
+  };
 
   // 포스트관련 -- api파일로 옮겨야함!!
   const getDetailPosts = async () => {
@@ -60,7 +104,7 @@ export const PostsDetail = () => {
 
   // console.log(quest);
   return (
-    <div className="w-full p-4">
+    <div className="w-full h-full overflow-y-scroll pb-[3.5rem] p-4">
       <div className="flex flex-row-reverse">
         <button
           type="button"
@@ -118,7 +162,27 @@ export const PostsDetail = () => {
       </div>
 
       {/* 댓글시작 */}
-      <PostsComment />
+      {comments?.map(co => (
+        <PostsComment key={co.commentId} co={co} />
+      ))}
+      {/* 댓글 입력란 */}
+      <div className="flex row mt-5 mb-20 ">
+        <input
+          className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full h-14 p-2.5 mx-1"
+          value={comment}
+          placeholder="댓글을 입력해주세요."
+          onChange={e => setComment(e.target.value)}
+          onKeyPress={onEnterComment}
+        />
+
+        <button
+          type="button"
+          className="cursor-pointer bg-cyan-300 hover:bg-cyan-400  w-20 h-14 rounded-lg border-none"
+          onClick={onSubmitComment}
+        >
+          댓글달기
+        </button>
+      </div>
     </div>
   );
 };
