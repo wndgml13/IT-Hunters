@@ -1,4 +1,6 @@
 export interface IQuest {
+  recentQuestId?: number;
+  mainQuestId?: number;
   bookmarkCnt: number;
   classes: {
     frontend: number;

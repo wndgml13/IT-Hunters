@@ -7,6 +7,7 @@ import { useInput } from "../hooks/useInput";
 import { PostsAdd } from "../types/postsaddType";
 import { useRecoilValue } from "recoil";
 import { loginInfoState } from "../store/loginInfoState";
+import { NoLoginError } from "../pages/ErrorPage/NoLoginError";
 
 export const AddPosts = () => {
   const userToken = getCookieToken();
@@ -76,6 +77,10 @@ export const AddPosts = () => {
 
   const userProfile = useRecoilValue(loginInfoState);
   console.log(userProfile);
+
+  if (!userToken) {
+    return <NoLoginError />;
+  }
 
   return (
     <div className="w-full h-full overflow-y-scroll pb-[3.5rem] p-4">
