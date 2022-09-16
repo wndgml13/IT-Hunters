@@ -17,12 +17,12 @@ export const chatApi = {
       return data;
     });
   },
-  getChatData: () => {
+  getChatData: (channelNum: string | undefined) => {
     return useQuery(
-      ["chat"],
+      ["chat", channelNum],
       async () => {
         const { data } = await instance.get<chatData[]>(
-          `/api/channels/3`,
+          `/api/channels/${channelNum}`,
           userToken,
         );
         return data;

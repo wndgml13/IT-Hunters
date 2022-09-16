@@ -1,4 +1,19 @@
+import { Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { getCookieToken } from "../config/cookies";
+import { loginInfoState } from "../store/loginInfoState";
+import { NoLoginError } from "./ErrorPage/NoLoginError";
+
 export const MyPage = () => {
+  const userProfile = useRecoilValue(loginInfoState);
+  const usertoken = getCookieToken();
+
+  if (!usertoken) {
+    return <NoLoginError />;
+  }
+
+  console.log(userProfile);
+
   return (
     <div className="w-auto h-[100vh] p-6">
       <div className="flex justify-between">
@@ -10,17 +25,25 @@ export const MyPage = () => {
         <div className="m-5 relative w-24 h-24 bg-gray-300 rounded-full">
           <img
             className="w-full h-full border rounded-full"
-            src="https://img.freepik.com/premium-vector/cute-animal-characters-duck_235100-137.jpg"
+            src={userProfile.profileImage}
           />
         </div>
         <div>
-          <p className="py-14 text-2xl">닉네임</p>
+          <p className="py-14 text-2xl">{userProfile.nickname}</p>
         </div>
+        <Link className="text-blue-600" to="edituser">
+          정보수정
+        </Link>
       </div>
 
-      <p>보유스택</p>
+      <p>
+        보유스택{" "}
+        <Link className="text-blue-600" to="editstack">
+          수정
+        </Link>
+      </p>
 
-      <div className="flex justify-between mt-6">
+      <div className="flex flex-wrap justify-between mt-6">
         <div className="mx-auto  relative w-14 h-14 bg-gray-300 rounded-full"></div>
         <div className="mx-auto relative w-14 h-14 bg-gray-300 rounded-full"></div>
         <div className="mx-auto relative w-14 h-14 bg-gray-300 rounded-full"></div>
