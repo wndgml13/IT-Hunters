@@ -1,21 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { CommentApi } from "../APIs/CommentApi";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
 import { IQuestDetail, CommentGet } from "../types/postsDetailType";
+import { PostsComment } from "./Comments/PostsComment";
 
 export const PostsDetail = () => {
+  const navigate = useNavigate();
   const userToken = getCookieToken();
   const queryClient = useQueryClient();
   const { id } = useParams();
-
   const [comment, setComment] = useState("");
 
-  const [visible, setVisible] = useState(false);
-
-  const navigate = useNavigate();
-  // 댓글 조회 -- api파일로 옮겨야함!!
+  // 댓글, 답글 조회
+  // const { data: comments } = CommentApi.getComments();
   const getComments = async () => {
     const { data } = await instance.get<CommentGet[]>(
       `api/quests/${id}/comments`,
@@ -39,6 +39,7 @@ export const PostsDetail = () => {
     );
     return data;
   };
+
   const { mutate: addCom } = useMutation(addComment, {
     onSuccess: () => {
       queryClient.invalidateQueries(["comments"]);
@@ -47,7 +48,6 @@ export const PostsDetail = () => {
 
   const onEnterComment = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      console.log(comment);
       addCom(comment);
       setComment("");
     }
@@ -56,56 +56,6 @@ export const PostsDetail = () => {
   const onSubmitComment = () => {
     addCom(comment);
     setComment("");
-  };
-  // 댓글 수정 -- api 파일로 옮겨야함!!
-  // const editComments = async () => {
-  //   const { data } = await instance.put<CommentGet[]>(
-  //     `api/quests/${id}/comments/${commentId}`,
-  //     {
-  //       headers: { authorization: userToken },
-  //     },
-  //   );
-
-  //   return data;
-  // };
-
-  // const { mutate: editCom } = useMutation(editComments, {
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries(["editcomments"]);
-  //   },
-  // });
-
-  // 댓글 삭제 -- api 파일로 옮겨야함!!
-  // const deletecomments = async () => {
-  //   const { data } = await instance.delete(
-  //     `/api/quests/${id}/comments/${commentId}`,
-  //     {
-  //       headers: { authorization: userToken },
-  //     },
-  //   );
-  //   return data;
-  // };
-
-  // const { mutate: delcomment } = useMutation(deletecomments, {
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries(["deletecomments"]);
-  //   },
-  // });
-
-  const { mutate: delcomment } = useMutation(
-    (commentId: number) =>
-      instance.delete(`/api/quests/${id}/comments/${commentId}`, {
-        headers: { authorization: userToken },
-      }),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["comments"]); // "comments"는 33번째 줄 usequery 키값임. 키값을 동일하게 안적어주면 새로고침 해야 댓글이 삭제됨.
-      },
-    },
-  );
-
-  const onDeletecomment = (commentId: number) => {
-    delcomment(commentId);
   };
 
   // 포스트관련 -- api파일로 옮겨야함!!
@@ -120,6 +70,7 @@ export const PostsDetail = () => {
     ["Postsdetail"],
     getDetailPosts,
   );
+
   // 게시글 삭제 -- api 파일로 옮겨야함!!
   const deleteposts = async () => {
     const { data } = await instance.delete(`/api/quests/${id}`, {
@@ -139,9 +90,8 @@ export const PostsDetail = () => {
     navigate("/search");
   };
 
-  // console.log(quest);
   return (
-    <div className="w-full p-4">
+    <div className="w-full h-full overflow-y-scroll pb-[3.5rem] p-4">
       <div className="flex flex-row-reverse">
         <button
           type="button"
@@ -190,38 +140,19 @@ export const PostsDetail = () => {
           type="button"
           className=" cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 rounded-lg border-none
              mt-5"
+          // onClick={() => {
+          //   navigate(`/addposts/${nickname}`);
+          // }}
         >
           신청하기
         </button>
       </div>
 
       {/* 댓글시작 */}
-      {comments?.map(data => (
-        <div key={data.commentId} className="my-8 border-b-2">
-          <span className="border border-black px-2 py-1">{data.nickname}</span>
-          <span className="text"> {data.content}</span>
-          <div className="ml-24 text-sm">
-            <a
-              type="button"
-              className="cursor-pointer mr-1 text-blue-600/100"
-              onClick={() => {
-                setVisible(!visible);
-              }}
-            >
-              Edit
-            </a>
-            |
-            <a
-              type="button"
-              className="cursor-pointer ml-1 text-blue-600/100"
-              onClick={() => onDeletecomment(data.commentId)}
-            >
-              Delete
-            </a>
-            {/* {visible && <EachComment />} */}
-          </div>
-        </div>
+      {comments?.map(co => (
+        <PostsComment key={co.commentId} co={co} />
       ))}
+      {/* 댓글 입력란 */}
       <div className="flex row mt-5 mb-20 ">
         <input
           className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full h-14 p-2.5 mx-1"
@@ -233,8 +164,7 @@ export const PostsDetail = () => {
 
         <button
           type="button"
-          className="cursor-pointer bg-cyan-300 hover:bg-cyan-400  w-20 h-14 rounded-lg border-none
-     "
+          className="cursor-pointer bg-cyan-300 hover:bg-cyan-400  w-20 h-14 rounded-lg border-none"
           onClick={onSubmitComment}
         >
           댓글달기

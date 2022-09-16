@@ -17,20 +17,8 @@ export interface IQuestDetail {
   title: string;
   stacks: string[];
 }
-
-export interface IQuestDetailPut {
-  title: string;
-  content: string;
-  frontend: number | null;
-  backend: number | null;
-  fullstack: number | null;
-  designer: number | null;
-  duration: number;
-  stacks: string[];
-}
-
-export interface CommentPost {
-  commentId: number;
+export interface SubCommentGet {
+  subCommentId: number;
   nickname: string;
   content: string;
   createdAt: number;
@@ -45,14 +33,12 @@ export interface CommentGet {
   createdAt: number;
   modifiedAt: number;
   profileImage: string;
-  subCommentList: [
-    {
-      subCommentId: number;
-      nickname: string;
-      content: string;
-      createdAt: number;
-      modifiedAt: number;
-      profileImage: string;
-    },
-  ];
+  subCommentList: SubCommentGet[];
+}
+
+export interface OffersPost {
+  BACKEND: number | null;
+  FRONTEND: number | null;
+  DESIGNER: number | null;
+  FULLSTACK: number | null;
 }

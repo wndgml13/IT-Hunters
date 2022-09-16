@@ -7,6 +7,7 @@ import { useInput } from "../hooks/useInput";
 import { PostsAdd } from "../types/postsaddType";
 import { useRecoilValue } from "recoil";
 import { loginInfoState } from "../store/loginInfoState";
+import { NoLoginError } from "../pages/ErrorPage/NoLoginError";
 
 export const AddPosts = () => {
   const userToken = getCookieToken();
@@ -34,7 +35,6 @@ export const AddPosts = () => {
 
   const contentHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
-    console.log(content);
   };
 
   const addStack = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -58,7 +58,7 @@ export const AddPosts = () => {
   const { mutateAsync } = addPostsMutation();
 
   const onSubmitHandler = async () => {
-    if (content) {
+    if (content && title) {
       console.log("onSubmitHandler");
       const responce = await mutateAsync(postInfo);
       console.log(responce);
@@ -66,16 +66,23 @@ export const AddPosts = () => {
       navigate("/search");
       return;
     }
+    if (!title) {
+      return alert("제목을 입력해 주세요!!");
+    }
     if (!content) {
-      return alert("프로젝트 내용을 입력 해주세요!!");
+      return alert("프로젝트 내용을 입력해 주세요!!");
     }
   };
 
   const userProfile = useRecoilValue(loginInfoState);
   console.log(userProfile);
 
+  if (!userToken) {
+    return <NoLoginError />;
+  }
+
   return (
-    <div className="w-full p-4">
+    <div className="w-full h-full overflow-y-scroll pb-[3.5rem] p-4">
       <div className="flex justify-start">
         <div className="m-5 overflow-hidden relative w-24 h-24 bg-gray-100 rounded-full">
           {/* <img src={userProfile[0].profileImage} /> */}

@@ -1,11 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
 import { instance } from "../../config/axios";
 import { setAccessToken } from "../../config/cookies";
-import { loginInfoState } from "../../store/loginInfoState";
-import { LoginInfoType } from "../../types/loginInfoType";
 import {
   buttonStyle,
   inputStyle,
@@ -19,9 +16,6 @@ export const SignInPage = () => {
   const [password, setPassword] = useState("");
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
-
-  const setLoginInfo = useSetRecoilState<LoginInfoType[]>(loginInfoState);
-
   const navigate = useNavigate();
 
   const emailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,19 +44,11 @@ export const SignInPage = () => {
           email,
           password,
         });
-        console.log(data);
 
         setAccessToken(data.headers.authorization);
         axios.defaults.headers.common[
           "Authorization"
         ] = `${data.headers.authorization}`;
-
-        const signInInfo = {
-          nickname: data.data.nickname,
-          profileImage: data.data.profileImage,
-        };
-        setLoginInfo([signInInfo]);
-
         alert("로그인 성공");
         setEmail("");
         setPassword("");
