@@ -18,56 +18,74 @@ export const Main = () => {
 
   return (
     <main className="w-full m-auto overflow-y-scroll h-full pb-[3.5rem] overflow-x-hidden">
-      <ul className="flex border-1 border relative w-[400%]">
-        <li className="w-full border h-[150px]">1</li>
-        <li className="w-full border h-[150px]">2</li>
-        <li className="w-full border h-[150px]">3</li>
-        <li className="w-full border h-[150px]">4</li>
-      </ul>
-      <div className="px-6 flex gap-y-[45px] flex-col">
-        <ul className="flex gap-[2.666%]">
-          <li className="w-[23%] text-center h-[150px] border">프론트엔드</li>
-          <li className="w-[23%] text-center h-[150px] border">백엔드</li>
-          <li className="w-[23%] text-center h-[150px] border">디자이너</li>
-          <li className="w-[23%] text-center h-[150px] border">기획자</li>
+      <section className="mb-[30px]">
+        <ul className="flex border-1 border relative w-[400%]">
+          <li className="w-full border h-[150px]">1</li>
+          <li className="w-full border h-[150px]">2</li>
+          <li className="w-full border h-[150px]">3</li>
+          <li className="w-full border h-[150px]">4</li>
         </ul>
-        <div>
-          <div>
-            <h3 className="mb-[10px] text-xl font-normal">
-              지금 가장 <span className="text-brandBlue">인기있는</span> 파티다!
+      </section>
+      <div className="px-6 flex gap-y-[45px] flex-col">
+        <section>
+          <div className="mb-[20px]">
+            <h3 className="mb-[10px] text-xl font-normal font-cookie">
+              함께 하고픈{" "}
+              <span className="text-brandBlue font-cookie">동료</span>를
+              골라봐라!
             </h3>
+            <p>검색하고픈 직업을 선택하세요.</p>
+          </div>
+          <ul className="flex gap-[2.666%]">
+            <li className="w-[23%] text-center h-[150px] border">고백</li>
+            <li className="w-[23%] text-center h-[150px] border">퓨</li>
+            <li className="w-[23%] text-center h-[150px] border">디아</li>
+            <li className="w-[23%] text-center h-[150px] border">풀스</li>
+          </ul>
+        </section>
+        <section>
+          <div className="flex justify-between">
+            <h3 className="mb-[10px] text-xl font-normal font-cookie">
+              지금 가장{" "}
+              <span className="text-brandBlue font-cookie">인기있는</span>{" "}
+              파티다!
+            </h3>
+            <button className="text-xs">더보기</button>
           </div>
           <ul>
             {popularQuests?.map((quest: IQuest) => (
               <Quest key={quest.mainQuestId} quest={quest} />
             ))}
           </ul>
-        </div>
-        <div>
-          <div>
-            <h3 className="mb-[10px] text-xl font-normal">
-              지금 모집하는 <span className="text-brandBlue">최신 파티</span>다!
+        </section>
+        <section>
+          <div className="flex justify-between">
+            <h3 className="mb-[10px] text-xl font-normal font-cookie">
+              지금 모집하는{" "}
+              <span className="text-brandBlue font-cookie">최신 파티</span>다!
             </h3>
+            <button className="text-xs">더보기</button>
           </div>
           <ul>
             {recentQuests?.map((quest: IQuest) => (
               <Quest key={quest.recentQuestId} quest={quest} />
             ))}
           </ul>
-        </div>
-        <div>
-          <div>
-            <h3 className="mb-[10px] text-xl font-normal">
-              <span className="text-brandBlue">이달의 몬스터</span>다! 잘
-              확인하도록.
+        </section>
+        <section>
+          <div className="flex justify-between">
+            <h3 className="mb-[10px] text-xl font-normal font-cookie">
+              <span className="text-brandBlue font-cookie">이달의 몬스터</span>
+              다! 잘 확인하도록.
             </h3>
+            <button className="text-xs">더보기</button>
           </div>
           <ul>
             {monthMonster?.map((monster: IMonthMonster) => (
               <MonthMonster key={monster.nickname} monster={monster} />
             ))}
           </ul>
-        </div>
+        </section>
       </div>
     </main>
   );

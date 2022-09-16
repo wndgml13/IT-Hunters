@@ -1,29 +1,74 @@
 import { useNavigate } from "react-router-dom";
+
 import { IQuest } from "../types/questType";
+
+import { FuIcon, DeIcon, FeIcon } from "../assets/icons";
 
 export const Quest = ({ quest }: { quest: IQuest }) => {
   const navigate = useNavigate();
-  const { questId, content, title, duration, stacks, classes } = quest;
+  const { questId, nickname, content, title, duration, classes, createdAt } =
+    quest;
 
+  interface LooseObject {
+    [key: string]: number | string;
+  }
+  const classesList: LooseObject = classes;
+  const existStack = Object.keys(classesList).filter(
+    item => classesList[item] !== 0,
+  );
+  existStack.map(item => console.log(item));
   return (
     <li
       onClick={() => navigate(`/posts/${questId}`)}
-      className="flex flex-col items-center mb-3 bg-white rounded-lg border shadow-md md:flex-row hover:bg-gray-100 cursor-pointer"
+      className="flex p-[10px] mb-3 gap-x-[10px] bg-white rounded-lg border shadow-md hover:bg-gray-100 cursor-pointer relative"
     >
-      <div className="object-cover w-full rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg">
-        <img />
-      </div>
-      <div className="flex flex-col justify-between p-4 leading-normal">
-        <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900">
-          {title}
-        </h5>
-        <p className="mb-3 font-normal text-gray-700">{content}</p>
-        <p>예상 소요기간 : {duration} 주</p>
-        <div className="flex row">
-          {stacks?.map(m => (
-            <p className="bg-green-300 mx-1">{m}</p>
-          ))}
+      <div className="w-[66px]">
+        <div className="border rounded-[7px] mb-[5px] overflow-hidden">
+          <img src="" alt="" className="w-[66px] h-[66px] " />
         </div>
+        <p className="text-sm text-center border rounded-[10px] leading-4 px-[13px] text-ellipsis overflow-hidden">
+          {nickname}
+        </p>
+      </div>
+      <div>
+        <h2 className="font-medium text-sm mb-[5px]">{title}</h2>
+        <p className="text-xs">{content}</p>
+        <p className="text-xs">시작일 : {createdAt.slice(0, 10)}</p>
+        <p className="text-xs">기한 : {duration}주</p>
+        <ul className="flex">
+          {existStack.map(stack => {
+            switch (stack) {
+              case "frontend":
+                return (
+                  <li key={stack}>
+                    <FeIcon />
+                  </li>
+                );
+              case "backend":
+                return (
+                  <li key={stack}>
+                    <DeIcon />
+                  </li>
+                );
+              case "designer":
+                return (
+                  <li key={stack}>
+                    <DeIcon />
+                  </li>
+                );
+              case "fullstack":
+                return (
+                  <li key={stack}>
+                    <FuIcon />
+                  </li>
+                );
+            }
+          })}
+          {/* <li>{classes.frontend && <FeIcon />}</li>
+          <li>{classes.designer && <DeIcon />}</li>
+          <li>{classes.fullstack && <FuIcon />}</li>
+          <li>{classes.frontend && <FeIcon />}</li> */}
+        </ul>
       </div>
     </li>
   );
