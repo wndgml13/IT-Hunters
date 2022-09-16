@@ -1,10 +1,14 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// import { CommentApi } from "../APIs/CommentApi";
+// import { useRecoilState } from "recoil";
+import { CommentApi } from "../APIs/CommentApi";
+import { PostsApi } from "../APIs/PostsApi";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
-import { IQuestDetail, CommentGet } from "../types/postsDetailType";
+// import { idState } from "../store/questIdState";
+import { OffersPost } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
 
 export const PostsDetail = () => {
@@ -13,20 +17,22 @@ export const PostsDetail = () => {
   const queryClient = useQueryClient();
   const { id } = useParams();
   const [comment, setComment] = useState("");
+  // const [offer, setOffer] = useState("");
+  // const [idParam, setIdParam] = useRecoilState(idState);
 
   // 댓글, 답글 조회
-  // const { data: comments } = CommentApi.getComments();
-  const getComments = async () => {
-    const { data } = await instance.get<CommentGet[]>(
-      `api/quests/${id}/comments`,
-      {
-        headers: { authorization: userToken },
-      },
-    );
-    return data;
-  };
+  const { data: comments } = CommentApi.getComments(Number(id));
+  // const getComments = async () => {
+  //   const { data } = await instance.get<CommentGet[]>(
+  //     `api/quests/${id}/comments`,
+  //     {
+  //       headers: { authorization: userToken },
+  //     },
+  //   );
+  //   return data;
+  // };
 
-  const { data: comments } = useQuery<CommentGet[]>(["comments"], getComments);
+  // const { data: comments } = useQuery<CommentGet[]>(["comments"], getComments);
 
   // 댓글 작성 -- api파일로 옮겨야함!!
   const addComment = async (comment: string) => {
@@ -58,18 +64,19 @@ export const PostsDetail = () => {
     setComment("");
   };
 
-  // 포스트관련 -- api파일로 옮겨야함!!
-  const getDetailPosts = async () => {
-    const { data } = await instance.get<IQuestDetail>(`api/quests/${id}`, {
-      headers: { authorization: userToken },
-    });
-    return data;
-  };
+  // 게시글 조회 -- api파일로 옮겨야함!!
+  const { data: quest } = PostsApi.getDetailPosts(Number(id));
+  // const getDetailPosts = async () => {
+  //   const { data } = await instance.get<IQuestDetail>(`api/quests/${id}`, {
+  //     headers: { authorization: userToken },
+  //   });
+  //   return data;
+  // };
 
-  const { data: quest } = useQuery<IQuestDetail, Error>(
-    ["Postsdetail"],
-    getDetailPosts,
-  );
+  // const { data: quest } = useQuery<IQuestDetail, Error>(
+  //   ["Postsdetail"],
+  //   getDetailPosts,
+  // );
 
   // 게시글 삭제 -- api 파일로 옮겨야함!!
   const deleteposts = async () => {
@@ -88,6 +95,39 @@ export const PostsDetail = () => {
   const onDeletepost = () => {
     delpost();
     navigate("/search");
+  };
+
+  // 신청하기(합류요청) POST
+  const offerPost = async () => {
+    try {
+      const { data } = await instance.post<OffersPost>(
+        `api/quests/${id}/offers`,
+        { classType: "FRONTEND" },
+        {
+          headers: { authorization: userToken },
+        },
+      );
+      alert("합류요청 완료!!");
+      return data;
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        if (err.response?.status === 400) {
+          // 모집인원이 0명이면 400에러가 뜸
+          alert("본인 게시글에는 신청할 수 없습니다.");
+        } else if (err.response?.status === 409) {
+          alert("이미 신청이 완료되었습니다.");
+        } else if (err.response?.status === 401) {
+          alert("로그인 하신 후 신청해 주세요.");
+          navigate("/signin");
+        }
+      }
+    }
+  };
+
+  const onOfferHandler = () => {
+    offerPost();
+
+    return;
   };
 
   return (
@@ -140,9 +180,7 @@ export const PostsDetail = () => {
           type="button"
           className=" cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 rounded-lg border-none
              mt-5"
-          // onClick={() => {
-          //   navigate(`/addposts/${nickname}`);
-          // }}
+          onClick={onOfferHandler}
         >
           신청하기
         </button>

@@ -11,6 +11,7 @@ import { getCookieToken } from "../../config/cookies";
 import { chatDataState } from "../../store/chatDataState";
 import { chatData } from "../../types/chatType";
 import { useQueryClient } from "@tanstack/react-query";
+import { notificationApi } from "../../APIs/NotificationApi";
 
 export const ChatRoomPage = () => {
   const textRef = useRef<HTMLInputElement>(null);
@@ -20,7 +21,8 @@ export const ChatRoomPage = () => {
   };
   const [chatdata, setChatData] = useRecoilState<chatData[]>(chatDataState);
   const { id } = useParams();
-
+  const { data: getapprovedmember } = notificationApi.getApprovedQuestMember(8);
+  console.log(getapprovedmember);
   const channelNum = id;
   const queryClient = useQueryClient();
   const baseURL = process.env.REACT_APP_API_BASEURL;

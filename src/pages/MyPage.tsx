@@ -1,12 +1,23 @@
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
+import { notificationApi } from "../APIs/NotificationApi";
 import { getCookieToken } from "../config/cookies";
 import { loginInfoState } from "../store/loginInfoState";
 import { NoLoginError } from "./ErrorPage/NoLoginError";
 
+interface squad {
+  memberId: number;
+  questId: number;
+  questTitle: string;
+  squadId: number;
+}
+
 export const MyPage = () => {
   const userProfile = useRecoilValue(loginInfoState);
   const usertoken = getCookieToken();
+
+  const { data: mysquad } = notificationApi.getMySquads();
+  console.log(mysquad);
 
   if (!usertoken) {
     return <NoLoginError />;
@@ -15,7 +26,7 @@ export const MyPage = () => {
   console.log(userProfile);
 
   return (
-    <div className="w-auto h-[100vh] p-6">
+    <div className="w-full overflow-y-scroll h-full px-6 pb-[4rem] overflow-x-hidden">
       <div className="flex justify-between">
         <h1 className="text-xl">마이페이지</h1>
         <h1 className="text-xl">...</h1>
@@ -33,6 +44,9 @@ export const MyPage = () => {
         </div>
         <Link className="text-blue-600" to="edituser">
           정보수정
+        </Link>
+        <Link className="ml-4 text-red-600" to="/notification">
+          알림
         </Link>
       </div>
 
@@ -79,29 +93,16 @@ export const MyPage = () => {
           </div>
         </div>
       </div>
-      <div className="mt-8">
+      <div className="mt-8 mb-6">
+        <p>진행중인 퀘스트</p>
+        {mysquad?.map((m: squad) => (
+          <div className="my-2 py-2 bg-gray-200" key={m.squadId}>
+            <h3 className="text-xl px-4 break-all">{m.questTitle}</h3>
+          </div>
+        ))}
+      </div>
+      <div className="mt-8 mb-20">
         <p>완료한 퀘스트</p>
-        <div className="my-2 py-2 bg-gray-200">
-          <h3 className="text-xl px-4 break-all">[it-monster] - 프론트엔드</h3>
-        </div>
-        <div className="my-2 py-2 bg-gray-200">
-          <h3 className="text-xl px-4 break-all">[it-monster] - 프론트엔드</h3>
-        </div>
-        <div className="my-2 py-2 bg-gray-200">
-          <h3 className="text-xl px-4 break-all">[it-monster] - 프론트엔드</h3>
-        </div>
-        <div className="my-2 py-2 bg-gray-200">
-          <h3 className="text-xl px-4 break-all">[it-monster] - 프론트엔드</h3>
-        </div>
-        <div className="my-2 py-2 bg-gray-200">
-          <h3 className="text-xl px-4 break-all">[it-monster] - 프론트엔드</h3>
-        </div>
-        <div className="my-2 py-2 bg-gray-200">
-          <h3 className="text-xl px-4 break-all">[it-monster] - 프론트엔드</h3>
-        </div>
-        <div className="my-2 py-2 bg-gray-200">
-          <h3 className="text-xl px-4 break-all">[it-monster] - 프론트엔드</h3>
-        </div>
         <div className="my-2 py-2 bg-gray-200">
           <h3 className="text-xl px-4 break-all">[it-monster] - 프론트엔드</h3>
         </div>
