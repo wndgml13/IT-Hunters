@@ -3,12 +3,12 @@ import { IQuest } from "../types/questType";
 
 export const Quest = ({ quest }: { quest: IQuest }) => {
   const navigate = useNavigate();
-  const { questId, content, title, duration, stacks } = quest;
+  const { questId, content, title, duration, stacks, classes } = quest;
 
   return (
     <li
       onClick={() => navigate(`/posts/${questId}`)}
-      className="flex flex-col items-center mb-3 bg-white rounded-lg border shadow-md md:flex-row hover:bg-gray-100"
+      className="flex flex-col items-center mb-3 bg-white rounded-lg border shadow-md md:flex-row hover:bg-gray-100 cursor-pointer"
     >
       <div className="object-cover w-full rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg">
         <img />

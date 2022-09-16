@@ -2,6 +2,6 @@ export interface IMonthMonster {
   folioTitle: string;
   nickname: string;
   profileImage: string;
-  stacks: [string];
+  stacks: string[];
   followCnt: number;
 }
