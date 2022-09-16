@@ -1,13 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
-import { loginInfoState } from "../store/loginInfoState";
 
 export const EditStackPage = () => {
   const [stacks, setStacks] = useState<string[]>([]);
-  const userProfile = useRecoilValue(loginInfoState);
+
   const userToken = getCookieToken();
   const queryClient = useQueryClient();
   const addStack = (e: React.ChangeEvent<HTMLSelectElement>) => {

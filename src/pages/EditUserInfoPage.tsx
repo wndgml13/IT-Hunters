@@ -4,10 +4,8 @@ import { loginInfoState } from "../store/loginInfoState";
 
 export const EditUserInfoPage = () => {
   const userProfile = useRecoilValue(loginInfoState);
-  const [nickname, setNickname] = useState<string>(userProfile.nickname);
-  const [profileImage, setProfileImage] = useState<string>(
-    userProfile.profileImage,
-  );
+  const [nickname] = useState<string>(userProfile.nickname);
+  const [profileImage] = useState<string>(userProfile.profileImage);
 
   return (
     <div className="p-4">
