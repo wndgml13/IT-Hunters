@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { CommentApi } from "../APIs/CommentApi";
+// import { CommentApi } from "../APIs/CommentApi";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
 import { IQuestDetail, CommentGet } from "../types/postsDetailType";
