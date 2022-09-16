@@ -16,7 +16,7 @@ export const Quest = ({ quest }: { quest: IQuest }) => {
   const existStack = Object.keys(classesList).filter(
     item => classesList[item] !== 0,
   );
-  existStack.map(item => console.log(item));
+
   return (
     <li
       onClick={() => navigate(`/posts/${questId}`)}
