@@ -57,6 +57,7 @@ export const AddPosts = () => {
 
   const { mutateAsync } = addPostsMutation();
 
+  // 등록하기 버튼
   const onSubmitHandler = async () => {
     if (content && title) {
       console.log("onSubmitHandler");
