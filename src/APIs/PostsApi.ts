@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
 import { IQuestDetail } from "../types/postsDetailType";

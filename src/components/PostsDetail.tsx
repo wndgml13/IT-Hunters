@@ -1,14 +1,14 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
+// import { useRecoilState } from "recoil";
 import { CommentApi } from "../APIs/CommentApi";
 import { PostsApi } from "../APIs/PostsApi";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
-import { idState } from "../store/questIdState";
-import { IQuestDetail, CommentGet, OffersPost } from "../types/postsDetailType";
+// import { idState } from "../store/questIdState";
+import { OffersPost } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
 
 export const PostsDetail = () => {
@@ -17,8 +17,8 @@ export const PostsDetail = () => {
   const queryClient = useQueryClient();
   const { id } = useParams();
   const [comment, setComment] = useState("");
-  const [offer, setOffer] = useState("");
-  const [idParam, setIdParam] = useRecoilState(idState);
+  // const [offer, setOffer] = useState("");
+  // const [idParam, setIdParam] = useRecoilState(idState);
 
   // 댓글, 답글 조회
   const { data: comments } = CommentApi.getComments(Number(id));
