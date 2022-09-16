@@ -9,20 +9,29 @@ import { SearchPage } from "../pages/SearchPage";
 import { FooterNavBar } from "../components/FooterNavBar";
 import { ChatListPage } from "../pages/Chats/ChatListPage";
 import { ChatRoomPage } from "../pages/Chats/ChatRoomPage";
+import { Header } from "../components/Header";
+import { EditStackPage } from "../pages/EditStackPage";
+import { EditUserInfoPage } from "../pages/EditUserInfoPage";
+import { NotificationPage } from "../pages/NotificationPage";
+
 
 const AppRouter = () => {
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/editstack" element={<EditStackPage />} />
+        <Route path="/mypage/edituser" element={<EditUserInfoPage />} />
         <Route path="/posts/:id" element={<PostsDetail />} />
         <Route path="/addposts" element={<AddPosts />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/chats" element={<ChatListPage />} />
         <Route path="/chats/:id" element={<ChatRoomPage />} />
+        <Route path="notification" element={<NotificationPage />} />
       </Routes>
       <FooterNavBar />
     </BrowserRouter>

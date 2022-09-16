@@ -10,6 +10,7 @@ import { UserInfoApi } from "../../APIs/UserInfoApi";
 import { getCookieToken } from "../../config/cookies";
 import { chatDataState } from "../../store/chatDataState";
 import { chatData } from "../../types/chatType";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const ChatRoomPage = () => {
   const textRef = useRef<HTMLInputElement>(null);
@@ -20,16 +21,21 @@ export const ChatRoomPage = () => {
   const [chatdata, setChatData] = useRecoilState<chatData[]>(chatDataState);
   const { id } = useParams();
 
+  const channelNum = id;
+  const queryClient = useQueryClient();
   const baseURL = process.env.REACT_APP_API_BASEURL;
 
   const sock = new SockJs(`${baseURL}socket`);
   const client = Stomp.over(sock);
-  const { data: chatolddata, isSuccess } = chatApi.getChatData();
+  const { data: chatolddata, isSuccess } = chatApi.getChatData(channelNum);
   const { data: userinfo } = UserInfoApi.getUserInfo();
   // client.debug = f => f;
 
   useEffect(() => {
-    if (isSuccess) setChatData(chatolddata);
+    if (isSuccess) {
+      queryClient.invalidateQueries(["chat", channelNum]);
+      setChatData(chatolddata);
+    }
   }, [isSuccess]);
 
   const messageBoxRef = useRef<HTMLDivElement>(null);
@@ -90,6 +96,7 @@ export const ChatRoomPage = () => {
       usertoken,
       JSON.stringify({ content: textRef.current.value }),
     );
+    queryClient.invalidateQueries(["chat", channelNum]);
     textRef.current.value = "";
   };
 

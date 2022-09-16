@@ -2,6 +2,9 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
+    fontFamily: {
+      cookie: ["It-Monsters", "Noto Sans KR", "sans-serif"],
+    },
     extend: {
       colors: {
         fontBlack: "#191919",

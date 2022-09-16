@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { chatApi } from "../../APIs/ChatApi";
+import { getCookieToken } from "../../config/cookies";
+import { NoLoginError } from "../ErrorPage/NoLoginError";
 
 export const ChatListPage = () => {
   const navigate = useNavigate();
-
+  const usertoken = getCookieToken();
   // const getChatlist = async () => {
   //   const { data } = await instance.get<chatlist[]>(`/api/channels/`, {
   //     headers: { authorization: userToken },
@@ -12,6 +14,10 @@ export const ChatListPage = () => {
   // };
 
   // const { data: chat } = useQuery<chatlist[]>(["chatlist"], getChatlist);
+
+  if (!usertoken) {
+    return <NoLoginError />;
+  }
 
   const { data: chat } = chatApi.getChatRoomlist();
 

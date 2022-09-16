@@ -19,9 +19,9 @@
 *,
 *::before,
 *::after {
-  /* font-family: 'Noto Sans KR', sans-serif; */
-  font-family: "It-Monsters", "Noto Sans KR";
+  font-family: "Noto Sans KR", sans-serif;
   line-height: 1.25;
+  letter-spacing: -0.06em;
 }
 
 * {
