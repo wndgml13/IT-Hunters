@@ -9,10 +9,12 @@ import { SearchPage } from "../pages/SearchPage";
 import { FooterNavBar } from "../components/FooterNavBar";
 import { ChatListPage } from "../pages/Chats/ChatListPage";
 import { ChatRoomPage } from "../pages/Chats/ChatRoomPage";
+import { Header } from "../components/Header";
 
 const AppRouter = () => {
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/signin" element={<SignInPage />} />
