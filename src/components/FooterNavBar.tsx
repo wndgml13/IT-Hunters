@@ -25,28 +25,28 @@ export const FooterNavBar = () => {
       <Link to="/mypage">
         <MyPageIcon
           className={classNames("fill-black", {
-            "fill-[#4B23B8]": pathname === "/mypage",
+            "fill-brandBlue": pathname === "/mypage",
           })}
         />
       </Link>
       <Link to="/">
         <HomeIcon
           className={classNames("fill-black", {
-            "fill-[#4B23B8]": pathname === "/",
+            "fill-brandBlue": pathname === "/",
           })}
         />
       </Link>
       <Link to="/chats">
         <ChatIcon
           className={classNames("fill-black", {
-            "fill-[#4B23B8]": pathname === "/chats",
+            "fill-brandBlue": pathname === "/chats",
           })}
         />
       </Link>
       <Link to="/addposts">
         <WriteIcon
           className={classNames("fill-black", {
-            "fill-[#4B23B8]": pathname === "/addposts",
+            "fill-brandBlue": pathname === "/addposts",
           })}
         />
       </Link>
