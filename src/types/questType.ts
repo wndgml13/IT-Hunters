@@ -18,4 +18,5 @@ export interface IQuest {
   stacks: string[];
   status: false;
   title: string;
+  profileImg: string;
 }
