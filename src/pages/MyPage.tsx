@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { notificationApi } from "../APIs/NotificationApi";
+import { PortfolioApi } from "../APIs/PortfolioAPI";
 import { getCookieToken } from "../config/cookies";
 import { loginInfoState } from "../store/loginInfoState";
 import { NoLoginError } from "./ErrorPage/NoLoginError";
@@ -18,6 +19,10 @@ export const MyPage = () => {
 
   const { data: mysquad } = notificationApi.getMySquads();
   console.log(mysquad);
+
+  const { data: myfolio } = PortfolioApi.getPortfolio(12);
+
+  console.log(myfolio);
 
   if (!usertoken) {
     return <NoLoginError />;
@@ -71,7 +76,12 @@ export const MyPage = () => {
         </div>
       </div>
       <div className="mt-8">
-        <p>포트폴리오</p>
+        <p>
+          포트폴리오{" "}
+          <Link className="text-blue-600" to="editfolio">
+            수정
+          </Link>
+        </p>
         <div className="flex justify-between mt-6">
           <div className="mx-auto  relative w-14 h-14 bg-gray-300 rounded-full">
             <img
