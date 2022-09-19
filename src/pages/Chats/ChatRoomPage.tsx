@@ -124,7 +124,7 @@ export const ChatRoomPage = () => {
         <div className="h-full w-full bottom-16 overflow-y-scroll scroll flex flex-col-reverse pt-14 pb-6">
           {chatdata?.map((cD, idx) =>
             cD.nickname !== userinfo.nickname ? (
-              <div className="px-4 pt-4" key={idx}>
+              <div className="px-2 pt-4" key={idx}>
                 <div className="flex">
                   <div className="w-[46px] h-[46px] bg-gray-300 rounded-full">
                     <img src={cD.profileImg} className="rounded-full" />
@@ -144,7 +144,7 @@ export const ChatRoomPage = () => {
                 </div>
               </div>
             ) : (
-              <div className="px-4 pt-4 float-right flex justify-end" key={idx}>
+              <div className="px-2 pt-4 float-right flex justify-end" key={idx}>
                 <div className="flex">
                   <div className="mr-4">
                     <h1 className="text-right">{cD.nickname}</h1>
