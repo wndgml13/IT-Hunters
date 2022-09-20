@@ -72,10 +72,6 @@ export const Quest = ({ quest }: { quest: IQuest }) => {
                 );
             }
           })}
-          <li>{classes.frontend && <FeIcon />}</li>
-          <li>{classes.designer && <DeIcon />}</li>
-          <li>{classes.fullstack && <FuIcon />}</li>
-          <li>{classes.frontend && <FeIcon />}</li>
         </ul>
       </div>
     </li>
