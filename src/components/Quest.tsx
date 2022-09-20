@@ -6,8 +6,16 @@ import { FuIcon, DeIcon, FeIcon } from "../assets/icons";
 
 export const Quest = ({ quest }: { quest: IQuest }) => {
   const navigate = useNavigate();
-  const { questId, nickname, content, title, duration, classes, createdAt } =
-    quest;
+  const {
+    questId,
+    nickname,
+    content,
+    title,
+    duration,
+    classes,
+    createdAt,
+    profileImg,
+  } = quest;
 
   interface LooseObject {
     [key: string]: number | string;
@@ -24,7 +32,7 @@ export const Quest = ({ quest }: { quest: IQuest }) => {
     >
       <div className="w-[66px]">
         <div className="border rounded-[7px] mb-[5px] overflow-hidden">
-          <img src="" alt="" className="w-[66px] h-[66px] " />
+          <img src={profileImg} alt="" className="w-[66px] h-[66px] " />
         </div>
         <p className="text-sm text-center border rounded-[10px] leading-4 px-[13px] text-ellipsis overflow-hidden">
           {nickname}
