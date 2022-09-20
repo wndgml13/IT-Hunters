@@ -19,7 +19,7 @@ import { EditPortFolio } from "../pages/EditPortfoilio";
 const AppRouter = () => {
   return (
     <BrowserRouter>
-      <Header />
+      {/* <Header /> */}
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/signin" element={<SignInPage />} />
