@@ -41,7 +41,7 @@ export const Quest = ({ quest }: { quest: IQuest }) => {
       <div>
         <h2 className="font-medium text-sm mb-[5px]">{title}</h2>
         <p className="text-xs">{content}</p>
-        <p className="text-xs">시작일 : {createdAt.slice(0, 10)}</p>
+        {/* <p className="text-xs">시작일 : {createdAt.slice(0, 10)}</p> */}
         <p className="text-xs">기한 : {duration}주</p>
         <ul className="flex">
           {existStack.map(stack => {

@@ -18,7 +18,12 @@ export const PortfolioApi = {
     return useMutation(async (portfolioInfo: portfolioType) => {
       const { data } = await instance.put(
         `api/folio`,
-        { portfolioInfo },
+        {
+          title: portfolioInfo.title,
+          notionUrl: portfolioInfo.notionUrl,
+          githubUrl: portfolioInfo.githubUrl,
+          blogUrl: portfolioInfo.blogUrl,
+        },
         userToken,
       );
       return data;

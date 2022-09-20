@@ -16,6 +16,7 @@ export const SignInPage = () => {
   const [password, setPassword] = useState("");
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
+
   const navigate = useNavigate();
 
   const emailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,11 +45,13 @@ export const SignInPage = () => {
           email,
           password,
         });
+        console.log(data.headers);
 
         setAccessToken(data.headers.authorization);
         axios.defaults.headers.common[
           "Authorization"
         ] = `${data.headers.authorization}`;
+
         alert("로그인 성공");
         setEmail("");
         setPassword("");

@@ -1,6 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import classNames from "classnames";
-import { HomeIcon, ChatIcon, WriteIcon, MyPageIcon } from "../assets/icons";
+import {
+  HomeIcon,
+  ChatIcon,
+  WriteIcon,
+  MyPageIcon,
+  SearchIcon,
+} from "../assets/icons";
 import { UserInfoApi } from "../APIs/UserInfoApi";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
@@ -21,11 +27,18 @@ export const FooterNavBar = () => {
 
   const { pathname } = useLocation();
   return (
-    <footer className="absolute flex justify-center items-center gap-x-16 h-[3.75rem] w-full left-0 bottom-0 z-10 shadow-[4px_0_30_1px_rgba(194,194,194,0.5)] bg-bgWhite">
-      <Link to="/mypage">
-        <MyPageIcon
+    <footer className="absolute flex justify-center items-center gap-x-11 h-[3.75rem] w-full left-0 bottom-0 z-10 shadow-[4px_0_30_1px_rgba(194,194,194,0.5)] bg-bgWhite">
+      <Link to="/search">
+        <SearchIcon
+          className={classNames("fill-white", {
+            "fill-brandBlue": pathname === "/search",
+          })}
+        />
+      </Link>
+      <Link to="/addposts">
+        <WriteIcon
           className={classNames("fill-black", {
-            "fill-brandBlue": pathname === "/mypage",
+            "fill-brandBlue": pathname === "/addposts",
           })}
         />
       </Link>
@@ -43,10 +56,10 @@ export const FooterNavBar = () => {
           })}
         />
       </Link>
-      <Link to="/addposts">
-        <WriteIcon
+      <Link to="/mypage">
+        <MyPageIcon
           className={classNames("fill-black", {
-            "fill-brandBlue": pathname === "/addposts",
+            "fill-brandBlue": pathname === "/mypage",
           })}
         />
       </Link>
