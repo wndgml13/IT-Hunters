@@ -7,6 +7,8 @@ export const NotificationPage = () => {
   const { data: notifications } = notificationApi.getQuestOffer();
   const queryClient = useQueryClient();
 
+  //const { data: getapprovedmember } = notificationApi.getApprovedQuestMember(8);
+
   const { mutateAsync: approveQuestoffer } =
     notificationApi.approveQuestOffer();
 
