@@ -1,5 +1,6 @@
 import { MonthMonster } from "./MonthMonster";
 import { Quest } from "../Quest";
+import { MainSlide } from "./MainSlide";
 
 import { mainPageAPis } from "../../APIs/mainPageApis";
 
@@ -17,14 +18,9 @@ export const Main = () => {
     mainPageAPis.getPopularQuests();
 
   return (
-    <main className="w-full m-auto overflow-y-scroll h-[calc(100%-3.5rem)] pb-[4rem] overflow-x-hidden">
+    <main className="w-full m-auto overflow-y-scroll h-[calc(100%-100px)] overflow-x-hidden">
       <section className="mb-[30px]">
-        <ul className="flex border-1 border relative w-[400%]">
-          <li className="w-full border h-[150px]">1</li>
-          <li className="w-full border h-[150px]">2</li>
-          <li className="w-full border h-[150px]">3</li>
-          <li className="w-full border h-[150px]">4</li>
-        </ul>
+        <MainSlide />
       </section>
       <div className="px-6 flex gap-y-[45px] flex-col">
         <section>
