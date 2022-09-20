@@ -54,13 +54,11 @@ export const AddPosts = () => {
       return addPost(data);
     });
   };
-
   const { mutateAsync } = addPostsMutation();
 
   // 등록하기 버튼
   const onSubmitHandler = async () => {
     if (content && title) {
-      console.log("onSubmitHandler");
       const responce = await mutateAsync(postInfo);
       console.log(responce);
       alert("게시글 작성 완료!");
@@ -83,7 +81,7 @@ export const AddPosts = () => {
   }
 
   return (
-    <div className="w-full h-full overflow-y-scroll pb-[3.5rem] p-4">
+    <div className="w-full h-full overflow-y-scroll pb-[7rem] p-4">
       <div className="flex justify-start">
         <div className="m-5 overflow-hidden relative w-24 h-24 bg-gray-100 rounded-full">
           {/* <img src={userProfile[0].profileImage} /> */}

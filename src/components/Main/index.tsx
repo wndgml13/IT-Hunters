@@ -80,11 +80,6 @@ export const Main = () => {
             </h3>
             <button className="text-xs">더보기</button>
           </div>
-          <ul className="flex gap-x-[21px]">
-            {monthMonster?.map((monster: IMonthMonster) => (
-              <MonthMonster key={monster.nickname} monster={monster} />
-            ))}
-          </ul>
         </section>
       </div>
     </main>
