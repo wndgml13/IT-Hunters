@@ -17,7 +17,7 @@ export const Main = () => {
     mainPageAPis.getPopularQuests();
 
   return (
-    <main className="w-full m-auto overflow-y-scroll h-full pb-[4rem] overflow-x-hidden">
+    <main className="w-full m-auto overflow-y-scroll h-[calc(100%-3.5rem)] pb-[4rem] overflow-x-hidden">
       <section className="mb-[30px]">
         <ul className="flex border-1 border relative w-[400%]">
           <li className="w-full border h-[150px]">1</li>
@@ -44,8 +44,8 @@ export const Main = () => {
           </ul>
         </section>
         <section>
-          <div className="flex justify-between">
-            <h3 className="mb-[10px] text-xl font-normal font-cookie">
+          <div className="flex justify-between mb-[10px] items-end">
+            <h3 className=" text-xl font-normal font-cookie">
               지금 가장{" "}
               <span className="text-brandBlue font-cookie">인기있는</span>{" "}
               파티다!
@@ -59,8 +59,8 @@ export const Main = () => {
           </ul>
         </section>
         <section>
-          <div className="flex justify-between">
-            <h3 className="mb-[10px] text-xl font-normal font-cookie">
+          <div className="flex justify-between mb-[10px] items-end">
+            <h3 className=" text-xl font-normal font-cookie">
               지금 모집하는{" "}
               <span className="text-brandBlue font-cookie">최신 파티</span>다!
             </h3>
@@ -73,18 +73,13 @@ export const Main = () => {
           </ul>
         </section>
         <section className="mb-[54px]">
-          <div className="flex justify-between">
-            <h3 className="mb-[18px] text-xl font-normal font-cookie">
+          <div className="flex justify-between mb-[18px] items-end">
+            <h3 className="text-xl font-normal font-cookie">
               <span className="text-brandBlue font-cookie">이달의 몬스터</span>
               다! 잘 확인하도록.
             </h3>
             <button className="text-xs">더보기</button>
           </div>
-          <ul className="flex gap-x-[21px]">
-            {/* {monthMonster?.map((monster: IMonthMonster) => (
-              <MonthMonster key={monster.nickname} monster={monster} />
-            ))} */}
-          </ul>
         </section>
       </div>
     </main>

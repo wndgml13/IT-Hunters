@@ -74,7 +74,6 @@ export const AddPosts = () => {
       return addPost(data);
     });
   };
-
   const { mutateAsync } = addPostsMutation();
 
   // 등록하기 버튼

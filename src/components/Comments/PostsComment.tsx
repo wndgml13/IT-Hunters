@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { CommentGet } from "../../types/postsDetailType";
-import { instance } from "../../config/axios";
-import { getCookieToken } from "../../config/cookies";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { PostsSubComment } from "./PostsSubComment";
+import { CommentApi } from "../../APIs/CommentApi";
+import { subCommentApi } from "../../APIs/subCommentApi";
 
 export const PostsComment = ({ co }: { co: CommentGet }) => {
-  const userToken = getCookieToken();
   const queryClient = useQueryClient();
   const { id } = useParams();
 
@@ -17,86 +16,63 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
   const [editCommentToggle, setEditCommentToggle] = useState(false); // 댓글 Edit 토글
   const [subCommentToggle, setSubCommentToggle] = useState(false); // 답글 달기 토글
 
-  // 댓글 수정 -- api파일로 옮겨야함!!
-  const { mutate: editCom } = useMutation(
-    (commentId: number) =>
-      instance.put(
-        `/api/quests/${id}/comments/${commentId}`,
-        {
-          content: editComment,
-        },
-        {
-          headers: { authorization: userToken },
-        },
-      ),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["comments"]);
-      },
-    },
-  );
+  // 댓글 수정
+  const { mutateAsync: modifiedComment } = CommentApi.modifiedComment();
 
-  const onEditcomment = (commentId: number) => {
-    editCom(commentId);
+  const onEditcomment = () => {
+    const payload = {
+      id: Number(id),
+      editComment: editComment,
+      commentId: co.commentId,
+    };
+    modifiedComment(payload).then(() => {
+      queryClient.invalidateQueries(["comments"]);
+    });
     seteditComment("");
   };
 
-  // const onEntereditComment = async (
-  //   e: React.KeyboardEvent<HTMLTextAreaElement>,
-  // ) => {
-  //   if (e.key === "Enter") {
-  //     editComment(editComment);
-  //     seteditComment("");
-  //   }
-  // };
-
-  // 댓글 삭제 -- api파일로 옮겨야함!!
-  const { mutate: delComment } = useMutation(
-    (commentId: number) =>
-      instance.delete(`/api/quests/${id}/comments/${commentId}`, {
-        headers: { authorization: userToken },
-      }),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["comments"]);
-      },
-    },
-  );
-
-  const onDeletecomment = (commentId: number) => {
-    delComment(commentId);
-  };
-
-  // 답글 작성 -- api파일로 옮겨야함!!
-  const addSubComment = async (subcomment: string) => {
-    const { data } = await instance.post(
-      `/api/quests/${id}/comments/${co.commentId}/subComments`,
-      { content: subcomment },
-      {
-        headers: { authorization: userToken },
-      },
-    );
-    return data;
-  };
-
-  const { mutate: addSubcom } = useMutation(addSubComment, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["comments"]);
-    },
-  });
-
-  const onEntersubComment = async (
-    e: React.KeyboardEvent<HTMLTextAreaElement>,
-  ) => {
+  const onEntereditComment = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      addSubcom(subComment);
-      setSubcomment("");
+      onEditcomment();
+      seteditComment("");
     }
   };
 
+  // 댓글 삭제
+  const { mutateAsync: deleteComment } = CommentApi.deleteComment();
+
+  const onDeletecomment = () => {
+    const payload = {
+      id: Number(id),
+      commentId: co.commentId,
+    };
+    deleteComment(payload).then(() => {
+      queryClient.invalidateQueries(["comments"]);
+    });
+  };
+
+  // 답글 작성
+  const { mutateAsync: addSubComment } = subCommentApi.addSubComment();
+
   const onSubmitSubComment = () => {
-    addSubcom(subComment);
+    const payload = {
+      id: Number(id),
+      commentId: co.commentId,
+      subComment: subComment,
+    };
+    addSubComment(payload).then(() => {
+      queryClient.invalidateQueries(["comments"]);
+    });
     setSubcomment("");
+  };
+
+  const onEntersubComment = async (
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (e.key === "Enter") {
+      onSubmitSubComment();
+      setSubcomment("");
+    }
   };
 
   return (
@@ -120,7 +96,7 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
           <a
             type="button"
             className="cursor-pointer ml-1 mr-1 text-gray-400/100 hover:text-blue-600/100"
-            onClick={() => onDeletecomment(co.commentId)}
+            onClick={() => onDeletecomment()}
           >
             Delete
           </a>
@@ -136,30 +112,30 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
           </a>
           {/* 댓글 Edit 버튼 */}
           {editCommentToggle && (
-            <div className="flex justify-between gap-2">
-              <textarea
+            <div className="flex justify-between gap-2 mb-2">
+              <input
                 id="message"
-                rows={2}
-                className="mb-2 block p-2.5 mt-2 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
+                className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full h-14 my-3 p-2.5 mx-1"
                 placeholder="댓글 수정"
                 value={editComment}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   seteditComment(e.target.value);
                 }}
-                // onKeyPress={onEntereditComment}
+                onKeyPress={onEntereditComment}
               />
               <button
                 type="button"
                 className="cursor-pointer bg-blue-200 hover:bg-blue-400 w-20 h-10 mt-6 rounded-lg border-none"
-                onClick={() => {
-                  onEditcomment(co.commentId);
-                }}
+                onClick={onEditcomment}
               >
                 Edit
               </button>
               <button
                 type="button"
                 className="cursor-pointer bg-blue-200 hover:bg-blue-400 w-20 h-10 mt-6 rounded-lg border-none"
+                onClick={() => {
+                  setEditCommentToggle(!editCommentToggle);
+                }}
               >
                 Cancel
               </button>
@@ -174,13 +150,12 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
         {/* 답글 달기 버튼 */}
         {subCommentToggle && (
           <div className="flex justify-between gap-2 ml-24 text-sm">
-            <textarea
+            <input
               id="message"
-              rows={2}
-              className="mb-2 block p-2.5 mt-2 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
+              className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full h-14 mb-3 p-2.5 mx-1"
               value={subComment}
               placeholder="답글 입력"
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setSubcomment(e.target.value)
               }
               onKeyPress={onEntersubComment}
