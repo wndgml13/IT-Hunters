@@ -1,99 +1,52 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// import { useRecoilState } from "recoil";
 import { CommentApi } from "../APIs/CommentApi";
 import { PostsApi } from "../APIs/PostsApi";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
-// import { idState } from "../store/questIdState";
-import { OffersPost } from "../types/postsDetailType";
+import { CommentGet, OffersPost } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
-
+d;
 export const PostsDetail = () => {
   const navigate = useNavigate();
   const userToken = getCookieToken();
   const queryClient = useQueryClient();
   const { id } = useParams();
   const [comment, setComment] = useState("");
-  // const [offer, setOffer] = useState("");
-  // const [idParam, setIdParam] = useRecoilState(idState);
 
   // 댓글, 답글 조회
   const { data: comments } = CommentApi.getComments(Number(id));
-  // const getComments = async () => {
-  //   const { data } = await instance.get<CommentGet[]>(
-  //     `api/quests/${id}/comments`,
-  //     {
-  //       headers: { authorization: userToken },
-  //     },
-  //   );
-  //   return data;
-  // };
 
-  // const { data: comments } = useQuery<CommentGet[]>(["comments"], getComments);
+  // 댓글 작성
+  const { mutateAsync: addComment } = CommentApi.addComment();
 
-  // 댓글 작성 -- api파일로 옮겨야함!!
-  const addComment = async (comment: string) => {
-    const { data } = await instance.post(
-      `/api/quests/${id}/comments`,
-      { content: comment },
-      {
-        headers: { authorization: userToken },
-      },
-    );
-    return data;
+  const onSubmitComment = () => {
+    const payload = { id: Number(id), comment: comment };
+    addComment(payload).then(() => {
+      queryClient.invalidateQueries(["comments"]);
+    });
+    setComment("");
   };
 
-  const { mutate: addCom } = useMutation(addComment, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["comments"]);
-    },
-  });
-
-  const onEnterComment = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onEnterComment = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      addCom(comment);
+      onSubmitComment();
       setComment("");
     }
   };
 
-  const onSubmitComment = () => {
-    addCom(comment);
-    setComment("");
-  };
-
-  // 게시글 조회 -- api파일로 옮겨야함!!
+  // 게시글 조회
   const { data: quest } = PostsApi.getDetailPosts(Number(id));
-  // const getDetailPosts = async () => {
-  //   const { data } = await instance.get<IQuestDetail>(`api/quests/${id}`, {
-  //     headers: { authorization: userToken },
-  //   });
-  //   return data;
-  // };
 
-  // const { data: quest } = useQuery<IQuestDetail, Error>(
-  //   ["Postsdetail"],
-  //   getDetailPosts,
-  // );
-
-  // 게시글 삭제 -- api 파일로 옮겨야함!!
-  const deleteposts = async () => {
-    const { data } = await instance.delete(`/api/quests/${id}`, {
-      headers: { authorization: userToken },
-    });
-    return data;
-  };
-
-  const { mutate: delpost } = useMutation(deleteposts, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["filterlist"]);
-    },
-  });
+  // 게시글 삭제
+  const { mutateAsync: deleteposts } = PostsApi.deleteposts();
 
   const onDeletepost = () => {
-    delpost();
+    deleteposts(Number(id)).then(() => {
+      queryClient.invalidateQueries(["Postsdetail"]);
+    });
     navigate("/search");
   };
 
@@ -102,7 +55,6 @@ export const PostsDetail = () => {
     try {
       const { data } = await instance.post<OffersPost>(
         `api/quests/${id}/offers`,
-        { classType: "FRONTEND" },
         {
           headers: { authorization: userToken },
         },
@@ -126,7 +78,6 @@ export const PostsDetail = () => {
 
   const onOfferHandler = () => {
     offerPost();
-
     return;
   };
 
@@ -187,7 +138,7 @@ export const PostsDetail = () => {
       </div>
 
       {/* 댓글시작 */}
-      {comments?.map(co => (
+      {comments?.map((co: CommentGet) => (
         <PostsComment key={co.commentId} co={co} />
       ))}
       {/* 댓글 입력란 */}
