@@ -13,7 +13,6 @@ import { Header } from "../components/Header";
 import { EditStackPage } from "../pages/EditStackPage";
 import { EditUserInfoPage } from "../pages/EditUserInfoPage";
 import { NotificationPage } from "../pages/NotificationPage";
-import { EditPortFolio } from "../pages/EditPortfoilio";
 
 const AppRouter = () => {
   return (
@@ -26,7 +25,6 @@ const AppRouter = () => {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/mypage/editstack" element={<EditStackPage />} />
         <Route path="/mypage/edituser" element={<EditUserInfoPage />} />
-        <Route path="/mypage/editfolio" element={<EditPortFolio />} />
         <Route path="/posts/:id" element={<PostsDetail />} />
         <Route path="/addposts" element={<AddPosts />} />
         <Route path="/search" element={<SearchPage />} />
