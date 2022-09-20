@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
 import { useMutation } from "@tanstack/react-query";
@@ -8,6 +8,7 @@ import { PostsAdd } from "../types/postsaddType";
 import { useRecoilValue } from "recoil";
 import { loginInfoState } from "../store/loginInfoState";
 import { NoLoginError } from "../pages/ErrorPage/NoLoginError";
+import { FeIcon } from "../assets/icons";
 
 export const AddPosts = () => {
   const userToken = getCookieToken();
@@ -21,6 +22,7 @@ export const AddPosts = () => {
   const [frontend, setFrontend] = useState<number>(0);
   const [designer, setDesigner] = useState<number>(0);
   const [fullstack, setFullstack] = useState<number>(0);
+  const [durationH, setDurationH] = useState<number>(0);
 
   const postInfo = {
     title,
@@ -33,8 +35,26 @@ export const AddPosts = () => {
     fullstack,
   };
 
+  const [FStoggle, setFStoggle] = useState(false);
+
+  const frontStackData = [
+    { stack: "React" },
+    { stack: "Vue Js" },
+    { stack: "Javascript" },
+    { stack: "TypeScript" },
+    { stack: "Next Js" },
+    { stack: "Angular Js" },
+  ];
+
   const contentHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
+  };
+
+  const onDurationHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (parseInt(e.target.value) > 0) {
+      setDuration(parseInt(e.target.value));
+      setDurationH(parseInt(e.target.value) * 5);
+    }
   };
 
   const addStack = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -60,7 +80,6 @@ export const AddPosts = () => {
   const onSubmitHandler = async () => {
     if (content && title) {
       const responce = await mutateAsync(postInfo);
-      console.log(responce);
       alert("게시글 작성 완료!");
       navigate("/search");
       return;
@@ -73,179 +92,203 @@ export const AddPosts = () => {
     }
   };
 
-  const userProfile = useRecoilValue(loginInfoState);
-  console.log(userProfile);
+  const stackStyle =
+    "inline-flex p-2 w-full text-[14px] text-gray-300 w-full border border-gray-300 cursor-pointer peer-checked:text-blue-500 peer-checked:ring-blue-500 peer-checked:ring-1 peer-checked:border-transparent";
 
   if (!userToken) {
     return <NoLoginError />;
   }
 
   return (
-    <div className="w-full h-full overflow-y-scroll pb-[7rem] p-4">
-      <div className="flex justify-start">
-        <div className="m-5 overflow-hidden relative w-24 h-24 bg-gray-100 rounded-full">
-          {/* <img src={userProfile[0].profileImage} /> */}
-        </div>
-        <div className="grid justify-items-start mt-5 m-3">
-          {/* <p>닉네임:{userProfile[0].nickname}</p> */}
-        </div>
+    <div className="w-full h-full overflow-y-scroll pb-[3.5rem] px-6 ">
+      <div className="flex mt-3">
+        <button
+          className="text-brandBlue text-2xl"
+          onClick={() => navigate(-1)}
+        >
+          &lt;
+        </button>
+        <p className="ml-4 text-lg">파티 모집 글쓰기</p>
       </div>
-      {/* 제목 입력 란 */}
-      <input
-        className="border-b-gray-200 border-t-transparent border-r-transparent border-l-transparent outline-none border-double border-4 border-gray-600 w-full mb-5 text-3xl placeholder:italic placeholder:text-slate-300"
-        placeholder="제목을 입력해주세요."
-        value={title}
-        onChange={titleHandler}
-      />
-      {/* DropDown */}
+      <h1 className="font-cookie my-6">좋은 파티를 구하길 바란다</h1>
       <div>
-        <div className="my-6">
-          <div className="flex justify-between">
-            <p>구인스택</p>
-            <select
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-2.5"
-              onChange={addStack}
-            >
-              <option selected>스택 선택</option>
-              <option value="React">React</option>
-              <option value="Vue Js">Vue js</option>
-              <option value="Javascript">JavaScript</option>
-              <option value="Typescript">Typecript</option>
-              <option value="Next Js">Next js</option>
-              <option value="Svelte">Svelte</option>
-              <option value="CSS3">CSS3</option>
-              <option value="Angular Js">Angular js</option>
-              <option value="jQuery">jQuery</option>
-              <option value="Java">Java</option>
-              <option value="Spring Boot">Spring Boot</option>
-              <option value="Node Js">Node js</option>
-              <option value="Python">Python</option>
-              <option value="Django">Django</option>
-              <option value="PHP">PHP</option>
-              <option value="C++">C++</option>
-              <option value="C#">C#</option>
-              <option value="AWS">AWS</option>
-              <option value="MySqal">MySQL</option>
-              <option value="Oracle">Oracle</option>
-            </select>
-          </div>
-          <div className="flex row">
-            {stacks.map(s => (
-              <p className="mr-2 border border-black p-2">#{s}</p>
+        <h2 className="mb-4">필요직업군</h2>
+        <ul className="flex gap-x-[21px] overflow-x-scroll">
+          <li className="w-[84px] h-[120px] border flex-col align-center justify-center border-black rounded-lg">
+            <div className="flex justify-center py-6">
+              <FeIcon />
+            </div>
+            <p className="text-center text-[12px]">프론트엔드</p>
+            <div className="flex justify-center">
+              <button
+                className="text-center text-[16px]"
+                onClick={() => {
+                  if (frontend > 0) setFrontend(frontend - 1);
+                }}
+              >
+                -
+              </button>
+              <p className="mx-2 text-[12px]">{frontend}</p>
+              <button
+                className="text-center text-[16px]"
+                onClick={() => {
+                  if (frontend < 20) setFrontend(frontend + 1);
+                }}
+              >
+                +
+              </button>
+            </div>
+          </li>
+          <li className="w-[84px] h-[120px] border flex-col align-center justify-center border-black rounded-lg">
+            <div className="flex justify-center py-6">
+              <FeIcon />
+            </div>
+            <p className="text-center text-[12px]">프론트엔드</p>
+            <div className="flex justify-center">
+              <button
+                className="text-center text-[16px]"
+                onClick={() => {
+                  if (frontend > 0) setFrontend(frontend - 1);
+                }}
+              >
+                -
+              </button>
+              <p className="mx-2 text-[12px]">{frontend}</p>
+              <button
+                className="text-center text-[16px]"
+                onClick={() => {
+                  if (frontend < 20) setFrontend(frontend + 1);
+                }}
+              >
+                +
+              </button>
+            </div>
+          </li>
+          <li className="w-[84px] h-[120px] border flex-col align-center justify-center border-black rounded-lg">
+            <div className="flex justify-center py-6">
+              <FeIcon />
+            </div>
+            <p className="text-center text-[12px]">프론트엔드</p>
+            <div className="flex justify-center">
+              <button
+                className="text-center text-[16px]"
+                onClick={() => {
+                  if (frontend > 0) setFrontend(frontend - 1);
+                }}
+              >
+                -
+              </button>
+              <p className="mx-2 text-[12px]">{frontend}</p>
+              <button
+                className="text-center text-[16px]"
+                onClick={() => {
+                  if (frontend < 20) setFrontend(frontend + 1);
+                }}
+              >
+                +
+              </button>
+            </div>
+          </li>
+          <li className="w-[84px] h-[120px] border flex-col align-center justify-center border-black rounded-lg">
+            <div className="flex justify-center py-6">
+              <FeIcon />
+            </div>
+            <p className="text-center text-[12px]">프론트엔드</p>
+            <div className="flex justify-center">
+              <button
+                className="text-center text-[16px]"
+                onClick={() => {
+                  if (frontend > 0) setFrontend(frontend - 1);
+                }}
+              >
+                -
+              </button>
+              <p className="mx-2 text-[12px]">{frontend}</p>
+              <button
+                className="text-center text-[16px]"
+                onClick={() => {
+                  if (frontend < 20) setFrontend(frontend + 1);
+                }}
+              >
+                +
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div className="my-2 pt-1 space-y-6">
+        <h1 className="text-[16px]">기간</h1>
+        <div className={`w-full  px-2 text-[12px] rounded-lg`}>
+          <p
+            className={`inline-block px-2 py-1 rounded-lg translate-x-[-50%] bg-brandBlue text-white relative after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-4 after:border-x-transparent after:border-b-transparent after:border-t-gray-700`}
+            style={{ left: `${durationH}%` }}
+          >
+            {duration}일
+          </p>
+        </div>
+        <input
+          type="range"
+          min="0"
+          max="20"
+          step="1"
+          value={duration}
+          name="duration"
+          onChange={onDurationHandler}
+          className="w-full h-[3px] range-sm bg-brandBlue accent-brandBlue"
+        />
+      </div>
+      <div className="my-8 pt-1 space-y-6">
+        <h1>요구 스택</h1>
+        <h2 className="text-[14px]" onClick={() => setFStoggle(!FStoggle)}>
+          프론트엔드 &gt;
+        </h2>
+
+        {FStoggle ? (
+          <ul className="grid gap-1 w-full grid-cols-3">
+            {frontStackData?.map(fsd => (
+              <li>
+                <input
+                  type="checkbox"
+                  className="sr-only peer"
+                  value={fsd.stack}
+                  id={fsd.stack}
+                  checked={stacks.includes(fsd.stack) ? true : false}
+                  // onChange={e => onStacksHandler(e)}
+                />
+                <label className={stackStyle} htmlFor={fsd.stack}>
+                  <p>{fsd.stack}</p>
+                </label>
+              </li>
             ))}
-          </div>
-          <div className="flex justify-between">
-            <p>프로젝트 예상 기간</p>
-            <select
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-2.5"
-              onChange={e => {
-                setDuration(parseInt(e.target.value));
-              }}
-            >
-              <option selected>예상 기간</option>
-              <option value="1">1주</option>
-              <option value="2">2주</option>
-              <option value="3">3주</option>
-              <option value="4">4주</option>
-              <option value="5">5주</option>
-              <option value="6">6주</option>
-              <option value="7">6주 이상</option>
-            </select>
-          </div>
-        </div>
-        <p>- 모집인원 -</p>
-        <div className="mt-5">
-          <div className="flex justify-between">
-            <p>Backend</p>
-            <select
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-2.5"
-              onChange={e => {
-                setBackend(parseInt(e.target.value));
-              }}
-            >
-              <option selected>0</option>
-              <option value="1">1명</option>
-              <option value="2">2명</option>
-              <option value="3">3명</option>
-              <option value="4">4명</option>
-              <option value="5">5명</option>
-              <option value="6">6명</option>
-              <option value="7">6명이상</option>
-            </select>
-          </div>{" "}
-          <div className="flex justify-between ">
-            <p>Frontend</p>
-            <select
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-2.5"
-              onChange={e => {
-                setFrontend(parseInt(e.target.value));
-              }}
-            >
-              <option selected>0</option>
-              <option value="1">1명</option>
-              <option value="2">2명</option>
-              <option value="3">3명</option>
-              <option value="4">4명</option>
-              <option value="5">5명</option>
-              <option value="6">6명</option>
-              <option value="7">6명이상</option>
-            </select>
-          </div>{" "}
-          <div className="flex justify-between">
-            <p>Designer</p>
-            <select
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-2.5"
-              onChange={e => {
-                setDesigner(parseInt(e.target.value));
-              }}
-            >
-              <option selected>0</option>
-              <option value="1">1명</option>
-              <option value="2">2명</option>
-              <option value="3">3명</option>
-              <option value="4">4명</option>
-              <option value="5">5명</option>
-              <option value="6">6명</option>
-              <option value="7">6명이상</option>
-            </select>
-          </div>{" "}
-          <div className="flex justify-between">
-            <p>Fullstack</p>
-            <select
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-2.5"
-              onChange={e => {
-                setFullstack(parseInt(e.target.value));
-              }}
-            >
-              <option selected>0</option>
-              <option value="1">1명</option>
-              <option value="2">2명</option>
-              <option value="3">3명</option>
-              <option value="4">4명</option>
-              <option value="5">5명</option>
-              <option value="6">6명</option>
-              <option value="7">6명이상</option>
-            </select>
-          </div>
-        </div>
+          </ul>
+        ) : null}
+      </div>
+      <div className="my-4">
+        <p className="mb-4">글쓰기</p>
+        <input
+          className="w-full pl-2.5 py-2 border-b-[1px] outline-none focus:border-brandBlue"
+          placeholder="제목을 입력해주세요."
+          value={title}
+          onChange={titleHandler}
+        />
+        <textarea
+          id="message"
+          rows={15}
+          className="block p-2.5 mt-6 w-full text-sm text-gray-900 bg-gray-100 rounded-lg focus:ring-blue-500 focus:border-blue-500 "
+          placeholder="프로젝트 내용을 입력해주세요."
+          style={{ resize: "none" }}
+          value={content}
+          onChange={contentHandler}
+        />
       </div>
 
-      <textarea
-        id="message"
-        rows={5}
-        className="block p-2.5 mt-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
-        placeholder="프로젝트 내용을 입력해주세요."
-        value={content}
-        onChange={contentHandler}
-      />
-      <div className="flex flex-row-reverse">
+      <div className="w-full absolute bottom-0 left-0 right-0 z-50">
         <button
           type="button"
-          className="cursor-pointer bg-cyan-300 hover:bg-cyan-400 w-20 h-10 rounded-lg border-none
-           mt-5"
           onClick={onSubmitHandler}
+          className="text-white bg-brandBlue focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium bottom-0 w-full h-[3rem] text-sm px-5 py-2.5 text-center"
         >
-          등록하기
+          필터적용
         </button>
       </div>
     </div>
