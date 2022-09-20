@@ -21,7 +21,7 @@ export const FooterNavBar = () => {
 
   const { pathname } = useLocation();
   return (
-    <footer className="absolute flex justify-center items-center gap-x-16 h-[3.75rem] w-full left-0 bottom-0 z-10 shadow-[4px_0_30_1px_rgba(194,194,194,0.5)] bg-bgWhite">
+    <footer className="flex justify-center items-center gap-x-16 h-[3.75rem] w-full left-0 bottom-0 z-10 shadow-[4px_0_30_1px_rgba(194,194,194,0.5)] bg-bgWhite">
       <Link to="/mypage">
         <MyPageIcon
           className={classNames("fill-black", {
