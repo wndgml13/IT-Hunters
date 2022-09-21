@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { title } from "process";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
+import { PostsAdd } from "../types/postsaddType";
 import { IQuestDetail } from "../types/postsDetailType";
 
 const userToken = {
@@ -31,7 +32,6 @@ export const PostsApi = {
       return data;
     });
   },
-
   // 게시글 수정 -- 작업중
   editPosts: () => {
     return useMutation((payload: EditPostsPayload) =>
@@ -51,7 +51,25 @@ export const PostsApi = {
       ),
     );
   },
-
+  submitPost: () => {
+    return useMutation(async (postInfo: PostsAdd) => {
+      const { data } = await instance.post(
+        "api/quests",
+        {
+          backend: postInfo.backend,
+          content: postInfo.content,
+          designer: postInfo.designer,
+          duration: postInfo.duration,
+          frontend: postInfo.frontend,
+          fullstack: postInfo.fullstack,
+          stacks: postInfo.stacks,
+          title: postInfo.title,
+        },
+        userToken,
+      );
+      return data;
+    });
+  },
   // 게시글 삭제
   deleteposts: () => {
     return useMutation(async (id: number) => {

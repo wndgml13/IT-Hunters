@@ -4,10 +4,10 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BookmarkApi } from "../APIs/BookmarkApi";
 import { CommentApi } from "../APIs/CommentApi";
-import { OfferApi } from "../APIs/OfferApi";
 import { PostsApi } from "../APIs/PostsApi";
+import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
-import { CommentGet } from "../types/postsDetailType";
+import { CommentGet, OffersPost } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
 
 export const PostsDetail = () => {
@@ -83,11 +83,17 @@ export const PostsDetail = () => {
   };
 
   // 신청하기(합류요청) POST -- 작업중
-  const { mutateAsync: offerPost } = OfferApi.offerPost();
-  const onOfferHandler = async () => {
+  const offerPost = async () => {
     try {
-      offerPost(Number(id));
+      const { data } = await instance.post<OffersPost>(
+        `api/quests/${id}/offers`,
+        { classType: "FRONTEND" },
+        {
+          headers: { authorization: userToken },
+        },
+      );
       alert("합류요청 완료!!");
+      return data;
     } catch (err) {
       if (axios.isAxiosError(err)) {
         if (err.response?.status === 400) {
@@ -101,6 +107,11 @@ export const PostsDetail = () => {
         }
       }
     }
+  };
+
+  const onOfferHandler = () => {
+    offerPost();
+    return;
   };
 
   // 게시글 북마크 POST
