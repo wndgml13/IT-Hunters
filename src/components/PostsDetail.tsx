@@ -8,7 +8,7 @@ import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
 import { CommentGet, OffersPost } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
-d;
+
 export const PostsDetail = () => {
   const navigate = useNavigate();
   const userToken = getCookieToken();
