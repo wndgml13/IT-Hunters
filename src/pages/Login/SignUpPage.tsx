@@ -1,39 +1,24 @@
+import { AxiosError } from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { instance } from "../../config/axios";
-
-import {
-  buttonStyle,
-  inputFileStyle,
-  inputStyle,
-  labelStyle,
-  validSuccess,
-  validError,
-} from "./formStyle";
+import { validSuccess, validError } from "./formStyle";
 
 export const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [nickname, setNickname] = useState("");
+  // const [phoneNum, setPhoneNum] = useState("");
 
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
   const [passwordConfirmValid, setPasswordConfirmValid] = useState(false);
   const [nicknameValid, setNicknameValid] = useState(false);
 
+  const [emailCheckMsg, setEmailCheckMsg] = useState("");
+  const [nicknameCheckMsg, setNicknameCheckMsg] = useState("");
   const navigate = useNavigate();
-
-  const emailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    const emailRegex =
-      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-    if (email && emailRegex.test(email)) {
-      setEmailValid(true);
-    } else {
-      setEmailValid(false);
-    }
-  };
 
   const passwordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
@@ -51,19 +36,56 @@ export const SignUpPage = () => {
       setPasswordConfirmValid(false);
     }
   };
-  const nicknameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(e.target.value);
-    if (e.target.value.length > 2) {
-      setNicknameValid(true);
-    } else {
-      setNicknameValid(false);
+
+  const isDuplicatedEmail = async () => {
+    try {
+      const { data } = await instance.post("/api/members/checkId", {
+        email,
+      });
+      console.log(data);
+      setEmailValid(true);
+      setEmailCheckMsg(data);
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        console.log(err.response?.data.message);
+        setEmailValid(false);
+        setEmailCheckMsg(err.response?.data.message);
+      }
     }
   };
+
+  const isDuplicatedNickname = async () => {
+    try {
+      const { data } = await instance.post("/api/members/checkNickname", {
+        nickname,
+      });
+      console.log(data);
+      setNicknameValid(true);
+      setNicknameCheckMsg(data);
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        console.log(err.response?.data.message);
+        setNicknameValid(false);
+        setNicknameCheckMsg(err.response?.data.message);
+      }
+    }
+  };
+
+  // const checkPhoneNum = async () => {
+  //   try {
+  //     const { data } = await instance.post("/api/members/sendAuth", {
+  //       phoneNo: phoneNum,
+  //     });
+  //     console.log(data);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   const onSignup = async () => {
     if (emailValid && passwordValid && passwordConfirmValid && nicknameValid) {
       try {
-        const data = await instance.post("api/members/signup", {
+        const { data } = await instance.post("api/members/signup", {
           email,
           password,
           nickname,
@@ -79,63 +101,140 @@ export const SignUpPage = () => {
         console.log(error);
       }
     } else {
-      console.log("입력이 잘못되었습니다");
+      alert("입력이 잘못되었습니다");
     }
   };
 
   return (
-    <div className="grid gap-6 p-10 mb-6 md:grid-cols-1">
-      <h1 className="text-3xl">용병님, 자기소개를 부탁해요!</h1>
+    <div className="w-full h-full overflow-y-scroll pb-[10rem] p-6">
+      <h1 className="text-xl">회원가입</h1>
+      <div className="text-[28px] font-cookie mt-[32px]">
+        <p className="font-cookie leading-10">
+          IT의 세계에 온것을
+          <br /> 환영한다! <br />
+          <span className="font-cookie text-brandBlue">그대의정보가</span>
+          알고싶군.
+        </p>
+      </div>
+      <div className="mt-[44px]">
+        <p className="text-sm mb-4">약관동의 - 아직안됨</p>
+        <div className="border">
+          <div className="flex border-b p-4">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="12" cy="12" r="12" fill="#D9D9D9" />
+              <path
+                d="M6.17431 11.7551C6.08111 11.6486 5.96784 11.5615 5.84098 11.4988C5.71412 11.4361 5.57615 11.3989 5.43494 11.3896C5.29374 11.3802 5.15206 11.3987 5.01801 11.444C4.88396 11.4894 4.76015 11.5607 4.65366 11.6539C4.54716 11.7471 4.46007 11.8603 4.39735 11.9872C4.33463 12.1141 4.29751 12.252 4.28812 12.3932C4.27872 12.5345 4.29722 12.6761 4.34258 12.8102C4.38793 12.9442 4.45925 13.068 4.55245 13.1745L8.32421 17.4857C8.42309 17.599 8.54462 17.6904 8.68097 17.754C8.81732 17.8176 8.96547 17.8519 9.11588 17.8547C9.26629 17.8576 9.41563 17.8289 9.55428 17.7705C9.69294 17.7121 9.81783 17.6254 9.92093 17.5158L19.0813 7.81737C19.2775 7.60963 19.3832 7.33245 19.3751 7.04681C19.3669 6.76116 19.2456 6.49044 19.0379 6.29421C18.8302 6.09797 18.553 5.9923 18.2673 6.00044C17.9817 6.00857 17.711 6.12985 17.5147 6.33758L9.16783 15.1773L6.17431 11.7551Z"
+                fill="white"
+              />
+            </svg>
+            <p className="ml-2 text-sm">전체동의</p>
+          </div>
+          <div className="flex border-b p-4">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="12" cy="12" r="11.5" fill="white" stroke="#C2C2C2" />
+              <path
+                d="M6.17431 11.7551C6.08111 11.6486 5.96784 11.5615 5.84098 11.4988C5.71412 11.4361 5.57615 11.3989 5.43494 11.3896C5.29374 11.3802 5.15206 11.3987 5.01801 11.444C4.88396 11.4894 4.76015 11.5607 4.65366 11.6539C4.54716 11.7471 4.46007 11.8603 4.39735 11.9872C4.33463 12.1141 4.29751 12.252 4.28812 12.3932C4.27872 12.5345 4.29722 12.6761 4.34258 12.8102C4.38793 12.9442 4.45925 13.068 4.55245 13.1745L8.32421 17.4857C8.42309 17.599 8.54462 17.6904 8.68097 17.754C8.81732 17.8176 8.96547 17.8519 9.11588 17.8547C9.26629 17.8576 9.41563 17.8289 9.55428 17.7705C9.69294 17.7121 9.81783 17.6254 9.92093 17.5158L19.0813 7.81737C19.2775 7.60963 19.3832 7.33245 19.3751 7.04681C19.3669 6.76116 19.2456 6.49044 19.0379 6.29421C18.8302 6.09797 18.553 5.9923 18.2673 6.00044C17.9817 6.00857 17.711 6.12985 17.5147 6.33758L9.16783 15.1773L6.17431 11.7551Z"
+                fill="#C2C2C2"
+              />
+            </svg>
+            <p className="ml-2 text-sm">웹회원 이용약관 동의</p>
+          </div>
+          <div className="flex p-4">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="12" cy="12" r="11.5" fill="white" stroke="#C2C2C2" />
+              <path
+                d="M6.17431 11.7551C6.08111 11.6486 5.96784 11.5615 5.84098 11.4988C5.71412 11.4361 5.57615 11.3989 5.43494 11.3896C5.29374 11.3802 5.15206 11.3987 5.01801 11.444C4.88396 11.4894 4.76015 11.5607 4.65366 11.6539C4.54716 11.7471 4.46007 11.8603 4.39735 11.9872C4.33463 12.1141 4.29751 12.252 4.28812 12.3932C4.27872 12.5345 4.29722 12.6761 4.34258 12.8102C4.38793 12.9442 4.45925 13.068 4.55245 13.1745L8.32421 17.4857C8.42309 17.599 8.54462 17.6904 8.68097 17.754C8.81732 17.8176 8.96547 17.8519 9.11588 17.8547C9.26629 17.8576 9.41563 17.8289 9.55428 17.7705C9.69294 17.7121 9.81783 17.6254 9.92093 17.5158L19.0813 7.81737C19.2775 7.60963 19.3832 7.33245 19.3751 7.04681C19.3669 6.76116 19.2456 6.49044 19.0379 6.29421C18.8302 6.09797 18.553 5.9923 18.2673 6.00044C17.9817 6.00857 17.711 6.12985 17.5147 6.33758L9.16783 15.1773L6.17431 11.7551Z"
+                fill="#C2C2C2"
+              />
+            </svg>
+            <p className="ml-2 text-sm">선택이용약관</p>
+          </div>
+        </div>
+      </div>
 
-      <div className="relative">
-        <label className={labelStyle}>이메일</label>
-        <input
-          type="email"
-          value={email}
-          onChange={emailHandler}
-          className={inputStyle}
-          required
-        />
-        <button
-          type="submit"
-          className=" absolute right-1 bottom-1 bg-gray-300 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm px-4 py-2 "
-        >
-          중복확인
-        </button>
-        {email.length > 0 ? (
+      <div className="relative block mt-10">
+        <p className="mb-4 text-sm font-medium text-gray-900">이메일</p>
+        <div className="flex border-b-[2px] focus-within:border-b-brandBlue">
+          <input
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            placeholder="이메일을 입력해주세요"
+            className="w-full pl-2.5 py-2 outline-none "
+            required
+          />
+          <button
+            type="submit"
+            className="mb-1 border w-[100px] text-brandBlue border-brandBlue rounded-2xl text-sm px-2 py-1 "
+            onClick={isDuplicatedEmail}
+          >
+            중복확인
+          </button>
+        </div>
+
+        {emailCheckMsg.length ? (
           emailValid ? (
-            <p className={validSuccess}>올바른 이메일 형식입니다</p>
+            <p className={validSuccess}>{emailCheckMsg}</p>
           ) : (
-            <p className={validError}> 올바르지 않은 이메일 형식입니다</p>
+            <p className={validError}> {emailCheckMsg}</p>
           )
         ) : null}
       </div>
 
-      <div>
-        <label className={labelStyle}>닉네임</label>
-        <input
-          type="text"
-          value={nickname}
-          onChange={nicknameHandler}
-          className={inputStyle}
-          required
-        />
-        {nickname.length > 0 ? (
+      <div className="relative block mt-7">
+        <p className="mb-4 text-sm font-medium text-gray-900">닉네임</p>
+        <div className="flex border-b-[2px] focus-within:border-b-brandBlue">
+          <input
+            type="nickname"
+            value={nickname}
+            onChange={e => setNickname(e.target.value)}
+            placeholder="닉네임을 입력해주세요"
+            className="w-full pl-2.5 py-2 outline-none "
+            required
+          />
+          <button
+            type="submit"
+            className="mb-1 border w-[100px] text-brandBlue border-brandBlue rounded-2xl text-sm px-2 py-1 "
+            onClick={isDuplicatedNickname}
+          >
+            중복확인
+          </button>
+        </div>
+        {nicknameCheckMsg.length > 0 ? (
           nicknameValid ? (
-            <p className={validSuccess}>올바른 닉네임입니다</p>
+            <p className={validSuccess}>{nicknameCheckMsg}</p>
           ) : (
-            <p className={validError}>닉네임은 2글자 이상으로 입력해주세요.</p>
+            <p className={validError}> {nicknameCheckMsg}</p>
           )
         ) : null}
       </div>
 
-      <div>
-        <label className={labelStyle}>비밀번호</label>
+      <div className="mt-7">
+        <p className="mb-4 text-sm font-medium text-gray-900">비밀번호</p>
         <input
           type="password"
           value={password}
           onChange={passwordHandler}
-          className={inputStyle}
+          placeholder="영문/숫자 조합 8~20자리"
+          className="w-full pl-2.5 py-2 border-b-[2px] outline-none focus:border-brandBlue"
           required
         />
 
@@ -147,13 +246,16 @@ export const SignUpPage = () => {
           )
         ) : null}
       </div>
-      <div>
-        <label className={labelStyle}>비밀번호 재확인</label>
+      <div className="mt-7">
+        <p className="mb-4 text-sm font-medium text-gray-900">
+          비밀번호 재확인
+        </p>
         <input
           type="password"
           value={passwordConfirm}
           onChange={passwordConfirmHandler}
-          className={inputStyle}
+          placeholder="영문/숫자 조합 8~20자리"
+          className="w-full pl-2.5 py-2 border-b-[2px] outline-none focus:border-brandBlue"
           required
         />
         {passwordConfirm.length > 0 ? (
@@ -165,9 +267,46 @@ export const SignUpPage = () => {
         ) : null}
       </div>
 
-      <div className="grid grid-cols-3 gap-4 ">
+      {/* <div className="mt-7">
+        <p className="mb-4 text-sm font-medium text-gray-900">휴대폰 번호</p>
+        <div className="flex">
+          <input
+            type="tel"
+            placeholder="'-' 제외하고 입력해주세요"
+            value={phoneNum}
+            onChange={e => setPhoneNum(e.target.value)}
+            className="w-4/5 pl-2.5 py-2 mr-8 outline-none  border-b-[2px] focus-within:border-b-brandBlue"
+            required
+          />
+          <button
+            type="submit"
+            className="mb-1 border w-[120px] text-brandBlue border-brandBlue rounded-xl text-sm px-2 py-1 "
+            onClick={checkPhoneNum}
+          >
+            인증번호 요청
+          </button>
+        </div>
+      </div> */}
+      {/* <div className="mt-7">
+        <p className="mb-4 text-sm font-medium text-gray-900">인증번호</p>
+        <div className="flex">
+          <input
+            type="text"
+            placeholder="인증번호를 입력해주세요"
+            className="w-4/5 pl-2.5 py-2 mr-8 outline-none  border-b-[2px] focus-within:border-b-brandBlue"
+            required
+          />
+          <button
+            type="submit"
+            className="mb-1 border w-[120px] text-brandBlue border-brandBlue rounded-xl text-sm px-2 py-1 "
+          >
+            인증번호 확인
+          </button>
+        </div>
+      </div> */}
+      {/* <div className="grid grid-cols-3 gap-4 ">
         <div className="w-20 h-20 rounded-full bg-green-300 ">
-          {/* <img className= 'w-full h-full' alt='profileImg' /> */}
+          <img className= 'w-full h-full' alt='profileImg' />
         </div>
         <div className="col-span-2">
           <input
@@ -176,11 +315,17 @@ export const SignUpPage = () => {
             type="file"
           />
         </div>
-      </div>
+      </div> */}
 
-      <button type="button" className={buttonStyle} onClick={onSignup}>
-        회원가입
-      </button>
+      <div className="w-full absolute bottom-0 left-0 right-0 z-50">
+        <button
+          type="button"
+          onClick={onSignup}
+          className="text-white bg-brandBlue focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium bottom-0 w-full h-[3rem] text-sm px-5 py-2.5 text-center"
+        >
+          회원가입
+        </button>
+      </div>
     </div>
   );
 };

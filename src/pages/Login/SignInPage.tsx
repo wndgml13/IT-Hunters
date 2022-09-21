@@ -3,13 +3,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { instance } from "../../config/axios";
 import { setAccessToken } from "../../config/cookies";
-import {
-  buttonStyle,
-  inputStyle,
-  labelStyle,
-  validError,
-  validSuccess,
-} from "./formStyle";
+import { validError, validSuccess } from "./formStyle";
 
 export const SignInPage = () => {
   const [email, setEmail] = useState("");
@@ -45,7 +39,7 @@ export const SignInPage = () => {
           email,
           password,
         });
-        console.log(data.headers);
+        console.log(data);
 
         setAccessToken(data.headers.authorization);
         axios.defaults.headers.common[
@@ -65,7 +59,7 @@ export const SignInPage = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="w-full h-full overflow-y-scroll pb-[3.5rem] p-6">
       <h1 className="text-xl">로그인</h1>
       <div className="text-[28px] font-cookie mt-[70px]">
         <p className="font-cookie leading-10">
@@ -78,12 +72,12 @@ export const SignInPage = () => {
         </p>
       </div>
 
-      <div className="mt-[34px] mb-[24px]">
+      <div className="mt-[34px] mb-[24px] flex-col space-y-4">
         <input
           type="email"
           value={email}
           onChange={emailHandler}
-          className="text-gray-900 text-sm bg-[#f1f2f5] h-[52px] rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 "
+          className="text-gray-900 text-sm bg-[#f1f2f5] h-[52px] rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
           placeholder="이메일을 입력해주세요"
         />
         {email.length > 0 ? (
