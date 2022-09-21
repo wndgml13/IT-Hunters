@@ -1,3 +1,4 @@
+// 게시글 상세 조회
 export interface IQuestDetail {
   classes: {
     backend: number | null;
@@ -17,6 +18,18 @@ export interface IQuestDetail {
   title: string;
   stacks: string[];
 }
+// 게시글 수정
+export interface EditIQuestDetail {
+  title: string;
+  content: string;
+  frontend: number | null;
+  backend: number | null;
+  designer: number | null;
+  fullstack: number | null;
+  duration: number;
+  stacks: string[];
+}
+// 답글 조회
 export interface SubCommentGet {
   subCommentId: number;
   nickname: string;
@@ -25,7 +38,7 @@ export interface SubCommentGet {
   modifiedAt: number;
   profileImage: string;
 }
-
+// 댓글 조회
 export interface CommentGet {
   commentId: number;
   nickname: string;
@@ -35,12 +48,7 @@ export interface CommentGet {
   profileImage: string;
   subCommentList: SubCommentGet[];
 }
-
+// 신청하기(합류요청)
 export interface OffersPost {
-  classType: {
-    BACKEND: number | null;
-    FRONTEND: number | null;
-    DESIGNER: number | null;
-    FULLSTACK: number | null;
-  };
+  classType: string;
 }

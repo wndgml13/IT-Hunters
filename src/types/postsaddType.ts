@@ -1,3 +1,4 @@
+// 게시글 등록
 export interface PostsAdd {
   title: string;
   content: string;
