@@ -15,7 +15,6 @@ import { EditUserInfoPage } from "../pages/EditUserInfoPage";
 import { NotificationPage } from "../pages/NotificationPage";
 import { EditPortFolio } from "../pages/EditPortfoilio";
 
-
 const AppRouter = () => {
   return (
     <BrowserRouter>
