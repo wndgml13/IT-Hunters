@@ -9,7 +9,7 @@ import { SearchPage } from "../pages/SearchPage";
 import { FooterNavBar } from "../components/FooterNavBar";
 import { ChatListPage } from "../pages/Chats/ChatListPage";
 import { ChatRoomPage } from "../pages/Chats/ChatRoomPage";
-import { Header } from "../components/Header";
+// import { Header } from "../components/Header";
 import { EditStackPage } from "../pages/EditStackPage";
 import { EditUserInfoPage } from "../pages/EditUserInfoPage";
 import { NotificationPage } from "../pages/NotificationPage";
