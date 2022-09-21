@@ -1,14 +1,13 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// import { useRecoilState } from "recoil";
+import { BookmarkApi } from "../APIs/BookmarkApi";
 import { CommentApi } from "../APIs/CommentApi";
 import { PostsApi } from "../APIs/PostsApi";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
-// import { idState } from "../store/questIdState";
-import { OffersPost } from "../types/postsDetailType";
+import { CommentGet, OffersPost } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
 
 export const PostsDetail = () => {
@@ -17,87 +16,73 @@ export const PostsDetail = () => {
   const queryClient = useQueryClient();
   const { id } = useParams();
   const [comment, setComment] = useState("");
-  // const [offer, setOffer] = useState("");
-  // const [idParam, setIdParam] = useRecoilState(idState);
+  const [bookMark, setBookMark] = useState(false);
+
+  // 게시글 수정 state -- 작업중
+  const [title, setTitle] = useState(Number(id));
+  const [content, setContent] = useState(Number(id));
+  const [frontend, setFrontend] = useState(Number(id));
+  const [backend, setBackend] = useState(Number(id));
+  const [designer, setDesigner] = useState(Number(id));
+  const [fullstack, setFullStack] = useState(Number(id));
+  const [duration, setDuration] = useState(Number(id));
+  const [stacks, setStacks] = useState(Number(id));
 
   // 댓글, 답글 조회
   const { data: comments } = CommentApi.getComments(Number(id));
-  // const getComments = async () => {
-  //   const { data } = await instance.get<CommentGet[]>(
-  //     `api/quests/${id}/comments`,
-  //     {
-  //       headers: { authorization: userToken },
-  //     },
-  //   );
-  //   return data;
-  // };
 
-  // const { data: comments } = useQuery<CommentGet[]>(["comments"], getComments);
+  // 댓글 작성
+  const { mutateAsync: addComment } = CommentApi.addComment();
 
-  // 댓글 작성 -- api파일로 옮겨야함!!
-  const addComment = async (comment: string) => {
-    const { data } = await instance.post(
-      `/api/quests/${id}/comments`,
-      { content: comment },
-      {
-        headers: { authorization: userToken },
-      },
-    );
-    return data;
+  const onSubmitComment = () => {
+    const payload = { id: Number(id), comment: comment };
+    addComment(payload).then(() => {
+      queryClient.invalidateQueries(["comments"]);
+    });
+    setComment("");
   };
 
-  const { mutate: addCom } = useMutation(addComment, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["comments"]);
-    },
-  });
-
-  const onEnterComment = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onEnterComment = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      addCom(comment);
+      onSubmitComment();
       setComment("");
     }
   };
 
-  const onSubmitComment = () => {
-    addCom(comment);
-    setComment("");
-  };
-
-  // 게시글 조회 -- api파일로 옮겨야함!!
+  // 게시글 조회
   const { data: quest } = PostsApi.getDetailPosts(Number(id));
-  // const getDetailPosts = async () => {
-  //   const { data } = await instance.get<IQuestDetail>(`api/quests/${id}`, {
-  //     headers: { authorization: userToken },
+
+  // 게시글 수정 -- 작업중
+  // const { mutateAsync: editPosts } = PostsApi.editPosts();
+
+  // const onEditPosts = () => {
+  //   const payload = {
+  //     id: Number(id),
+  //     title: title,
+  //     content: content,
+  //     frontend: frontend,
+  //     backend: backend,
+  //     designer: designer,
+  //     fullstack: fullstack,
+  //     duration: duration,
+  //     stacks: stacks,
+  //   };
+  //   editPosts(payload).then(() => {
+  //     queryClient.invalidateQueries(["Postsdetail"]);
   //   });
-  //   return data;
   // };
 
-  // const { data: quest } = useQuery<IQuestDetail, Error>(
-  //   ["Postsdetail"],
-  //   getDetailPosts,
-  // );
-
-  // 게시글 삭제 -- api 파일로 옮겨야함!!
-  const deleteposts = async () => {
-    const { data } = await instance.delete(`/api/quests/${id}`, {
-      headers: { authorization: userToken },
-    });
-    return data;
-  };
-
-  const { mutate: delpost } = useMutation(deleteposts, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["filterlist"]);
-    },
-  });
+  // 게시글 삭제
+  const { mutateAsync: deleteposts } = PostsApi.deleteposts();
 
   const onDeletepost = () => {
-    delpost();
+    deleteposts(Number(id)).then(() => {
+      queryClient.invalidateQueries(["Postsdetail"]);
+    });
     navigate("/search");
   };
 
-  // 신청하기(합류요청) POST
+  // 신청하기(합류요청) POST -- 작업중
   const offerPost = async () => {
     try {
       const { data } = await instance.post<OffersPost>(
@@ -126,12 +111,19 @@ export const PostsDetail = () => {
 
   const onOfferHandler = () => {
     offerPost();
-
     return;
+  };
+
+  // 게시글 북마크 POST
+  const { mutateAsync: bookMarkpost } = BookmarkApi.bookMarkpost();
+
+  const onBookMarkHandler = () => {
+    bookMarkpost(Number(id));
   };
 
   return (
     <div className="w-full h-full overflow-y-scroll pb-[3.5rem] p-4">
+      <button onClick={onBookMarkHandler}>⭐</button>☆
       <div className="flex flex-row-reverse">
         <button
           type="button"
@@ -159,13 +151,11 @@ export const PostsDetail = () => {
         ))}
       </div>
       <p>프로젝트 예상 기간 {quest?.duration}주</p>
-
       <p>-모집인원-</p>
       <p>Backend {quest?.classes.backend}명</p>
       <p>Frontend {quest?.classes.frontend}명</p>
       <p>Designer {quest?.classes.designer}명</p>
       <p>Fullstack {quest?.classes.fullstack}명</p>
-
       <div className="h-80 p-4 bg-blue-100">
         <p>{quest?.content}</p>
       </div>
@@ -185,9 +175,8 @@ export const PostsDetail = () => {
           신청하기
         </button>
       </div>
-
       {/* 댓글시작 */}
-      {comments?.map(co => (
+      {comments?.map((co: CommentGet) => (
         <PostsComment key={co.commentId} co={co} />
       ))}
       {/* 댓글 입력란 */}

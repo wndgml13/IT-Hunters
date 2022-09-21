@@ -38,10 +38,11 @@ export const Quest = ({ quest }: { quest: IQuest }) => {
           {nickname}
         </p>
       </div>
-      <div>
-        <h2 className="font-medium text-sm mb-[5px]">{title}</h2>
-        <p className="text-xs">{content}</p>
-        <p className="text-xs">시작일 : {createdAt.slice(0, 10)}</p>
+      {/* 밑에 width값 수정 필요할듯. */}
+      <div className="w-[220px]">
+        <h2 className="font-medium text-sm truncate mb-[5px]">{title}</h2>
+        <p className="text-xs truncate">{content}</p>
+        <p className="text-xs">시작일 : {createdAt?.slice(0, 10)}</p>
         <p className="text-xs">기한 : {duration}주</p>
         <ul className="flex">
           {existStack.map(stack => {
@@ -72,10 +73,6 @@ export const Quest = ({ quest }: { quest: IQuest }) => {
                 );
             }
           })}
-          {/* <li>{classes.frontend && <FeIcon />}</li>
-          <li>{classes.designer && <DeIcon />}</li>
-          <li>{classes.fullstack && <FuIcon />}</li>
-          <li>{classes.frontend && <FeIcon />}</li> */}
         </ul>
       </div>
     </li>
