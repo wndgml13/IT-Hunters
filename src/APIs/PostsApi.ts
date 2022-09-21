@@ -8,6 +8,18 @@ const userToken = {
   headers: { authorization: getCookieToken() },
 };
 
+interface EditPostsPayload {
+  id: number;
+  title: string;
+  content: string;
+  frontend: number | null;
+  backend: number | null;
+  designer: number | null;
+  fullstack: number | null;
+  duration: number;
+  stacks: string[];
+}
+
 export const PostsApi = {
   // 게시글 조회
   getDetailPosts: (id: number) => {
@@ -18,6 +30,26 @@ export const PostsApi = {
       );
       return data;
     });
+  },
+
+  // 게시글 수정 -- 작업중
+  editPosts: () => {
+    return useMutation((payload: EditPostsPayload) =>
+      instance.put(
+        `/api/quests/${payload.id}`,
+        {
+          title: payload.title,
+          content: payload.content,
+          frontend: payload.frontend,
+          backend: payload.backend,
+          designer: payload.designer,
+          fullstack: payload.fullstack,
+          duration: payload.duration,
+          stacks: payload.stacks,
+        },
+        userToken,
+      ),
+    );
   },
   submitPost: () => {
     return useMutation(async (postInfo: PostsAdd) => {
@@ -38,6 +70,7 @@ export const PostsApi = {
       return data;
     });
   },
+
   // 게시글 삭제
   deleteposts: () => {
     return useMutation(async (id: number) => {

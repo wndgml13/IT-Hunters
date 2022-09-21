@@ -18,7 +18,7 @@ export const FooterNavBar = () => {
   const { data: userinfo, isSuccess } = UserInfoApi.getUserInfo();
   const setLoginInfo = useSetRecoilState<LoginInfoType>(loginInfoState);
   const usertoken = getCookieToken();
-
+  0;
   useEffect(() => {
     if (usertoken && isSuccess) {
       setLoginInfo(userinfo);
