@@ -16,17 +16,17 @@ export const PostsDetail = () => {
   const queryClient = useQueryClient();
   const { id } = useParams();
   const [comment, setComment] = useState("");
-  const [bookMark, setBookMark] = useState(false);
+  // const [bookMark, setBookMark] = useState(false);
 
-  // 게시글 수정 state -- 작업중
-  const [title, setTitle] = useState(Number(id));
-  const [content, setContent] = useState(Number(id));
-  const [frontend, setFrontend] = useState(Number(id));
-  const [backend, setBackend] = useState(Number(id));
-  const [designer, setDesigner] = useState(Number(id));
-  const [fullstack, setFullStack] = useState(Number(id));
-  const [duration, setDuration] = useState(Number(id));
-  const [stacks, setStacks] = useState(Number(id));
+  // // 게시글 수정 state -- 작업중
+  // const [title, setTitle] = useState(Number(id));
+  // const [content, setContent] = useState(Number(id));
+  // const [frontend, setFrontend] = useState(Number(id));
+  // const [backend, setBackend] = useState(Number(id));
+  // const [designer, setDesigner] = useState(Number(id));
+  // const [fullstack, setFullStack] = useState(Number(id));
+  // const [duration, setDuration] = useState(Number(id));
+  // const [stacks, setStacks] = useState(Number(id));
 
   // 댓글, 답글 조회
   const { data: comments } = CommentApi.getComments(Number(id));
