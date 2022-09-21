@@ -32,6 +32,7 @@ export const PostsApi = {
       return data;
     });
   },
+
   // 게시글 수정 -- 작업중
   editPosts: () => {
     return useMutation((payload: EditPostsPayload) =>
