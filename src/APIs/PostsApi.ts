@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { title } from "process";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
 import { PostsAdd } from "../types/postsaddType";
@@ -26,7 +25,7 @@ export const PostsApi = {
   getDetailPosts: (id: number) => {
     return useQuery<IQuestDetail, Error>(["Postsdetail", id], async () => {
       const { data } = await instance.get<IQuestDetail>(
-        `/api/quests/${id}`,
+        `api/quests/${id}`,
         userToken,
       );
       return data;
@@ -71,6 +70,7 @@ export const PostsApi = {
       return data;
     });
   },
+
   // 게시글 삭제
   deleteposts: () => {
     return useMutation(async (id: number) => {

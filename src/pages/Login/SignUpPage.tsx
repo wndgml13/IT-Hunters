@@ -84,7 +84,7 @@ export const SignUpPage = () => {
   };
 
   return (
-    <div className="overflow-y-scroll h-[calc(100%-3.5rem)] pb-[4rem] overflow-x-hidden grid gap-6 p-10 mb-6 md:grid-cols-1">
+    <div className="grid gap-6 p-10 mb-6 md:grid-cols-1">
       <h1 className="text-3xl">용병님, 자기소개를 부탁해요!</h1>
 
       <div className="relative">
