@@ -7,7 +7,7 @@ import { CommentApi } from "../APIs/CommentApi";
 import { PostsApi } from "../APIs/PostsApi";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
-import { CommentGet, OffersPost } from "../types/postsDetailType";
+import { CommentGet, OffersPost, IQuestDetail } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
 
 export const PostsDetail = () => {
@@ -19,14 +19,25 @@ export const PostsDetail = () => {
   const [bookMark, setBookMark] = useState(false);
 
   // 게시글 수정 state -- 작업중
-  const [title, setTitle] = useState(Number(id));
-  const [content, setContent] = useState(Number(id));
-  const [frontend, setFrontend] = useState(Number(id));
-  const [backend, setBackend] = useState(Number(id));
-  const [designer, setDesigner] = useState(Number(id));
-  const [fullstack, setFullStack] = useState(Number(id));
-  const [duration, setDuration] = useState(Number(id));
-  const [stacks, setStacks] = useState(Number(id));
+  // const [title, setTitle] = useState<string>("");
+  // const [content, setContent] = useState<string>("");
+  // const [frontend, setFrontend] = useState<number>(0);
+  // const [backend, setBackend] = useState<number>(0);
+  // const [designer, setDesigner] = useState<number>(0);
+  // const [fullstack, setFullStack] = useState<number>(0);
+  // const [duration, setDuration] = useState<number>(0);
+  // const [stacks, setStacks] = useState<string[]>([""]);
+  const [editPost, setEditPost] = useState({
+    title: "",
+    content: "",
+    frontend: 0,
+    backend: 0,
+    designer: 0,
+    fullstack: 0,
+    duration: 0,
+    stacks: [""],
+  });
+  const [editToggle, setEditToggle] = useState(false);
 
   // 댓글, 답글 조회
   const { data: comments } = CommentApi.getComments(Number(id));
@@ -53,24 +64,31 @@ export const PostsDetail = () => {
   const { data: quest } = PostsApi.getDetailPosts(Number(id));
 
   // 게시글 수정 -- 작업중
-  // const { mutateAsync: editPosts } = PostsApi.editPosts();
+  const { mutateAsync: editPosts } = PostsApi.editPosts();
 
-  // const onEditPosts = () => {
-  //   const payload = {
-  //     id: Number(id),
-  //     title: title,
-  //     content: content,
-  //     frontend: frontend,
-  //     backend: backend,
-  //     designer: designer,
-  //     fullstack: fullstack,
-  //     duration: duration,
-  //     stacks: stacks,
-  //   };
-  //   editPosts(payload).then(() => {
-  //     queryClient.invalidateQueries(["Postsdetail"]);
-  //   });
-  // };
+  const onEditPosts = () => {
+    if (editToggle) {
+      if (editPost) {
+        setEditToggle(false);
+        const payload = {
+          id: Number(id),
+          title: editPost.title,
+          content: editPost.content,
+          frontend: editPost.frontend,
+          backend: editPost.backend,
+          designer: editPost.designer,
+          fullstack: editPost.fullstack,
+          duration: editPost.duration,
+          stacks: editPost.stacks,
+        };
+        editPosts(payload).then(() => {
+          queryClient.invalidateQueries(["Postsdetail"]);
+        });
+      } else {
+        setEditToggle(true);
+      }
+    }
+  };
 
   // 게시글 삭제
   const { mutateAsync: deleteposts } = PostsApi.deleteposts();
@@ -141,7 +159,6 @@ export const PostsDetail = () => {
       </div>
       {/* 제목 입력 란 */}
       <h1 className="text-2xl text-center border border-b-black">
-        {" "}
         {quest?.title}
       </h1>
       <p>구인스택</p>
@@ -163,6 +180,7 @@ export const PostsDetail = () => {
         <button
           type="button"
           className="cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 mt-5 rounded-lg border-none"
+          onClick={onEditPosts}
         >
           수정하기
         </button>

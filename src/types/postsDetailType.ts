@@ -16,6 +16,7 @@ export interface IQuestDetail {
   status: boolean;
   title: string;
   stacks: string[];
+  id: number;
 }
 export interface SubCommentGet {
   subCommentId: number;
