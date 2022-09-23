@@ -9,12 +9,14 @@ export const SignUpPage = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [nickname, setNickname] = useState("");
-  // const [phoneNum, setPhoneNum] = useState("");
-
+  const [phoneNum, setPhoneNum] = useState("");
+  const [authPhoneNum, setAuthPhoneNum] = useState("");
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
   const [passwordConfirmValid, setPasswordConfirmValid] = useState(false);
   const [nicknameValid, setNicknameValid] = useState(false);
+
+  const [phoneNumValidToggle, setPhoneNumValidToggle] = useState(false);
 
   const [emailCheckMsg, setEmailCheckMsg] = useState("");
   const [nicknameCheckMsg, setNicknameCheckMsg] = useState("");
@@ -44,7 +46,7 @@ export const SignUpPage = () => {
       });
       console.log(data);
       setEmailValid(true);
-      setEmailCheckMsg(data);
+      setEmailCheckMsg(data.data);
     } catch (err) {
       if (err instanceof AxiosError) {
         console.log(err.response?.data.message);
@@ -61,7 +63,7 @@ export const SignUpPage = () => {
       });
       console.log(data);
       setNicknameValid(true);
-      setNicknameCheckMsg(data);
+      setNicknameCheckMsg(data.data);
     } catch (err) {
       if (err instanceof AxiosError) {
         console.log(err.response?.data.message);
@@ -71,16 +73,29 @@ export const SignUpPage = () => {
     }
   };
 
-  // const checkPhoneNum = async () => {
-  //   try {
-  //     const { data } = await instance.post("/api/members/sendAuth", {
-  //       phoneNo: phoneNum,
-  //     });
-  //     console.log(data);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  const checkPhoneNum = async () => {
+    try {
+      const { data } = await instance.post("/api/members/sendSmsForSignup", {
+        phoneNumber: phoneNum,
+      });
+      console.log(data);
+      setPhoneNumValidToggle(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const confirmPhoneNum = async () => {
+    try {
+      const { data } = await instance.post("/api/members/confirmPhoneNumber", {
+        phoneNumber: phoneNum,
+        authNumber: authPhoneNum,
+      });
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const onSignup = async () => {
     if (emailValid && passwordValid && passwordConfirmValid && nicknameValid) {
@@ -89,6 +104,7 @@ export const SignUpPage = () => {
           email,
           password,
           nickname,
+          phoneNumber: phoneNum,
         });
         console.log(data);
         alert("회원가입 성공");
@@ -267,7 +283,7 @@ export const SignUpPage = () => {
         ) : null}
       </div>
 
-      {/* <div className="mt-7">
+      <div className="mt-7">
         <p className="mb-4 text-sm font-medium text-gray-900">휴대폰 번호</p>
         <div className="flex">
           <input
@@ -286,24 +302,29 @@ export const SignUpPage = () => {
             인증번호 요청
           </button>
         </div>
-      </div> */}
-      {/* <div className="mt-7">
-        <p className="mb-4 text-sm font-medium text-gray-900">인증번호</p>
-        <div className="flex">
-          <input
-            type="text"
-            placeholder="인증번호를 입력해주세요"
-            className="w-4/5 pl-2.5 py-2 mr-8 outline-none  border-b-[2px] focus-within:border-b-brandBlue"
-            required
-          />
-          <button
-            type="submit"
-            className="mb-1 border w-[120px] text-brandBlue border-brandBlue rounded-xl text-sm px-2 py-1 "
-          >
-            인증번호 확인
-          </button>
+      </div>
+      {phoneNumValidToggle ? (
+        <div className="mt-7">
+          <p className="mb-4 text-sm font-medium text-gray-900">인증번호</p>
+          <div className="flex">
+            <input
+              type="text"
+              placeholder="인증번호를 입력해주세요"
+              value={authPhoneNum}
+              onChange={e => setAuthPhoneNum(e.target.value)}
+              className="w-4/5 pl-2.5 py-2 mr-8 outline-none  border-b-[2px] focus-within:border-b-brandBlue"
+              required
+            />
+            <button
+              type="submit"
+              className="mb-1 border w-[120px] text-brandBlue border-brandBlue rounded-xl text-sm px-2 py-1 "
+              onClick={confirmPhoneNum}
+            >
+              인증번호 확인
+            </button>
+          </div>
         </div>
-      </div> */}
+      ) : null}
       {/* <div className="grid grid-cols-3 gap-4 ">
         <div className="w-20 h-20 rounded-full bg-green-300 ">
           <img className= 'w-full h-full' alt='profileImg' />

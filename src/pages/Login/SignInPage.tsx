@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { instance } from "../../config/axios";
@@ -39,13 +38,7 @@ export const SignInPage = () => {
           email,
           password,
         });
-        console.log(data);
-
         setAccessToken(data.headers.authorization);
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `${data.headers.authorization}`;
-
         alert("로그인 성공");
         setEmail("");
         setPassword("");
