@@ -9,11 +9,12 @@ import { SearchPage } from "../pages/SearchPage";
 import { FooterNavBar } from "../components/FooterNavBar";
 import { ChatListPage } from "../pages/Chats/ChatListPage";
 import { ChatRoomPage } from "../pages/Chats/ChatRoomPage";
-import { Header } from "../components/Header";
+// import { Header } from "../components/Header";
 import { EditStackPage } from "../pages/EditStackPage";
 import { EditUserInfoPage } from "../pages/EditUserInfoPage";
 import { NotificationPage } from "../pages/NotificationPage";
 import { EditPortFolio } from "../pages/EditPortfoilio";
+import { EditPosts } from "../components/EditPosts";
 
 const AppRouter = () => {
   return (
@@ -33,6 +34,7 @@ const AppRouter = () => {
         <Route path="/chats" element={<ChatListPage />} />
         <Route path="/chats/:id" element={<ChatRoomPage />} />
         <Route path="notification" element={<NotificationPage />} />
+        <Route path="/editposts" element={<EditPosts />} />
       </Routes>
       <FooterNavBar />
     </BrowserRouter>

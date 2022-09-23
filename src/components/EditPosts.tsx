@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { getCookieToken } from "../config/cookies";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useInput } from "../hooks/useInput";
 import { NoLoginError } from "../pages/ErrorPage/NoLoginError";
 import { DurationRange } from "./DurationRange";
 import { StackListDropdwon } from "./StackListDropdown";
 import { PostsApi } from "../APIs/PostsApi";
 import { NumMemberGet } from "./NumMemberGet";
+import { useQueryClient } from "@tanstack/react-query";
 
-export const AddPosts = () => {
+export const EditPosts = () => {
   const userToken = getCookieToken();
   const navigate = useNavigate();
+  const { id } = useParams();
+  const queryClient = useQueryClient();
 
   const [title, titleHandler] = useInput("");
   const [content, setContent] = useState("");
@@ -20,6 +23,17 @@ export const AddPosts = () => {
   const [frontend, setFrontend] = useState<number>(0);
   const [designer, setDesigner] = useState<number>(0);
   const [fullstack, setFullstack] = useState<number>(0);
+
+  const [editPost, setEditPost] = useState({
+    title: {},
+    content: "",
+    frontend: 0,
+    backend: 0,
+    designer: 0,
+    fullstack: 0,
+    duration: 0,
+    stacks: [""],
+  });
 
   const postInfo = {
     title,
@@ -33,31 +47,47 @@ export const AddPosts = () => {
   };
 
   const { mutateAsync: submitPost } = PostsApi.submitPost();
-
+  console.log(postInfo);
   // 등록하기 버튼 catch error 해야함
   const onSubmitHandler = async () => {
     if (content && title) {
-      try {
-        submitPost(postInfo);
-        alert("게시글 작성 완료!");
-        navigate("/search");
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      alert("제목과 프로젝트 내용을 입력해 주세요!!");
+      submitPost(postInfo);
+      alert("게시글 수정 완료!");
+      navigate("/search");
+      return;
     }
-    // if (!title) {
-    //   return alert("제목을 입력해 주세요!!");
-    // }
-    // if (!content) {
-    //   return alert("프로젝트 내용을 입력해 주세요!!");
-    // }
+    if (!title) {
+      return alert("제목을 입력해 주세요!!");
+    }
+    if (!content) {
+      return alert("프로젝트 내용을 입력해 주세요!!");
+    }
   };
   //로그인제어 리엑트라우터돔에서 하는걸로 바꾸기
   if (!userToken) {
     return <NoLoginError />;
   }
+
+  // 게시글 수정 -- 작업중
+  const { mutateAsync: editPosts } = PostsApi.editPosts();
+
+  const onEditPosts = () => {
+    const payload = {
+      id: Number(id),
+      title,
+      content,
+      frontend,
+      backend,
+      designer,
+      fullstack,
+      duration,
+      stacks,
+    };
+    editPosts(payload).then(() => {
+      queryClient.invalidateQueries(["Postsdetail"]);
+    });
+    navigate("/search");
+  };
 
   return (
     <div className="w-full h-full overflow-y-scroll pb-[3.5rem] px-6 ">
@@ -68,7 +98,7 @@ export const AddPosts = () => {
         >
           &lt;
         </button>
-        <p className="ml-4 text-lg">파티 모집 글쓰기</p>
+        <p className="ml-4 text-lg">파티 모집 글수정</p>
       </div>
       <h1 className="font-cookie my-6">좋은 파티를 구하길 바란다</h1>
       <div>
@@ -119,10 +149,10 @@ export const AddPosts = () => {
       <div className="w-full absolute bottom-0 left-0 right-0 z-50">
         <button
           type="button"
-          onClick={onSubmitHandler}
+          onClick={onEditPosts}
           className="text-white bg-brandBlue focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium bottom-0 w-full h-[3rem] text-sm px-5 py-2.5 text-center"
         >
-          등록하기
+          수정하기
         </button>
       </div>
     </div>
