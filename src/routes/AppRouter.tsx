@@ -14,6 +14,7 @@ import { EditStackPage } from "../pages/EditStackPage";
 import { EditUserInfoPage } from "../pages/EditUserInfoPage";
 import { NotificationPage } from "../pages/NotificationPage";
 import { EditPortFolio } from "../pages/EditPortfoilio";
+import { FindMyEmail } from "../pages/Login/FindMyEmail";
 
 const AppRouter = () => {
   return (
@@ -23,6 +24,7 @@ const AppRouter = () => {
         <Route path="/" element={<MainPage />} />
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/findmyemail" element={<FindMyEmail />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/mypage/editstack" element={<EditStackPage />} />
         <Route path="/mypage/edituser" element={<EditUserInfoPage />} />

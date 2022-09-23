@@ -68,7 +68,7 @@ export const AddPosts = () => {
       <h1 className="font-cookie my-6">좋은 파티를 구하길 바란다</h1>
       <div>
         <h2 className="mb-4">필요직업군</h2>
-        <ul className="flex gap-x-[8px] overflow-x-scroll">
+        <ul className="flex gap-x-[8px] overflow-x-scroll ">
           <NumMemberGet
             num={frontend}
             setNum={setFrontend}
