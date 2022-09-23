@@ -1,9 +1,11 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { notificationApi } from "../APIs/NotificationApi";
-import { PortfolioApi } from "../APIs/PortfolioAPI";
+// import { PortfolioApi } from "../APIs/PortfolioAPI";
 import { getCookieToken } from "../config/cookies";
 import { loginInfoState } from "../store/loginInfoState";
+import { LoginInfoType } from "../types/loginInfoType";
 import { NoLoginError } from "./ErrorPage/NoLoginError";
 
 interface squad {
@@ -14,21 +16,23 @@ interface squad {
 }
 
 export const MyPage = () => {
-  const userProfile = useRecoilValue(loginInfoState);
+  const [userProfile, setUserProfile] = useState<LoginInfoType>();
   const usertoken = getCookieToken();
 
   const { data: mysquad } = notificationApi.getMySquads();
-  console.log(mysquad);
 
-  const { data: myfolio } = PortfolioApi.getPortfolio(12);
+  // const { data: myfolio } = PortfolioApi.getPortfolio(12);
 
-  console.log(myfolio);
+  const userinfo = useRecoilValue(loginInfoState);
+  console.log(userinfo);
+
+  useEffect(() => {
+    setUserProfile(userinfo);
+  }, [userinfo]);
 
   if (!usertoken) {
     return <NoLoginError />;
   }
-
-  console.log(userProfile);
 
   return (
     <div className="w-full overflow-y-scroll h-full px-6 pb-[4rem] overflow-x-hidden">
@@ -41,11 +45,11 @@ export const MyPage = () => {
         <div className="m-5 relative w-24 h-24 bg-gray-300 rounded-full">
           <img
             className="w-full h-full border rounded-full"
-            src={userProfile.profileImage}
+            src={userProfile?.profileImage}
           />
         </div>
         <div>
-          <p className="py-14 text-2xl">{userProfile.nickname}</p>
+          <p className="py-14 text-2xl">{userProfile?.nickname}</p>
         </div>
         <Link className="text-blue-600" to="edituser">
           정보수정

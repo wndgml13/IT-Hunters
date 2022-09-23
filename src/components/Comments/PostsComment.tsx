@@ -5,10 +5,13 @@ import { useParams } from "react-router-dom";
 import { PostsSubComment } from "./PostsSubComment";
 import { CommentApi } from "../../APIs/CommentApi";
 import { subCommentApi } from "../../APIs/subCommentApi";
+import { useRecoilValue } from "recoil";
+import { loginInfoState } from "../../store/loginInfoState";
 
 export const PostsComment = ({ co }: { co: CommentGet }) => {
   const queryClient = useQueryClient();
   const { id } = useParams();
+  const userinfo = useRecoilValue(loginInfoState);
 
   const [subComment, setSubcomment] = useState<string>(""); // 답글 추가
   const [editComment, seteditComment] = useState(""); // 댓글 수정
@@ -83,27 +86,30 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
         <span className="text"> {co.content}</span>
 
         <div className="ml-24 text-sm">
+          {co?.nickname === userinfo?.nickname ? (
+            <div>
+              <a
+                type="button"
+                className="cursor-pointer mr-1 text-gray-400/100 hover:text-blue-600/100"
+                onClick={() => {
+                  setEditCommentToggle(!editCommentToggle);
+                }}
+              >
+                Edit
+              </a>
+              |
+              <a
+                type="button"
+                className="cursor-pointer ml-1 mr-1 text-gray-400/100 hover:text-blue-600/100"
+                onClick={() => onDeletecomment()}
+              >
+                Delete
+              </a>
+            </div>
+          ) : null}
           <a
             type="button"
-            className="cursor-pointer mr-1 text-gray-400/100 hover:text-blue-600/100"
-            onClick={() => {
-              setEditCommentToggle(!editCommentToggle);
-            }}
-          >
-            Edit
-          </a>
-          |
-          <a
-            type="button"
-            className="cursor-pointer ml-1 mr-1 text-gray-400/100 hover:text-blue-600/100"
-            onClick={() => onDeletecomment()}
-          >
-            Delete
-          </a>
-          |
-          <a
-            type="button"
-            className="cursor-pointer ml-1 text-gray-400/100"
+            className="mb-2 flex flex-row-reverse cursor-pointer ml-1 text-gray-400/100"
             onClick={() => {
               setSubCommentToggle(!subCommentToggle);
             }}

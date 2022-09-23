@@ -3,6 +3,8 @@ import { SubCommentGet } from "../../types/postsDetailType";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { subCommentApi } from "../../APIs/subCommentApi";
+import { useRecoilValue } from "recoil";
+import { loginInfoState } from "../../store/loginInfoState";
 
 export const PostsSubComment = ({
   sc,
@@ -13,6 +15,7 @@ export const PostsSubComment = ({
 }) => {
   const queryClient = useQueryClient();
   const { id } = useParams();
+  const userinfo = useRecoilValue(loginInfoState);
 
   const [editSubcomment, setEditsubComment] = useState(""); // 답글 수정
   const [editSubCommentToggle, setEditSubCommentToggle] = useState(false); // 답글 수정 토글
@@ -64,25 +67,27 @@ export const PostsSubComment = ({
         <div key={sc.subCommentId} className="mx-14 my-5">
           <span className="border border-black px-2 py-1">{sc.nickname}</span>
           <span> {sc.content}</span>
-          <div className="ml-24 text-sm">
-            <a
-              type="button"
-              className="cursor-pointer mr-1 text-gray-400/100 hover:text-blue-600/100"
-              onClick={() => {
-                setEditSubCommentToggle(!editSubCommentToggle);
-              }}
-            >
-              Edit
-            </a>
-            |
-            <a
-              type="button"
-              className="cursor-pointer ml-1 mr-1 text-gray-400/100 hover:text-blue-600/100"
-              onClick={onDeletesubComment}
-            >
-              Delete
-            </a>
-          </div>
+          {sc?.nickname === userinfo.nickname ? (
+            <div className="ml-24 text-sm">
+              <a
+                type="button"
+                className="cursor-pointer mr-1 text-gray-400/100 hover:text-blue-600/100"
+                onClick={() => {
+                  setEditSubCommentToggle(!editSubCommentToggle);
+                }}
+              >
+                Edit
+              </a>
+              |
+              <a
+                type="button"
+                className="cursor-pointer ml-1 mr-1 text-gray-400/100 hover:text-blue-600/100"
+                onClick={onDeletesubComment}
+              >
+                Delete
+              </a>
+            </div>
+          ) : null}
         </div>
         {/* 답글 Edit 버튼 */}
         {editSubCommentToggle && (

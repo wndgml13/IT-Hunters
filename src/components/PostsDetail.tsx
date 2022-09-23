@@ -102,20 +102,20 @@ export const PostsDetail = () => {
       <button onClick={onBookMarkHandler}>⭐</button>☆
       <div className="flex flex-row-reverse">
         {quest?.nickname === userinfo?.nickname ? (
-          <div>
-            <button
-              type="button"
-              className="cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 mt-5 rounded-lg border-none"
-              onClick={onDeletepost}
-            >
-              게시글 삭제
-            </button>
+          <div className="grid gap-2 grid-cols-2">
             <button
               type="button"
               className="cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 mt-5 rounded-lg border-none"
               onClick={onEditPosts}
             >
-              수정하기
+              글수정
+            </button>
+            <button
+              type="button"
+              className="cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 mt-5 rounded-lg border-none"
+              onClick={onDeletepost}
+            >
+              글삭제
             </button>
           </div>
         ) : null}
