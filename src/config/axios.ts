@@ -1,8 +1,8 @@
 import axios, {
-  AxiosError,
-  AxiosInstance,
+  // AxiosError,
+  // AxiosInstance,
   AxiosRequestConfig,
-  AxiosResponse,
+  // AxiosResponse,
 } from "axios";
 
 import { getCookieToken } from "./cookies";

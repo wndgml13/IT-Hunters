@@ -36,7 +36,7 @@ const AppRouter = () => {
         <Route path="/chats" element={<ChatListPage />} />
         <Route path="/chats/:id" element={<ChatRoomPage />} />
         <Route path="notification" element={<NotificationPage />} />
-        <Route path="/editposts" element={<EditPosts />} />
+        <Route path="/editposts/:id" element={<EditPosts />} />
       </Routes>
       <FooterNavBar />
     </BrowserRouter>

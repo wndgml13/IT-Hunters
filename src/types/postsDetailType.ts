@@ -1,9 +1,9 @@
 export interface IQuestDetail {
   classes: {
-    backend: number | null;
-    frontend: number | null;
-    fullstack: number | null;
-    designer: number | null;
+    backend: number;
+    frontend: number;
+    fullstack: number;
+    designer: number;
   };
   bookmarkCnt: number;
   commentCnt: number;

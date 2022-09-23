@@ -1,8 +1,6 @@
-import { useState } from "react";
-import { getCookieToken } from "../config/cookies";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useInput } from "../hooks/useInput";
-import { NoLoginError } from "../pages/ErrorPage/NoLoginError";
 import { DurationRange } from "./DurationRange";
 import { StackListDropdwon } from "./StackListDropdown";
 import { PostsApi } from "../APIs/PostsApi";
@@ -10,12 +8,11 @@ import { NumMemberGet } from "./NumMemberGet";
 import { useQueryClient } from "@tanstack/react-query";
 
 export const EditPosts = () => {
-  const userToken = getCookieToken();
   const navigate = useNavigate();
   const { id } = useParams();
   const queryClient = useQueryClient();
-
-  const [title, titleHandler] = useInput("");
+  const { data: editInfo, isSuccess } = PostsApi.getDetailPosts(Number(id)); // 게시글 조회 get
+  const [title, titleHandler, setTitle] = useInput("");
   const [content, setContent] = useState("");
   const [stacks, setStacks] = useState<string[]>([]);
   const [duration, setDuration] = useState<number>(0);
@@ -24,69 +21,48 @@ export const EditPosts = () => {
   const [designer, setDesigner] = useState<number>(0);
   const [fullstack, setFullstack] = useState<number>(0);
 
-  const [editPost, setEditPost] = useState({
-    title: {},
-    content: "",
-    frontend: 0,
-    backend: 0,
-    designer: 0,
-    fullstack: 0,
-    duration: 0,
-    stacks: [""],
-  });
-
-  const postInfo = {
-    title,
-    content,
-    duration,
-    stacks,
-    backend,
-    frontend,
-    designer,
-    fullstack,
-  };
-
-  const { mutateAsync: submitPost } = PostsApi.submitPost();
-  console.log(postInfo);
-  // 등록하기 버튼 catch error 해야함
-  const onSubmitHandler = async () => {
-    if (content && title) {
-      submitPost(postInfo);
-      alert("게시글 수정 완료!");
-      navigate("/search");
-      return;
+  useEffect(() => {
+    if (isSuccess) {
+      setStacks(editInfo.stacks);
+      setTitle(editInfo.title);
+      setContent(editInfo.content);
+      setDuration(editInfo.duration);
+      setBackend(editInfo.classes.backend);
+      setFrontend(editInfo.classes.frontend);
+      setDesigner(editInfo.classes.designer);
+      setFullstack(editInfo.classes.fullstack);
     }
-    if (!title) {
-      return alert("제목을 입력해 주세요!!");
-    }
-    if (!content) {
-      return alert("프로젝트 내용을 입력해 주세요!!");
-    }
-  };
-  //로그인제어 리엑트라우터돔에서 하는걸로 바꾸기
-  if (!userToken) {
-    return <NoLoginError />;
-  }
+  }, [isSuccess]);
 
   // 게시글 수정 -- 작업중
   const { mutateAsync: editPosts } = PostsApi.editPosts();
 
-  const onEditPosts = () => {
-    const payload = {
-      id: Number(id),
-      title,
-      content,
-      frontend,
-      backend,
-      designer,
-      fullstack,
-      duration,
-      stacks,
-    };
-    editPosts(payload).then(() => {
-      queryClient.invalidateQueries(["Postsdetail"]);
-    });
-    navigate("/search");
+  const onEditPostsHandler = () => {
+    if (content && title) {
+      try {
+        const payload = {
+          id: Number(id),
+          title,
+          content,
+          frontend,
+          backend,
+          designer,
+          fullstack,
+          duration,
+          stacks,
+        };
+        editPosts(payload).then(() => {
+          queryClient.invalidateQueries(["Postsdetail"]);
+          queryClient.invalidateQueries(["filterlist"]);
+        });
+        alert("게시글 수정 완료!");
+        navigate("/search");
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("제목과 프로젝트 내용을 입력해 주세요!!");
+    }
   };
 
   return (
@@ -149,7 +125,7 @@ export const EditPosts = () => {
       <div className="w-full absolute bottom-0 left-0 right-0 z-50">
         <button
           type="button"
-          onClick={onEditPosts}
+          onClick={onEditPostsHandler}
           className="text-white bg-brandBlue focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium bottom-0 w-full h-[3rem] text-sm px-5 py-2.5 text-center"
         >
           수정하기

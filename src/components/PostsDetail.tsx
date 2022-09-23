@@ -9,11 +9,12 @@ import { PostsApi } from "../APIs/PostsApi";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
 import { loginInfoState } from "../store/loginInfoState";
-import { CommentGet, OffersPost, IQuestDetail } from "../types/postsDetailType";
+import { CommentGet, OffersPost } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
 
 export const PostsDetail = () => {
   const navigate = useNavigate();
+
   const userToken = getCookieToken();
   const queryClient = useQueryClient();
   const { id } = useParams();
@@ -46,7 +47,7 @@ export const PostsDetail = () => {
 
   // 게시글 수정 -- 작업중
   const onEditPosts = () => {
-    navigate("/editposts");
+    navigate(`/editposts/${id}`);
   };
 
   // 게시글 삭제
