@@ -11,6 +11,8 @@ export const SignInPage = () => {
   const [passwordValid, setPasswordValid] = useState(false);
 
   const navigate = useNavigate();
+  // const kakaoURL =
+  //   "https://kauth.kakao.com/oauth/authorize?client_id=75e088caeb12f87f945b64b6df403621&redirect_uri=http://localhost:3000/oauth/kakao/callback&response_type=code";
 
   const emailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -49,6 +51,11 @@ export const SignInPage = () => {
     } else {
       console.log("입력이 잘못되었습니다");
     }
+  };
+  //http://localhost:8080/oauth/google/loginpage
+  const onKakaoLogin = async () => {
+    // const data = await instance.get("oauth/google/loginpage");
+    // console.log(data);
   };
 
   return (
@@ -121,9 +128,15 @@ export const SignInPage = () => {
       </button>
 
       <div className="grid grid-cols-3 place-items-center mb-[69px]">
-        <div className="w-[68px] h-[68px] rounded-full bg-gray-300 ">
-          {/* <img className= 'w-full h-full' alt='profileImg' /> */}
-        </div>
+        <button
+          className="w-[68px] h-[68px] rounded-full bg-gray-300 "
+          onClick={onKakaoLogin}
+        >
+          <img
+            className="w-full h-full rounded-full"
+            src="https://play-lh.googleusercontent.com/KwGCiEolNEeR9Q4RFOnDtb8Pvqs3LNiQEdE07wMCnoULO3yLUprHbGGLBYNEt8k7WJY"
+          />
+        </button>
         <div className="w-[68px] h-[68px] rounded-full bg-gray-300 ">
           {/* <img className= 'w-full h-full' alt='profileImg' /> */}
         </div>
