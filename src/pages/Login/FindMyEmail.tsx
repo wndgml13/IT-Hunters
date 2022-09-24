@@ -7,7 +7,7 @@ export const FindMyEmail = () => {
   const [phoneNum, setPhoneNum] = useState("");
   const [phoneNumValidToggle, setPhoneNumValidToggle] = useState(false);
   const [authPhoneNum, setAuthPhoneNum] = useState("");
-  const [myEmail, setMyEmail] = useState<string>();
+  // const [myEmail, setMyEmail] = useState<string>();
   const checkPhoneNum = async () => {
     try {
       const { data } = await instance.post("/api/members/sendAuth", {

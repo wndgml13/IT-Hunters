@@ -51,6 +51,7 @@ export const PostsApi = {
       ),
     );
   },
+  // 게시글 등록
   submitPost: () => {
     return useMutation(async (postInfo: PostsAdd) => {
       const { data } = await instance.post(
