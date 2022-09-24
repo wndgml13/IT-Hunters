@@ -12,6 +12,7 @@ export const EditPosts = () => {
   const { id } = useParams();
   const queryClient = useQueryClient();
   const { data: editInfo, isSuccess } = PostsApi.getDetailPosts(Number(id)); // 게시글 조회 get
+
   const [title, titleHandler, setTitle] = useInput("");
   const [content, setContent] = useState("");
   const [stacks, setStacks] = useState<string[]>([]);
@@ -20,6 +21,17 @@ export const EditPosts = () => {
   const [frontend, setFrontend] = useState<number>(0);
   const [designer, setDesigner] = useState<number>(0);
   const [fullstack, setFullstack] = useState<number>(0);
+
+  // const state = {
+  //   title: "",
+  //   content: "",
+  //   stacks: [],
+  //   duration: 0,
+  //   backend: 0,
+  //   frontend: 0,
+  //   designer: 0,
+  //   fullstack: 0,
+  // };
 
   useEffect(() => {
     if (isSuccess) {

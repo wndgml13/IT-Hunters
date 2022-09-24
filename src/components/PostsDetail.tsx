@@ -134,7 +134,9 @@ export const PostsDetail = () => {
       <p>구인스택</p>
       <div className="flex row">
         {quest?.stacks.map(st => (
-          <p className="bg-green-300 mx-2">{st}</p>
+          <p key={quest.id} className="bg-green-300 mx-2">
+            {st}
+          </p>
         ))}
       </div>
       <p>프로젝트 예상 기간 {quest?.duration}주</p>
