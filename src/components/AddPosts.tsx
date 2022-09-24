@@ -7,6 +7,7 @@ import { DurationRange } from "./DurationRange";
 import { StackListDropdwon } from "./StackListDropdown";
 import { PostsApi } from "../APIs/PostsApi";
 import { NumMemberGet } from "./NumMemberGet";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const AddPosts = () => {
   const userToken = getCookieToken();
@@ -32,20 +33,24 @@ export const AddPosts = () => {
     fullstack,
   };
 
+  const queryClient = useQueryClient();
   const { mutateAsync: submitPost } = PostsApi.submitPost();
 
   // 등록하기 버튼 catch error 해야함
   const onSubmitHandler = async () => {
     if (content && title) {
-      try {
-        submitPost(postInfo);
-        alert("게시글 작성 완료!");
-        navigate("/search");
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      alert("제목과 프로젝트 내용을 입력해 주세요!!");
+      submitPost(postInfo).then(() => {
+        queryClient.invalidateQueries(["Postsdetail"]);
+      });
+      alert("게시글 작성 완료!");
+      navigate("/search");
+      return;
+    }
+    if (!title) {
+      return alert("제목을 입력해 주세요!!");
+    }
+    if (!content) {
+      return alert("프로젝트 내용을 입력해 주세요!!");
     }
     // if (!title) {
     //   return alert("제목을 입력해 주세요!!");
