@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { instance } from "../../config/axios";
@@ -52,10 +53,12 @@ export const SignInPage = () => {
       console.log("입력이 잘못되었습니다");
     }
   };
-  //http://localhost:8080/oauth/google/loginpage
+
   const onKakaoLogin = async () => {
-    // const data = await instance.get("oauth/google/loginpage");
-    // console.log(data);
+    const data = await axios.get(
+      "http://localhost:8080/oauth/google/loginpage",
+    );
+    console.log(data);
   };
 
   return (
