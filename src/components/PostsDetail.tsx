@@ -2,32 +2,25 @@ import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import { BookmarkApi } from "../APIs/BookmarkApi";
 import { CommentApi } from "../APIs/CommentApi";
 import { PostsApi } from "../APIs/PostsApi";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
+import { loginInfoState } from "../store/loginInfoState";
 import { CommentGet, OffersPost } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
 
 export const PostsDetail = () => {
   const navigate = useNavigate();
+
   const userToken = getCookieToken();
   const queryClient = useQueryClient();
   const { id } = useParams();
   const [comment, setComment] = useState("");
-  // const [bookMark, setBookMark] = useState(false);
-
-  // // 게시글 수정 state -- 작업중
-  // const [title, setTitle] = useState(Number(id));
-  // const [content, setContent] = useState(Number(id));
-  // const [frontend, setFrontend] = useState(Number(id));
-  // const [backend, setBackend] = useState(Number(id));
-  // const [designer, setDesigner] = useState(Number(id));
-  // const [fullstack, setFullStack] = useState(Number(id));
-  // const [duration, setDuration] = useState(Number(id));
-  // const [stacks, setStacks] = useState(Number(id));
-
+  const userinfo = useRecoilValue(loginInfoState);
+  console.log(userinfo);
   // 댓글, 답글 조회
   const { data: comments } = CommentApi.getComments(Number(id));
 
@@ -53,24 +46,9 @@ export const PostsDetail = () => {
   const { data: quest } = PostsApi.getDetailPosts(Number(id));
 
   // 게시글 수정 -- 작업중
-  // const { mutateAsync: editPosts } = PostsApi.editPosts();
-
-  // const onEditPosts = () => {
-  //   const payload = {
-  //     id: Number(id),
-  //     title: title,
-  //     content: content,
-  //     frontend: frontend,
-  //     backend: backend,
-  //     designer: designer,
-  //     fullstack: fullstack,
-  //     duration: duration,
-  //     stacks: stacks,
-  //   };
-  //   editPosts(payload).then(() => {
-  //     queryClient.invalidateQueries(["Postsdetail"]);
-  //   });
-  // };
+  const onEditPosts = () => {
+    navigate(`/editposts/${id}`);
+  };
 
   // 게시글 삭제
   const { mutateAsync: deleteposts } = PostsApi.deleteposts();
@@ -81,7 +59,6 @@ export const PostsDetail = () => {
     });
     navigate("/search");
   };
-
   // 신청하기(합류요청) POST -- 작업중
   const offerPost = async () => {
     try {
@@ -125,13 +102,24 @@ export const PostsDetail = () => {
     <div className="w-full h-full overflow-y-scroll pb-[3.5rem] p-4">
       <button onClick={onBookMarkHandler}>⭐</button>☆
       <div className="flex flex-row-reverse">
-        <button
-          type="button"
-          className="cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 mt-5 rounded-lg border-none"
-          onClick={onDeletepost}
-        >
-          게시글 삭제
-        </button>
+        {quest?.nickname === userinfo?.nickname ? (
+          <div className="grid gap-2 grid-cols-2">
+            <button
+              type="button"
+              className="cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 mt-5 rounded-lg border-none"
+              onClick={onEditPosts}
+            >
+              글수정
+            </button>
+            <button
+              type="button"
+              className="cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 mt-5 rounded-lg border-none"
+              onClick={onDeletepost}
+            >
+              글삭제
+            </button>
+          </div>
+        ) : null}
       </div>
       <div className="flex justify-start">
         <div className="m-5 overflow-hidden relative w-24 h-24 bg-gray-100 rounded-full dark:bg-gray-600"></div>
@@ -141,7 +129,6 @@ export const PostsDetail = () => {
       </div>
       {/* 제목 입력 란 */}
       <h1 className="text-2xl text-center border border-b-black">
-        {" "}
         {quest?.title}
       </h1>
       <p>구인스택</p>
@@ -160,12 +147,6 @@ export const PostsDetail = () => {
         <p>{quest?.content}</p>
       </div>
       <div className="flex justify-between">
-        <button
-          type="button"
-          className="cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 mt-5 rounded-lg border-none"
-        >
-          수정하기
-        </button>
         <button
           type="button"
           className=" cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 rounded-lg border-none
