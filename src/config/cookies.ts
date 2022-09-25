@@ -7,22 +7,19 @@ export const setAccessToken = (accessToken: string) => {
   const expireDate = today.setDate(today.getDate() + 7);
   console.log(accessToken);
 
-  return (
-    cookies.set("user_token", accessToken),
-    {
-      // sameSite: "none",
-      secure: false,
-      path: "/",
-      expires: new Date(expireDate),
-      httpOnly: true,
-    }
-  );
+  return cookies.set("monster_token", accessToken, {
+    sameSite: "strict",
+    // secure: false,
+    path: "/",
+    expires: new Date(expireDate),
+    // httpOnly: true,
+  });
 };
 
 export const getCookieToken = () => {
-  return cookies.get("user_token");
+  return cookies.get("monster_token");
 };
 
 export const removeCookieToken = () => {
-  return cookies.remove("user_token", { sameSite: "strict", path: "/" });
+  return cookies.remove("monster_token", { sameSite: "strict", path: "/" });
 };
