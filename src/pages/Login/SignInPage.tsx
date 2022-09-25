@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { instance } from "../../config/axios";
@@ -12,8 +11,7 @@ export const SignInPage = () => {
   const [passwordValid, setPasswordValid] = useState(false);
 
   const navigate = useNavigate();
-  // const kakaoURL =
-  //   "https://kauth.kakao.com/oauth/authorize?client_id=75e088caeb12f87f945b64b6df403621&redirect_uri=http://localhost:3000/oauth/kakao/callback&response_type=code";
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`;
 
   const emailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -54,13 +52,15 @@ export const SignInPage = () => {
     }
   };
 
-  const onKakaoLogin = async () => {
-    const data = await axios.get(
-      "http://localhost:8080/oauth/google/loginpage",
-    );
-    console.log(data);
+  const onKakaoLogin = () => {
+    window.location.href = kakaoURL;
   };
-
+  const onNaverLogin = () => {
+    alert("서비스 준비중입니다.");
+  };
+  const onGoogleLogin = () => {
+    window.location.href = `${process.env.REACT_APP_API_BASEURL}oauth2/authorization/google`;
+  };
   return (
     <div className="w-full h-full overflow-y-scroll pb-[3.5rem] p-6">
       <h1 className="text-xl">로그인</h1>
@@ -140,12 +140,21 @@ export const SignInPage = () => {
             src="https://play-lh.googleusercontent.com/KwGCiEolNEeR9Q4RFOnDtb8Pvqs3LNiQEdE07wMCnoULO3yLUprHbGGLBYNEt8k7WJY"
           />
         </button>
-        <div className="w-[68px] h-[68px] rounded-full bg-gray-300 ">
+        <button
+          className="w-[68px] h-[68px] rounded-full bg-gray-300 "
+          onClick={onNaverLogin}
+        >
           {/* <img className= 'w-full h-full' alt='profileImg' /> */}
-        </div>
-        <div className="w-[68px] h-[68px] rounded-full bg-gray-300 ">
-          {/* <img className= 'w-full h-full' alt='profileImg' /> */}
-        </div>
+        </button>
+        <button
+          className="w-[68px] h-[68px] rounded-full bg-gray-300 "
+          onClick={onGoogleLogin}
+        >
+          <img
+            className="w-full h-full rounded-full"
+            src="https://staffordonline.org/wp-content/uploads/2019/01/Google.jpg"
+          />
+        </button>
       </div>
 
       <div className="flex justify-center">
