@@ -12,6 +12,9 @@ export const SignInPage = () => {
 
   const navigate = useNavigate();
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`;
+  const naverURL =
+    `https://nid.naver.com/oauth2.0/authorize?client_id=${process.env.REACT_APP_NAVER_CLIENT_ID}&response_type=code&redirect_uri=${process.env.REACT_APP_NAVER_REDIRECT_URI}&state=` +
+    Math.random().toString(36).substring(3, 14);
 
   const emailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -56,11 +59,12 @@ export const SignInPage = () => {
     window.location.href = kakaoURL;
   };
   const onNaverLogin = () => {
-    alert("서비스 준비중입니다.");
+    window.location.href = naverURL;
   };
   const onGoogleLogin = () => {
     window.location.href = `${process.env.REACT_APP_API_BASEURL}oauth2/authorization/google`;
   };
+
   return (
     <div className="w-full h-full overflow-y-scroll pb-[3.5rem] p-6">
       <h1 className="text-xl">로그인</h1>

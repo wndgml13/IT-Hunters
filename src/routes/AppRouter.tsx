@@ -18,6 +18,7 @@ import { EditPosts } from "../components/EditPosts";
 import { FindMyEmail } from "../pages/Login/FindMyEmail";
 import { OAuthKakao } from "../pages/Login/OAuthKakao";
 import { OAuthGoogle } from "../pages/Login/OAuthGoogle";
+import { OAuthNaver } from "../pages/Login/OAuthNaver";
 
 const AppRouter = () => {
   return (
@@ -28,7 +29,7 @@ const AppRouter = () => {
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/oauth/kakao/callback/*" element={<OAuthKakao />} />
-        {/* <Route path="/oauth/naver/callback/*" element={<OAuthKakao />} /> */}
+        <Route path="/oauth/naver/callback/*" element={<OAuthNaver />} />
         <Route path="auth" element={<OAuthGoogle />} />
         <Route path="/findmyemail" element={<FindMyEmail />} />
         <Route path="/mypage" element={<MyPage />} />

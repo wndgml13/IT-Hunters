@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { setAccessToken } from "../../config/cookies";
 
 export const OAuthGoogle = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const googleToken = searchParams.get("accessToken");
 
@@ -13,7 +13,6 @@ export const OAuthGoogle = () => {
   useEffect(() => {
     try {
       setAccessToken(`BEARAR ${googleToken}`);
-      setSearchParams({ ac: "hello" });
       navigate("/");
     } catch (err) {
       console.log(err);
