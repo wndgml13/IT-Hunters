@@ -9,4 +9,11 @@ export const OAuthAPI = {
         setAccessToken(data.headers.authorization);
       });
   },
+  loginWithNaver: async (naverToken: string, naverState: string) => {
+    return await instance
+      .get(`oauth/naver/callback?code=${naverToken}&state=${naverState}`)
+      .then(data => {
+        setAccessToken(data.headers.authorization);
+      });
+  },
 };
