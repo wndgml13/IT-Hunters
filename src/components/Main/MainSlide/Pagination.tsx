@@ -53,7 +53,7 @@ export const Pagination = ({
             width: `${
               idx + 1 === currentSlideIdx ||
               (idx + 1 === 1 && currentSlideIdx === slideLength - 1)
-                ? "20px"
+                ? "28px"
                 : "10px"
             }`,
             borderRadius: `${

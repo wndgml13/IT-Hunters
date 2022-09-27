@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 
 import { IQuest } from "../types/questType";
 
+import convertDateText from "../lib/convertDateText";
+
 import { FuIcon, DeIcon, FeIcon } from "../assets/icons";
 
 export const Quest = ({ quest }: { quest: IQuest }) => {
@@ -24,7 +26,6 @@ export const Quest = ({ quest }: { quest: IQuest }) => {
   const existStack = Object.keys(classesList).filter(
     item => classesList[item] !== 0,
   );
-
   return (
     <li
       onClick={() => navigate(`/posts/${questId}`)}
@@ -38,10 +39,12 @@ export const Quest = ({ quest }: { quest: IQuest }) => {
           {nickname}
         </p>
       </div>
-      <div>
-        <h2 className="font-medium text-sm mb-[5px]">{title}</h2>
-        <p className="text-xs">{content}</p>
-        <p className="text-xs">시작일 : {createdAt?.slice(0, 10)}</p>
+      <div className="text-ellipsis overflow-hidden whitespace-nowrap">
+        <h2 className="w-full font-medium text-sm mb-[5px] ">{title}</h2>
+        <p className="text-xs text-ellipsis overflow-hidden ">{content}</p>
+        <p className="text-xs">
+          게시글 등록일 : {createdAt && convertDateText(createdAt)}
+        </p>
         <p className="text-xs">기한 : {duration}주</p>
         <ul className="flex">
           {existStack.map(stack => {

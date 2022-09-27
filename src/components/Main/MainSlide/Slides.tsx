@@ -21,7 +21,7 @@ export const Slides = ({
 
   return (
     <ul
-      className="flex border-1 border relative transition"
+      className="flex border-1 border relative transition mb-[10px]"
       style={{
         width: `${slideItems.length * 100}%`,
         transition: `${transition}ms`,
