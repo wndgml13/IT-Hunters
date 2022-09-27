@@ -9,7 +9,6 @@ export const StackListDropdwon = ({ stacks, setStacks }: props) => {
   const [FStoggle, setFStoggle] = useState(false);
   const [BStoggle, setBStoggle] = useState(false);
   const [DStoggle, setDStoggle] = useState(false);
-  const [FSStoggle, setFSStoggle] = useState(false);
 
   const frontStackData = [
     "React",
@@ -38,8 +37,6 @@ export const StackListDropdwon = ({ stacks, setStacks }: props) => {
     "Photoshop",
   ];
 
-  const fullStackData = [...frontStackData, ...backStackData];
-
   const onStacksHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       setStacks(prev => [...prev, e.target.value]);
@@ -50,7 +47,6 @@ export const StackListDropdwon = ({ stacks, setStacks }: props) => {
   return (
     <div className="my-8 pt-1 space-y-6">
       <>
-        <h1>요구 스택</h1>
         <h2
           className="text-[14px] cursor-pointer"
           onClick={() => setFStoggle(!FStoggle)}
@@ -134,36 +130,6 @@ export const StackListDropdwon = ({ stacks, setStacks }: props) => {
                   className="inline-flex p-2 w-full text-[14px] text-gray-300 border border-gray-300 cursor-pointer peer-checked:text-blue-500 peer-checked:ring-blue-500 peer-checked:ring-1 peer-checked:border-transparent"
                 >
                   <p>{dsd}</p>
-                </label>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </>
-      <>
-        <h2
-          className="text-[14px] cursor-pointer"
-          onClick={() => setFSStoggle(!FSStoggle)}
-        >
-          풀스택 &gt;
-        </h2>
-        {FSStoggle ? (
-          <ul className="grid gap-1 w-full grid-cols-3">
-            {fullStackData?.map((fsd, idx) => (
-              <li key={idx}>
-                <input
-                  type="checkbox"
-                  className="sr-only peer"
-                  value={fsd}
-                  id={fsd}
-                  checked={stacks.includes(fsd) ? true : false}
-                  onChange={e => onStacksHandler(e)}
-                />
-                <label
-                  htmlFor={fsd}
-                  className="inline-flex p-2 w-full text-[14px] text-gray-300 border border-gray-300 cursor-pointer peer-checked:text-blue-500 peer-checked:ring-blue-500 peer-checked:ring-1 peer-checked:border-transparent"
-                >
-                  <p>{fsd}</p>
                 </label>
               </li>
             ))}

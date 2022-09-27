@@ -5,7 +5,6 @@ const cookies = new Cookies();
 export const setAccessToken = (accessToken: string) => {
   const today = new Date();
   const expireDate = today.setDate(today.getDate() + 7);
-  console.log(accessToken);
 
   return cookies.set("monster_token", accessToken, {
     sameSite: "strict",
