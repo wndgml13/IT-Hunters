@@ -26,27 +26,33 @@ export const Quest = ({ quest }: { quest: IQuest }) => {
   const existStack = Object.keys(classesList).filter(
     item => classesList[item] !== 0,
   );
+
+  console.log(quest);
   return (
     <li
       onClick={() => navigate(`/posts/${questId}`)}
-      className="flex p-[10px] mb-3 gap-x-[10px] bg-white rounded-lg border shadow-md hover:bg-gray-100 cursor-pointer relative"
+      className="flex p-[10px] gap-x-[15px] bg-white rounded-lg border border-black shadow-md hover:bg-gray-100 cursor-pointer relative "
     >
       <div className="w-[66px]">
-        <div className="border rounded-[7px] mb-[5px] overflow-hidden">
+        <div className="border border-black rounded-[7px] mb-[5px] overflow-hidden">
           <img src={profileImg} alt="" className="w-[66px] h-[66px] " />
         </div>
-        <p className="text-sm text-center border rounded-[10px] leading-4 px-[13px] text-ellipsis overflow-hidden">
+        <p className="text-sm text-center border border-black rounded-[10px] leading-4 px-[13px] line-clamp-1 py-[1px]">
           {nickname}
         </p>
       </div>
-      <div className="text-ellipsis overflow-hidden whitespace-nowrap">
-        <h2 className="w-full font-medium text-sm mb-[5px] ">{title}</h2>
-        <p className="text-xs text-ellipsis overflow-hidden ">{content}</p>
+      <div className="flex-1  flex flex-col gap-y-[3px] ">
+        <h2 className="w-full font-bold text-sm mb-[2px] line-clamp-1">
+          {title}
+        </h2>
+        <p className="text-xs text-ellipsis overflow-hidden line-clamp-2 mb-[3px]">
+          {content}
+        </p>
         <p className="text-xs">
-          게시글 등록일 : {createdAt && convertDateText(createdAt)}
+          등록일 : {createdAt && convertDateText(createdAt)}
         </p>
         <p className="text-xs">기한 : {duration}주</p>
-        <ul className="flex">
+        <ul className="flex absolute right-[10px] bottom-[10px] justify-end">
           {existStack.map(stack => {
             switch (stack) {
               case "frontend":

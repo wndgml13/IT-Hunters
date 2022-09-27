@@ -22,7 +22,7 @@ export const Main = () => {
       <section className="mb-[30px]">
         <MainSlide />
       </section>
-      <section className="px-6 mb-[45px]">
+      <section className="p-6">
         <div className="mb-[20px]">
           <h3 className="mb-[10px] text-xl font-normal font-cookie">
             함께 하고픈 <span className="text-brandBlue font-cookie">동료</span>
@@ -30,14 +30,14 @@ export const Main = () => {
           </h3>
           <p>검색하고픈 직업을 선택하세요.</p>
         </div>
-        <ul className="flex gap-[2.666%]">
+        <ul className="flex gap-[2.666%] ">
           <li className="w-[23%] text-center h-[150px] border">고백</li>
           <li className="w-[23%] text-center h-[150px] border">퓨</li>
           <li className="w-[23%] text-center h-[150px] border">디아</li>
           <li className="w-[23%] text-center h-[150px] border">풀스</li>
         </ul>
       </section>
-      <section className="bg-[#EFD770] p-6  mb-[45px]">
+      <section className="bg-[#EFD770] p-6">
         <div className="flex justify-between mb-[10px] items-end">
           <h3 className=" text-xl font-normal font-cookie">
             지금 가장{" "}
@@ -45,13 +45,13 @@ export const Main = () => {
           </h3>
           <button className="text-xs">더보기</button>
         </div>
-        <ul>
+        <ul className="flex flex-col gap-y-3">
           {popularQuests?.map((quest: IQuest) => (
             <Quest key={quest.mainQuestId} quest={quest} />
           ))}
         </ul>
       </section>
-      <section>
+      <section className="p-6 mb-[45px]">
         <div className="flex justify-between mb-[10px] items-end">
           <h3 className=" text-xl font-normal font-cookie">
             지금 모집하는{" "}
@@ -59,13 +59,13 @@ export const Main = () => {
           </h3>
           <button className="text-xs">더보기</button>
         </div>
-        <ul>
+        <ul className="flex flex-col gap-y-3">
           {recentQuests?.map((quest: IQuest) => (
             <Quest key={quest.recentQuestId} quest={quest} />
           ))}
         </ul>
       </section>
-      <section className="mb-[54px] px-6">
+      <section className=" px-6">
         <div className="flex justify-between mb-[18px] items-end">
           <h3 className="text-xl font-normal font-cookie">
             <span className="text-brandBlue font-cookie">이달의 몬스터</span>

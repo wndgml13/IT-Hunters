@@ -19,9 +19,11 @@
     "autoprefixer": "^10.4.8",
     "axios": "^0.27.2",
     "classnames": "^2.3.2",
+    "i": "^0.3.7",
     "luxon": "^3.0.4",
     "moment": "^2.29.4",
     "net": "^1.0.2",
+    "npm": "^8.19.2",
     "postcss": "^8.4.16",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
@@ -61,6 +63,7 @@
     ]
   },
   "devDependencies": {
+    "@tailwindcss/line-clamp": "^0.4.2",
     "@types/luxon": "^3.0.1",
     "@typescript-eslint/eslint-plugin": "^5.36.0",
     "@typescript-eslint/parser": "^5.36.0",
