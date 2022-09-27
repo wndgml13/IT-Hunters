@@ -20,8 +20,6 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
   const [editCommentToggle, setEditCommentToggle] = useState(false); // 댓글 Edit 토글
   const [subCommentToggle, setSubCommentToggle] = useState(false); // 답글 달기 토글
 
-  const [editDeleteToggle, setEditDeleteToggle] = useState(false); // 댓글 수정,삭제 토글
-
   // 댓글 수정
   const { mutateAsync: modifiedComment } = CommentApi.modifiedComment();
 

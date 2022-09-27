@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { useSetSlide } from "../../../hooks/useSetSlide";
 import { useInterval } from "../../../hooks/useInterval";

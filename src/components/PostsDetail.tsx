@@ -1,8 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import classNames from "classnames";
-import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { BookmarkApi } from "../APIs/BookmarkApi";
 import { CommentApi } from "../APIs/CommentApi";
@@ -18,12 +17,10 @@ import {
 import convertDateText from "../lib/convertDateText";
 import { loginInfoState } from "../store/loginInfoState";
 import { CommentGet, OffersPost } from "../types/postsDetailType";
-import { IQuest } from "../types/questType";
 import { PostsComment } from "./Comments/PostsComment";
 
 export const PostsDetail = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation(); // 메세지 버튼
 
   const { elementLocation, onMoveToElementLocation } = useMoveScroolLocation(); // 작업 기간 스크롤 고정
   const { elementStack, onMoveToElementStack } = useMoveScroolStack(); // 요구 스택 스크롤 고정
@@ -36,8 +33,8 @@ export const PostsDetail = () => {
   const [classes, setClasses] = useState({}); // 직군 아이콘
 
   const [deleteModal, setDeleteModal] = useState(false); // 게시글 삭제하기 모달창 띄우고 닫기
-  const [actionModal, setActionModal] = useState(false); // 모달 바깥 창을 클릭했을 때 모달창 닫기
-  const node = useRef(); // 모달 바깥 창을 클릭했을 때 모달창 닫기
+  // const [actionModal, setActionModal] = useState(false); // 모달 바깥 창을 클릭했을 때 모달창 닫기
+  // const node = useRef(); // 모달 바깥 창을 클릭했을 때 모달창 닫기
 
   const userToken = getCookieToken();
   const queryClient = useQueryClient();
