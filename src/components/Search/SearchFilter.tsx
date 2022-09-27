@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
+import { SearchIcon } from "../../assets/icons";
 import { filterState } from "../../store/filterState";
 import { modalState } from "../../store/modalState";
+import { DurationRange } from "../DurationRange";
+import { StackListDropdwon } from "../StackListDropdown";
 
 export const SearchFilter = () => {
   const setModal = useSetRecoilState(modalState);
@@ -11,34 +14,11 @@ export const SearchFilter = () => {
   const [duration, setDuration] = useState<number>(20);
   const setFilter = useSetRecoilState(filterState);
 
-  const frontStackData = [
-    { stack: "React" },
-    { stack: "Vue Js" },
-    { stack: "Javascript" },
-    { stack: "TypeScript" },
-    { stack: "Next Js" },
-    { stack: "Angular Js" },
-  ];
-
   const onClassesHandelr = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       setClasses(prev => [...prev, e.target.value]);
     } else {
       setClasses(classes.filter(el => el !== e.target.value));
-    }
-  };
-
-  const onStacksHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      setStacks(prev => [...prev, e.target.value]);
-    } else {
-      setStacks(stacks.filter(el => el !== e.target.value));
-    }
-  };
-
-  const onDurationHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (parseInt(e.target.value) > 0) {
-      setDuration(parseInt(e.target.value));
     }
   };
 
@@ -54,26 +34,47 @@ export const SearchFilter = () => {
   };
 
   const classStyle =
-    "inline-flex justify-between items-center p-3 w-full  rounded-lg border border-gray-200 cursor-pointer peer-checked:ring-blue-500 peer-checked:ring-2 peer-checked:border-transparent";
-
-  const stackStyle =
-    "inline-flex justify-between items-center p-2 w-full  rounded-lg border border-gray-200 cursor-pointer peer-checked:ring-blue-500 peer-checked:ring-2 peer-checked:border-transparent";
+    "inline-flex item-center p-3 text-[14px] text-gray-300 w-full border border-gray-300 cursor-pointer peer-checked:text-blue-500 peer-checked:ring-blue-500 peer-checked:ring-[1px] peer-checked:border-transparent";
 
   return (
-    <div className="h-full w-full absolute bottom-0 left-0 z-50 flex items-end bg-black bg-opacity-70">
-      <div className="w-full bg-white z-50 rounded-t-2xl">
-        <div className=" right-6 w-3">
+    <div className="h-full w-full absolute top-0 left-0 z-50 flex bg-white">
+      <div className="w-full bg-white z-50 ">
+        <div className="flex mt-4 px-[25px]">
           <button
             type="button"
-            className=" hover:bg-gray-200 text-2xl p-6"
+            className="mr-4 hover:bg-gray-200 text-2xl"
             onClick={() => setModal(false)}
           >
-            <span>X</span>
+            <span className="text-brandBlue">&lt;</span>
+          </button>
+          <input
+            placeholder="파티를 찾아보겠는가!"
+            className="w-full py-2 border-b-[1px] outline-none focus:border-brandBlue"
+          />
+          <button>
+            <SearchIcon />
           </button>
         </div>
-        <div className="p-6 space-y-6 w-full ">
-          <h1 className="text-3xl">직업군</h1>
-          <ul className="grid gap-2 w-ful grid-cols-2">
+        <div className="p-6">
+          <div className="flex justify-between mb-4">
+            <h1 className="text-[16px]">최근검색어</h1>
+            <p className="text-[12px] text-gray-300">최근검색어 삭제</p>
+          </div>
+          <div className="">
+            <span className="text-[12px] rounded-full mx-1 px-4 py-1 border border-black">
+              UXUI
+            </span>
+            <span className="text-[12px] rounded-full mx-1 px-4 py-1 border border-black">
+              프론트엔드
+            </span>
+            <span className="text-[12px] rounded-full mx-1 px-4 py-1 border border-black">
+              디자이너
+            </span>
+          </div>
+        </div>
+        <div className="px-6 space-y-6 w-full ">
+          <h1 className="text-[16px] font-medium">직업군</h1>
+          <ul className="grid gap-2 w-full grid-cols-2">
             <li>
               <input
                 type="checkbox"
@@ -84,7 +85,7 @@ export const SearchFilter = () => {
                 onChange={e => onClassesHandelr(e)}
               />
               <label className={classStyle} htmlFor="Frontend">
-                <p>Frontend</p>
+                <p>프론트엔드</p>
               </label>
             </li>
             <li>
@@ -97,7 +98,7 @@ export const SearchFilter = () => {
                 onChange={e => onClassesHandelr(e)}
               />
               <label className={classStyle} htmlFor="Backend">
-                <p>Backend</p>
+                <p>백엔드</p>
               </label>
             </li>
             <li>
@@ -110,7 +111,7 @@ export const SearchFilter = () => {
                 onChange={e => onClassesHandelr(e)}
               />
               <label className={classStyle} htmlFor="Designer">
-                <p>Designer</p>
+                <p>디자이너</p>
               </label>
             </li>
             <li>
@@ -123,47 +124,20 @@ export const SearchFilter = () => {
                 onChange={e => onClassesHandelr(e)}
               />
               <label className={classStyle} htmlFor="Fullstack">
-                <p>FullStack</p>
+                <p>풀스택</p>
               </label>
             </li>
           </ul>
         </div>
-        <div className="p-6 pt-1 space-y-6">
-          <h1 className="text-3xl">스택</h1>
-          <ul className="grid gap-1 w-full grid-cols-3">
-            {frontStackData?.map(fsd => (
-              <li>
-                <input
-                  type="checkbox"
-                  className="sr-only peer"
-                  value={fsd.stack}
-                  id={fsd.stack}
-                  checked={stacks.includes(fsd.stack) ? true : false}
-                  onChange={e => onStacksHandler(e)}
-                />
-                <label className={stackStyle} htmlFor={fsd.stack}>
-                  <p>{fsd.stack}</p>
-                </label>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="p-6 pt-1 space-y-6">
-          <h1 className="text-3xl">기간</h1>
-          <input
-            type="number"
-            min="0"
-            max="20"
-            value={duration}
-            onChange={onDurationHandler}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5"
-          />
+        <div className="px-6">
+          <StackListDropdwon stacks={stacks} setStacks={setStacks} />
+          <DurationRange duration={duration} setDuration={setDuration} />
         </div>
 
-        <div className="flex items-center w-full  space-x-2 text-gray-200">
+        <div className="absolute bottom-0 flex items-center w-full space-x-2 text-gray-200">
           <button
             type="button"
-            className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium bottom-0 w-full h-[3rem] text-sm px-5 py-2.5 text-center"
+            className="text-white bg-brandBlue focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium bottom-0 w-full h-[3rem] text-sm px-5 py-2.5 text-center"
             onClick={onSubmitFilter}
           >
             필터적용

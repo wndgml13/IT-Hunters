@@ -54,19 +54,3 @@ export const SearchList = () => {
     </div>
   );
 };
-
-// const {
-//   data: quests,
-//   isError,
-//   error,
-//   isLoading,
-// } = useQuery<IQuestlist[], Error>(["Searchlist"], questApi.getAllQuests);
-
-// const {
-//   data: quests,
-
-//   isLoading,
-// } = useQuery<IQuestlist[]>(
-//   ["Searchlist", filterParam],
-//   questApi.getFilteredQuests(filterParam),
-// );

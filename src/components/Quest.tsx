@@ -51,6 +51,7 @@ export const Quest = ({ quest }: { quest: IQuest }) => {
         <p className="text-xs">
           등록일 : {createdAt && convertDateText(createdAt)}
         </p>
+
         <p className="text-xs">기한 : {duration}주</p>
         <ul className="flex absolute right-[10px] bottom-[10px] justify-end">
           {existStack.map(stack => {

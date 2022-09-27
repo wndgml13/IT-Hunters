@@ -1,103 +1,65 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
+import { BookmarkApi } from "../APIs/BookmarkApi";
 import { CommentApi } from "../APIs/CommentApi";
 import { PostsApi } from "../APIs/PostsApi";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
-// import { idState } from "../store/questIdState";
-import { OffersPost } from "../types/postsDetailType";
+import { loginInfoState } from "../store/loginInfoState";
+import { CommentGet, OffersPost } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
 
 export const PostsDetail = () => {
   const navigate = useNavigate();
+
   const userToken = getCookieToken();
   const queryClient = useQueryClient();
   const { id } = useParams();
   const [comment, setComment] = useState("");
-  // const [offer, setOffer] = useState("");
-  // const [idParam, setIdParam] = useRecoilState(idState);
-
+  const userinfo = useRecoilValue(loginInfoState);
+  console.log(userinfo);
   // 댓글, 답글 조회
   const { data: comments } = CommentApi.getComments(Number(id));
-  // const getComments = async () => {
-  //   const { data } = await instance.get<CommentGet[]>(
-  //     `api/quests/${id}/comments`,
-  //     {
-  //       headers: { authorization: userToken },
-  //     },
-  //   );
-  //   return data;
-  // };
 
-  // const { data: comments } = useQuery<CommentGet[]>(["comments"], getComments);
+  // 댓글 작성
+  const { mutateAsync: addComment } = CommentApi.addComment();
 
-  // 댓글 작성 -- api파일로 옮겨야함!!
-  const addComment = async (comment: string) => {
-    const { data } = await instance.post(
-      `/api/quests/${id}/comments`,
-      { content: comment },
-      {
-        headers: { authorization: userToken },
-      },
-    );
-    return data;
+  const onSubmitComment = () => {
+    const payload = { id: Number(id), comment: comment };
+    addComment(payload).then(() => {
+      queryClient.invalidateQueries(["comments"]);
+    });
+    setComment("");
   };
 
-  const { mutate: addCom } = useMutation(addComment, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["comments"]);
-    },
-  });
-
-  const onEnterComment = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onEnterComment = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      addCom(comment);
+      onSubmitComment();
       setComment("");
     }
   };
 
-  const onSubmitComment = () => {
-    addCom(comment);
-    setComment("");
-  };
-
-  // 게시글 조회 -- api파일로 옮겨야함!!
+  // 게시글 조회
   const { data: quest } = PostsApi.getDetailPosts(Number(id));
-  // const getDetailPosts = async () => {
-  //   const { data } = await instance.get<IQuestDetail>(`api/quests/${id}`, {
-  //     headers: { authorization: userToken },
-  //   });
-  //   return data;
-  // };
 
-  // const { data: quest } = useQuery<IQuestDetail, Error>(
-  //   ["Postsdetail"],
-  //   getDetailPosts,
-  // );
-
-  // 게시글 삭제 -- api 파일로 옮겨야함!!
-  const deleteposts = async () => {
-    const { data } = await instance.delete(`/api/quests/${id}`, {
-      headers: { authorization: userToken },
-    });
-    return data;
+  // 게시글 수정 -- 작업중
+  const onEditPosts = () => {
+    navigate(`/editposts/${id}`);
   };
 
-  const { mutate: delpost } = useMutation(deleteposts, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["filterlist"]);
-    },
-  });
+  // 게시글 삭제
+  const { mutateAsync: deleteposts } = PostsApi.deleteposts();
 
   const onDeletepost = () => {
-    delpost();
+    deleteposts(Number(id)).then(() => {
+      queryClient.invalidateQueries(["Postsdetail"]);
+    });
     navigate("/search");
   };
-
-  // 신청하기(합류요청) POST
+  // 신청하기(합류요청) POST -- 작업중
   const offerPost = async () => {
     try {
       const { data } = await instance.post<OffersPost>(
@@ -126,20 +88,38 @@ export const PostsDetail = () => {
 
   const onOfferHandler = () => {
     offerPost();
-
     return;
+  };
+
+  // 게시글 북마크 POST
+  const { mutateAsync: bookMarkpost } = BookmarkApi.bookMarkpost();
+
+  const onBookMarkHandler = () => {
+    bookMarkpost(Number(id));
   };
 
   return (
     <div className="w-full h-full overflow-y-scroll pb-[3.5rem] p-4">
+      <button onClick={onBookMarkHandler}>⭐</button>☆
       <div className="flex flex-row-reverse">
-        <button
-          type="button"
-          className="cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 mt-5 rounded-lg border-none"
-          onClick={onDeletepost}
-        >
-          게시글 삭제
-        </button>
+        {quest?.nickname === userinfo?.nickname ? (
+          <div className="grid gap-2 grid-cols-2">
+            <button
+              type="button"
+              className="cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 mt-5 rounded-lg border-none"
+              onClick={onEditPosts}
+            >
+              글수정
+            </button>
+            <button
+              type="button"
+              className="cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 mt-5 rounded-lg border-none"
+              onClick={onDeletepost}
+            >
+              글삭제
+            </button>
+          </div>
+        ) : null}
       </div>
       <div className="flex justify-start">
         <div className="m-5 overflow-hidden relative w-24 h-24 bg-gray-100 rounded-full dark:bg-gray-600"></div>
@@ -149,7 +129,6 @@ export const PostsDetail = () => {
       </div>
       {/* 제목 입력 란 */}
       <h1 className="text-2xl text-center border border-b-black">
-        {" "}
         {quest?.title}
       </h1>
       <p>구인스택</p>
@@ -159,23 +138,15 @@ export const PostsDetail = () => {
         ))}
       </div>
       <p>프로젝트 예상 기간 {quest?.duration}주</p>
-
       <p>-모집인원-</p>
       <p>Backend {quest?.classes.backend}명</p>
       <p>Frontend {quest?.classes.frontend}명</p>
       <p>Designer {quest?.classes.designer}명</p>
       <p>Fullstack {quest?.classes.fullstack}명</p>
-
       <div className="h-80 p-4 bg-blue-100">
         <p>{quest?.content}</p>
       </div>
       <div className="flex justify-between">
-        <button
-          type="button"
-          className="cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 mt-5 rounded-lg border-none"
-        >
-          수정하기
-        </button>
         <button
           type="button"
           className=" cursor-pointer bg-blue-200 hover:bg-blue-400  h-10 rounded-lg border-none
@@ -185,9 +156,8 @@ export const PostsDetail = () => {
           신청하기
         </button>
       </div>
-
       {/* 댓글시작 */}
-      {comments?.map(co => (
+      {comments?.map((co: CommentGet) => (
         <PostsComment key={co.commentId} co={co} />
       ))}
       {/* 댓글 입력란 */}
