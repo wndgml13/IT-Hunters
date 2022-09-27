@@ -17,6 +17,7 @@ export interface IQuestDetail {
   title: string;
   stacks: string[];
   id: number;
+  profileImg: string;
 }
 export interface SubCommentGet {
   subCommentId: number;
@@ -39,9 +40,9 @@ export interface CommentGet {
 
 export interface OffersPost {
   classType: {
-    BACKEND: number | null;
-    FRONTEND: number | null;
-    DESIGNER: number | null;
-    FULLSTACK: number | null;
+    BACKEND: string;
+    FRONTEND: string;
+    DESIGNER: string;
+    FULLSTACK: string;
   };
 }

@@ -91,7 +91,7 @@ export const PostsSubComment = ({
         </div>
         {/* 답글 Edit 버튼 */}
         {editSubCommentToggle && (
-          <div className="flex justify-between gap-2 ml-24 text-sm">
+          <div className="flex justify-between gap-1 ml-24 text-sm">
             <input
               id="message"
               className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full h-14 mb-5 p-2.5 mx-1"
@@ -104,14 +104,14 @@ export const PostsSubComment = ({
             />
             <button
               type="button"
-              className="cursor-pointer bg-blue-200 hover:bg-blue-400 w-20 h-10 mt-3 rounded-lg border-none"
+              className="text-white w-20 h-10 bg-[#F4C828] font-bold rounded-lg  px-3 py-2.5 mt-2 mr-2 mb-[58px] focus:outline-none"
               onClick={onEditsubComment}
             >
               Edit
             </button>
             <button
               type="button"
-              className="cursor-pointer bg-blue-200 hover:bg-blue-400 w-20 h-10 mt-3 rounded-lg border-none"
+              className="text-white w-20 h-10 bg-[#4B23B8] font-bold rounded-lg  px-2 py-2.5 mt-2 mr-2 mb-[58px] focus:outline-none"
               onClick={() => {
                 setEditSubCommentToggle(!editSubCommentToggle);
               }}

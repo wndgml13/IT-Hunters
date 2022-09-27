@@ -6,6 +6,7 @@ import { StackListDropdwon } from "./StackListDropdown";
 import { PostsApi } from "../APIs/PostsApi";
 import { NumMemberGet } from "./NumMemberGet";
 import { useQueryClient } from "@tanstack/react-query";
+import { IQuestDetail } from "../types/postsDetailType";
 
 export const EditPosts = () => {
   const navigate = useNavigate();
@@ -13,36 +14,67 @@ export const EditPosts = () => {
   const queryClient = useQueryClient();
   const { data: editInfo, isSuccess } = PostsApi.getDetailPosts(Number(id)); // 게시글 조회 get
 
-  const [title, titleHandler, setTitle] = useInput("");
-  const [content, setContent] = useState("");
-  const [stacks, setStacks] = useState<string[]>([]);
-  const [duration, setDuration] = useState<number>(0);
-  const [backend, setBackend] = useState<number>(0);
-  const [frontend, setFrontend] = useState<number>(0);
-  const [designer, setDesigner] = useState<number>(0);
-  const [fullstack, setFullstack] = useState<number>(0);
+  // const [title, titleHandler, setTitle] = useInput("");
+  // const [content, setContent] = useState("");
+  // const [stacks, setStacks] = useState<string[]>([]);
+  // const [duration, setDuration] = useState<number>(0);
+  // const [backend, setBackend] = useState<number>(0);
+  // const [frontend, setFrontend] = useState<number>(0);
+  // const [designer, setDesigner] = useState<number>(0);
+  // const [fullstack, setFullstack] = useState<number>(0);
 
-  // const state = {
-  //   title: "",
-  //   content: "",
-  //   stacks: [],
-  //   duration: 0,
-  //   backend: 0,
-  //   frontend: 0,
-  //   designer: 0,
-  //   fullstack: 0,
-  // };
+  const [state, setState] = useState({
+    title: "",
+    content: "",
+    stacks: [],
+    duration: 0,
+    backend: 0,
+    frontend: 0,
+    designer: 0,
+    fullstack: 0,
+  });
+
+  const {
+    title,
+    content,
+    stacks,
+    duration,
+    backend,
+    frontend,
+    designer,
+    fullstack,
+  } = state;
+
+  const onTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setState({
+      ...state,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setState({
+      ...state,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   useEffect(() => {
     if (isSuccess) {
-      setStacks(editInfo.stacks);
-      setTitle(editInfo.title);
-      setContent(editInfo.content);
-      setDuration(editInfo.duration);
-      setBackend(editInfo.classes.backend);
-      setFrontend(editInfo.classes.frontend);
-      setDesigner(editInfo.classes.designer);
-      setFullstack(editInfo.classes.fullstack);
+      setState({
+        ...state,
+        content: editInfo.content,
+        title: editInfo.title,
+        duration: editInfo.duration,
+      });
+      // setStacks(editInfo.stacks);
+      // setTitle(editInfo.title);
+      // setState(...state.content);
+      // setDuration(editInfo.duration);
+      // setBackend(editInfo.classes.backend);
+      // setFrontend(editInfo.classes.frontend);
+      // setDesigner(editInfo.classes.designer);
+      // setFullstack(editInfo.classes.fullstack);
     }
   }, [isSuccess]);
 
@@ -92,7 +124,7 @@ export const EditPosts = () => {
       <div>
         <h2 className="mb-4">필요직업군</h2>
         <ul className="flex gap-x-[8px] overflow-x-scroll">
-          <NumMemberGet
+          {/* <NumMemberGet
             num={frontend}
             setNum={setFrontend}
             title={"프론트엔드"}
@@ -107,21 +139,22 @@ export const EditPosts = () => {
             num={fullstack}
             setNum={setFullstack}
             title={"풀스택"}
-          />
+          /> */}
         </ul>
       </div>
 
-      <DurationRange duration={duration} setDuration={setDuration} />
+      {/* <DurationRange duration={duration} setDuration={setDuration} /> */}
 
-      <StackListDropdwon stacks={stacks} setStacks={setStacks} />
+      {/* <StackListDropdwon stacks={stacks} setStacks={setStacks} /> */}
 
       <div className="my-4">
         <p className="mb-4">글쓰기</p>
         <input
           className="w-full pl-2.5 py-2 border-b-[2px] outline-none focus:border-brandBlue"
           placeholder="제목을 입력해주세요."
+          name="title"
           value={title}
-          onChange={titleHandler}
+          onChange={onInputChange}
         />
         <textarea
           id="message"
@@ -129,8 +162,10 @@ export const EditPosts = () => {
           className="block p-2.5 mt-6 w-full text-sm text-gray-900 bg-gray-100 rounded-lg focus:ring-blue-500 focus:border-blue-500 "
           placeholder="프로젝트 내용을 입력해주세요."
           style={{ resize: "none" }}
+          name="content"
           value={content}
-          onChange={e => setContent(e.target.value)}
+          onChange={onTextAreaChange}
+          // onChange={e => setContent(e.target.value)}
         />
       </div>
 

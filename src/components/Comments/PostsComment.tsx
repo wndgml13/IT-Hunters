@@ -81,9 +81,17 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
   return (
     <>
       {/* 댓글 추가 */}
-      <div key={co.commentId} className="my-8 border-b-2">
-        <span className="border border-black px-2 py-1">{co.nickname}</span>
-        <span className="text"> {co.content}</span>
+      <div key={co.commentId} className="p-4 my-8 border-b-2">
+        <div className="flex-justify-start">
+          <span className="m-4 relative w-[59px] h-[59px] bg-white rounded-full">
+            <img
+              className="w-10 h-10 border rounded-full"
+              src={co?.profileImage}
+            />
+            <span>{co.nickname}</span>
+          </span>
+          <span className="text"> {co.content}</span>
+        </div>
 
         <div className="ml-24 text-sm">
           {co?.nickname === userinfo?.nickname ? (
@@ -118,7 +126,7 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
           </a>
           {/* 댓글 Edit 버튼 */}
           {editCommentToggle && (
-            <div className="flex justify-between gap-2 mb-2">
+            <div className="flex justify-between gap-1 mb-2">
               <input
                 id="message"
                 className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full h-14 my-3 p-2.5 mx-1"
@@ -131,14 +139,14 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
               />
               <button
                 type="button"
-                className="cursor-pointer bg-blue-200 hover:bg-blue-400 w-20 h-10 mt-6 rounded-lg border-none"
+                className="text-white w-20 h-10 bg-[#F4C828] font-bold rounded-lg  px-3 py-2.5 mt-5 mr-2 mb-[58px] focus:outline-none"
                 onClick={onEditcomment}
               >
                 Edit
               </button>
               <button
                 type="button"
-                className="cursor-pointer bg-blue-200 hover:bg-blue-400 w-20 h-10 mt-6 rounded-lg border-none"
+                className="text-white w-20 h-10 bg-[#4B23B8] font-bold rounded-lg  px-2 py-2.5 mt-5 mr-2 mb-[58px] focus:outline-none"
                 onClick={() => {
                   setEditCommentToggle(!editCommentToggle);
                 }}
@@ -155,7 +163,7 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
 
         {/* 답글 달기 버튼 */}
         {subCommentToggle && (
-          <div className="flex justify-between gap-2 ml-24 text-sm">
+          <div className="flex justify-between gap-1 ml-24 text-sm">
             <input
               id="message"
               className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full h-14 mb-3 p-2.5 mx-1"
@@ -168,7 +176,7 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
             />
             <button
               type="button"
-              className="cursor-pointer bg-blue-200 hover:bg-blue-400 w-20 h-10 mt-5 rounded-lg border-none"
+              className="text-white w-20 h-10 bg-[#F4C828] font-bold rounded-lg  px-2 py-2.5 mt-2 mr-2 mb-[58px] focus:outline-none"
               onClick={() => {
                 onSubmitSubComment();
               }}
@@ -177,7 +185,7 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
             </button>
             <button
               type="button"
-              className="cursor-pointer bg-blue-200 hover:bg-blue-400 w-20 h-10 mt-5 rounded-lg border-none"
+              className="text-white w-20 h-10 bg-[#4B23B8] font-bold rounded-lg  px-2 py-2.5 mt-2 mr-2 mb-[58px] focus:outline-none"
               onClick={() => {
                 setSubCommentToggle(!subCommentToggle);
               }}
