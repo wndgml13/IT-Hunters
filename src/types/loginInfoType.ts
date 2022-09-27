@@ -4,5 +4,10 @@ export interface LoginInfoType {
   followCnt: number;
   nickname: string;
   profileImage: string;
-  stacks: string[];
+  stacks: stacks[];
+  className: string;
+}
+
+interface stacks {
+  stackName: string;
 }

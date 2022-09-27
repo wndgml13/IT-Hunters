@@ -47,14 +47,17 @@ export const SearchFilter = () => {
           >
             <span className="text-brandBlue">&lt;</span>
           </button>
-          <input
-            placeholder="파티를 찾아보겠는가!"
-            className="w-full py-2 border-b-[1px] outline-none focus:border-brandBlue"
-          />
-          <button>
-            <SearchIcon />
-          </button>
+          <div className="flex w-full border-b-2 focus-within:border-b-brandBlue">
+            <input
+              className="w-full pl-2.5 py-2 outline-none "
+              placeholder="파티를 찾아보겠는가!"
+            />
+            <button className="mb-1 text-sm px-2 py-1 ">
+              <SearchIcon />
+            </button>
+          </div>
         </div>
+
         <div className="p-6">
           <div className="flex justify-between mb-4">
             <h1 className="text-[16px]">최근검색어</h1>

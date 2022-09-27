@@ -20,7 +20,7 @@ export const FooterNavBar = () => {
     if (isSuccess) {
       setLoginInfo(userinfo);
     }
-  }, [isSuccess]);
+  }, [isSuccess, userinfo]);
 
   const { pathname } = useLocation();
   return (
