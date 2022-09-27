@@ -1,31 +1,49 @@
 export const Slides = ({
-  slides,
+  slideItems,
   currentSlideIdx,
-  handeSlideInterval,
+  transition,
+  handleSlideStop,
+  handleSlideOn,
 }: {
-  slides: Array<string>;
+  slideItems: Array<string>;
   currentSlideIdx: number;
-  handeSlideInterval: (e: boolean) => void;
+  transition: number;
+  handleSlideStop: () => void;
+  handleSlideOn: () => void;
 }) => {
+  const stopSlideMove = () => {
+    handleSlideStop();
+  };
+
+  const onSlideMove = () => {
+    handleSlideOn();
+  };
+
   return (
     <ul
-      className="flex border-1 border relative transition duration-1000"
+      className="flex border-1 border relative transition"
       style={{
-        width: `${slides.length * 100}%`,
-        transform: `translateX(-${(100 / slides.length) * currentSlideIdx}%)`,
+        width: `${slideItems.length * 100}%`,
+        transition: `${transition}ms`,
+        transform: `translateX(-${
+          (100 / slideItems.length) * currentSlideIdx
+        }%)`,
       }}
       onMouseEnter={() => {
-        handeSlideInterval(true);
+        stopSlideMove();
       }}
       onMouseLeave={() => {
-        handeSlideInterval(false);
+        onSlideMove();
       }}
     >
-      {slides.map((color, idx) => (
+      {slideItems.map((color, idx) => (
         <li
           className="text-white h-[150px]"
           key={idx}
-          style={{ background: color, width: `${100 / slides.length}%` }}
+          style={{
+            background: color,
+            width: `${100 / slideItems.length}%`,
+          }}
         >
           {color}
           {currentSlideIdx}

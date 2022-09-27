@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useSetSlide } from "../../../hooks/useSetSlide";
 import { useInterval } from "../../../hooks/useInterval";
@@ -6,45 +6,59 @@ import { Slides } from "./Slides";
 import { Pagination } from "./Pagination";
 
 export const MainSlide = () => {
-  const [currentSlideIdx, setCurrentSlideIdx] = useState(0);
-  const [handleSlideInterval, setHandleSlideInterval] =
-    useState<boolean>(false);
-  const slides = useSetSlide(["#33a", "#8c9", "#f3e074"]);
-  const delay = 2000;
-
-  const handleMoveTargetSlide = (idx: number) => {
-    console.log(idx);
-    setCurrentSlideIdx(idx);
-    setHandleSlideInterval(true);
-    setTimeout(() => {
-      setHandleSlideInterval(false);
-    }, 1);
+  const [currentSlideIdx, setCurrentSlideIdx] = useState(1);
+  const [isSlideStop, setIsSlideStop] = useState(false);
+  const [isTransition, setIstransition] = useState(false);
+  const slideConfig = {
+    slideItems: useSetSlide(["#33a", "#8c9", "#f3e074"]),
+    delay: 2000,
+    transition: 1000,
   };
+
+  const handleSlide = (index: number) => {
+    if (currentSlideIdx >= slideConfig.slideItems.length - 1) {
+      setIstransition(true);
+      setCurrentSlideIdx(1);
+      setTimeout(() => {
+        setIsSlideStop(false);
+        setIstransition(false);
+      }, 10);
+      return;
+    }
+    setCurrentSlideIdx(index);
+  };
+
   useInterval(
     () => {
-      if (currentSlideIdx === slides.length - 1) {
-        setCurrentSlideIdx(0);
-        return;
-      }
-      setCurrentSlideIdx(currentSlideIdx => currentSlideIdx + 1);
+      handleSlide(currentSlideIdx + 1);
     },
-    delay,
-    handleSlideInterval,
+    !isSlideStop && !isTransition ? slideConfig.delay : null,
   );
-  const handeSlideInterval = (interval: boolean) => {
-    setHandleSlideInterval(interval);
+
+  const handleSlideStop = () => {
+    setIsSlideStop(true);
   };
+
+  const handleSlideOn = () => {
+    setIsSlideStop(false);
+  };
+
   return (
     <>
       <Slides
-        slides={slides}
+        slideItems={slideConfig.slideItems}
         currentSlideIdx={currentSlideIdx}
-        handeSlideInterval={handeSlideInterval}
+        transition={!isTransition ? slideConfig.transition : 0}
+        handleSlideStop={handleSlideStop}
+        handleSlideOn={handleSlideOn}
       />
       <Pagination
-        slidesLength={slides.length}
         currentSlideIdx={currentSlideIdx}
-        targetSlide={handleMoveTargetSlide}
+        transition={slideConfig.transition}
+        slideLength={slideConfig.slideItems.length}
+        handleSlideStop={handleSlideStop}
+        handleSlideOn={handleSlideOn}
+        handleCurrentSlide={handleSlide}
       />
     </>
   );
