@@ -10,7 +10,7 @@ module.exports = {
         fontBlack: "#191919",
         fontGray: "#4D4D4D",
         fontWhite: "#EBEBEB",
-        barndYellow: "#F4C828",
+        brandYellow: "#F4C828",
         brandBlue: "#4B23B8",
         errorColor: "#F4C828",
         bgWhite: "#FFFFFF",

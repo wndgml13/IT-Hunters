@@ -9,7 +9,7 @@ import { SearchPage } from "../pages/SearchPage";
 import { FooterNavBar } from "../components/FooterNavBar";
 import { ChatListPage } from "../pages/Chats/ChatListPage";
 import { ChatRoomPage } from "../pages/Chats/ChatRoomPage";
-// import { Header } from "../components/Header";
+import { Header } from "../components/Header";
 import { NotificationPage } from "../pages/NotificationPage";
 import { EditPosts } from "../components/EditPosts";
 import { FindMyEmail } from "../pages/Login/FindMyEmail";
@@ -18,13 +18,19 @@ import { OAuthGoogle } from "../pages/Login/OAuthGoogle";
 import { OAuthNaver } from "../pages/Login/OAuthNaver";
 import { UserPage } from "../pages/UserPage";
 
-
 const AppRouter = () => {
   return (
     <BrowserRouter>
-      {/* <Header /> */}
       <Routes>
-        <Route path="/" element={<MainPage />} />
+        <Route
+          path="/"
+          element={
+            <>
+              <Header />
+              <MainPage />
+            </>
+          }
+        />
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/oauth/kakao/callback/*" element={<OAuthKakao />} />

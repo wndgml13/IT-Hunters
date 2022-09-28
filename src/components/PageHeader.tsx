@@ -5,11 +5,11 @@ export const PageHeader = ({ pgTitle }: { pgTitle: string }) => {
   return (
     <>
       {" "}
-      <div className="flex my-5 px-3">
+      <div className="flex my-5">
         <button onClick={() => navigate(-1)}>
           <svg
-            width="12"
-            height="22"
+            width="10"
+            height="20"
             viewBox="0 0 12 22"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
