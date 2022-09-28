@@ -16,6 +16,7 @@ export interface profilePortfolioType {
   profileUrl: string;
   stackList: stackName[];
   title: string;
+  nickname: string;
 }
 
 export interface portfolioType {

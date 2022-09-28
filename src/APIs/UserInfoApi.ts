@@ -2,10 +2,10 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
 
-interface editedInfoType {
+export interface editedInfoType {
   editedNickname: string | undefined;
   myClasses: string | undefined;
-  profileImg: string;
+  profileImg: string | null;
 }
 
 export const UserInfoApi = {
