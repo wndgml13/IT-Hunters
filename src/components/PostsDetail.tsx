@@ -350,7 +350,7 @@ export const PostsDetail = () => {
       {/* 댓글 입력란 */}
       <div className="flex row mt-5  gap-2 p-2">
         <input
-          className="bg-gray-50 border border-black text-gray-900 text-sm rounded-2xl focus:ring-blue-500 focus:border-blue-500 w-full h-14 p-2.5 mx-1"
+          className="bg-gray-50 border-2 border-brandBlue text-gray-900 text-sm rounded-2xl focus:outline-none focus:ring focus:ring-brandBlue  marker:w-full h-14 p-2.5 mx-1"
           value={comment}
           placeholder="댓글을 입력해주세요."
           onChange={e => setComment(e.target.value)}

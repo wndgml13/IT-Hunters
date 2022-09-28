@@ -95,7 +95,9 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
             {co?.createdAt && convertDateText(co?.createdAt)}
           </p>
         </div>
-        <p className="text-sm text-gray-700 mt-1"> {co.content}</p>
+        <p className="bg-violet-400 p-2 w-[80%] rounded-xl text-sm text-white mt-1">
+          {co.content}
+        </p>
 
         <div className=" text-sm flex flex-justify-start gap-3">
           {co?.nickname === userinfo?.nickname ? (
@@ -163,10 +165,10 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
 
         {/* 답글 달기 버튼 */}
         {subCommentToggle && (
-          <div className="gap-1 text-sm">
+          <div className="gap-1">
             <input
               id="message"
-              className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full h-14 my-1 p-2.5"
+              className="bg-gray-50 border border-gary text-gray-900 text-sm rounded-2xl w-full h-14 my-1 p-2.5 focus:outline-none"
               value={subComment}
               placeholder="답글 입력"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
