@@ -18,6 +18,7 @@ export interface Quest {
   questId: number;
   status: boolean;
   title: string;
+  profileImg: string;
 }
 
 export interface IQuestlist extends Quest {

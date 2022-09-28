@@ -63,10 +63,13 @@ export const AddPosts = () => {
   return (
     <div className="w-full h-full overflow-y-scroll pb-[3.5rem] px-6 ">
       <PageHeader pgTitle={"파티 모집 글쓰기"} />
-      <h1 className="font-cookie my-6">좋은 파티를 구하길 바란다</h1>
+      <h1 className="font-cookie my-6">
+        좋은 <span className="text-brandBlue font-cookie">파티</span>를 구하길
+        바란다
+      </h1>
       <div>
         <h2 className="mb-4">필요직업군</h2>
-        <ul className="flex gap-x-[8px] overflow-x-scroll ">
+        <ul className="flex justify-between ">
           <NumMemberGet
             num={frontend}
             setNum={setFrontend}
