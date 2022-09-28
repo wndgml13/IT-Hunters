@@ -45,13 +45,25 @@ export const SearchList = () => {
         </div>
       </div>
 
-      <div className="mt-14 py-5 px-4 flex relative">
-        <div className="absolute left-5 bottom-0">
-          <p className="border border-black rounded-2xl px-[10px] py-[2px]">
+      <div className="mt-14 py-5 px-4 flex relative ">
+        {/* <div className="absolute w-[100%] flex left-5 bottom-0 overflow-x-hidden gap-x-1">
+          <span className="border border-black rounded-2xl px-[10px] py-[2px]">
             항해출신
-          </p>
-        </div>
-        <div className="absolute right-0 bottom-0 shadow-[-5px_0_0_0_rgba(75,35,184,0.7)]">
+          </span>
+          <span className="border border-black rounded-2xl px-[10px] py-[2px]">
+            항해출신
+          </span>{" "}
+          <span className="border border-black rounded-2xl px-[10px] py-[2px]">
+            항해출신
+          </span>
+          <span className="border border-black rounded-2xl px-[10px] py-[2px]">
+            항해출신
+          </span>
+          <span className="border border-black rounded-2xl px-[10px] py-[2px]">
+            항해출신
+          </span>
+        </div> */}
+        <div className="absolute right-0 bottom-0 bg-white shadow-[-5px_0_0_0_rgba(75,35,184,0.7)]">
           <button
             className="flex gap-x-2 bg-whtie rounded-lg z-40  px-4 py-2"
             onClick={() => {

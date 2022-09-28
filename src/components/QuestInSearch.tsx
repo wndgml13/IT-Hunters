@@ -8,16 +8,8 @@ import { FuIcon, DeIcon, FeIcon } from "../assets/icons";
 
 export const QuestInSearch = ({ quest }: { quest: IQuest }) => {
   const navigate = useNavigate();
-  const {
-    questId,
-    nickname,
-    content,
-    title,
-    duration,
-    classes,
-    createdAt,
-    profileImg,
-  } = quest;
+  const { questId, nickname, title, duration, classes, createdAt, profileImg } =
+    quest;
 
   interface LooseObject {
     [key: string]: number | string;
@@ -33,8 +25,8 @@ export const QuestInSearch = ({ quest }: { quest: IQuest }) => {
       className="flex  gap-x-[15px] bg-white p-6 my-3 border-b border-[#ebebeb] hover:bg-gray-100 cursor-pointer relative "
     >
       <div className="w-[66px]">
-        <div className="border border-black rounded-[7px] mb-[5px] overflow-hidden">
-          <img src={profileImg} alt="" className="w-[66px] h-[66px] " />
+        <div className="rounded-[7px] mb-[6px] overflow-hidden">
+          <img src={profileImg} className="w-[66px] h-[66px] " />
         </div>
         <p className="text-sm font-light text-center border border-black rounded-[10px] leading-4 px-[6px] line-clamp-1 py-[1px]">
           {nickname}
