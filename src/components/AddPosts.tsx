@@ -41,6 +41,7 @@ export const AddPosts = () => {
   const onSubmitHandler = async () => {
     if (content && title) {
       submitPost(postInfo).then(() => {
+        queryClient.invalidateQueries(["Postsdetail"]);
         queryClient.invalidateQueries(["filterlist"]);
       });
       alert("게시글 작성 완료!");
