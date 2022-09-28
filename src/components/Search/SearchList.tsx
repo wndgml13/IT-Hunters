@@ -6,8 +6,8 @@ import { filterState } from "../../store/filterState";
 import { modalState } from "../../store/modalState";
 
 import { SearchFilter } from "./SearchFilter";
-import { Quest } from "../Quest";
 import { SearchIcon } from "../../assets/icons";
+import { QuestInSearch } from "../QuestInSearch";
 
 export const SearchList = () => {
   const [modal, setModal] = useRecoilState(modalState);
@@ -15,7 +15,6 @@ export const SearchList = () => {
   const [title, setTitle] = useState("");
 
   const { data } = questApi.getFilteredQuests(filterParam);
-  console.log(filterParam);
 
   const searchParam = filterParam + "&title=" + title;
 
@@ -27,10 +26,10 @@ export const SearchList = () => {
   };
 
   return (
-    <div className="p-4 h-full overflow-y-scroll pb-[3.5rem]">
-      <div className="flex py-4 px-6 absolute top-0 left-0 right-0 z-50 bg-white">
-        <h1 className="mr-5 text-2xl w-14 font-cookie">검색</h1>{" "}
-        <div className="flex w-full rounded-2xl border-2 border-black focus-within:border-brandBlue">
+    <div className="h-full overflow-y-scroll pb-[3.5rem]">
+      <div className="flex py-3 px-6 absolute top-0 left-0 right-0 z-50 bg-white">
+        <h1 className="mr-5 text-2xl w-14 font-cookie">파티</h1>{" "}
+        <div className="flex w-full rounded-2xl border focus-within:border-brandBlue">
           <input
             value={title}
             onChange={e => {
@@ -46,35 +45,43 @@ export const SearchList = () => {
         </div>
       </div>
 
-      <div className="mt-14">
-        <button
-          className="flex rounded-lg border border-black p-2 my-4"
-          onClick={() => {
-            setModal(true);
-          }}
-        >
-          <p className="pr-2">필터</p>
-          <svg
-            width="15"
-            height="15"
-            viewBox="0 0 22 22"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+      <div className="mt-14 py-5 px-4 flex relative">
+        <div className="absolute left-5 bottom-0">
+          <p className="border border-black rounded-2xl px-[10px] py-[2px]">
+            항해출신
+          </p>
+        </div>
+        <div className="absolute right-0 bottom-0 shadow-[-5px_0_0_0_rgba(75,35,184,0.7)]">
+          <button
+            className="flex gap-x-2 bg-whtie rounded-lg z-40  px-4 py-2"
+            onClick={() => {
+              setModal(true);
+            }}
           >
-            <path
-              d="M20.5206 2.66436C21.0938 2.01946 20.636 1 19.7732 1H2.22684C1.36399 1 0.906189 2.01946 1.47943 2.66436L8.54741 10.6158C8.71012 10.7989 8.8 11.0353 8.8 11.2802V18.1734C8.8 18.5669 9.03078 18.9239 9.38964 19.0853L11.7896 20.1653C12.4514 20.4631 13.2 19.9791 13.2 19.2534V11.2802C13.2 11.0353 13.2899 10.7989 13.4526 10.6158L20.5206 2.66436Z"
-              stroke="black"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </button>
-        {modal ? <SearchFilter /> : null}
+            필터
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 22 22"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M20.5206 2.66436C21.0938 2.01946 20.636 1 19.7732 1H2.22684C1.36399 1 0.906189 2.01946 1.47943 2.66436L8.54741 10.6158C8.71012 10.7989 8.8 11.0353 8.8 11.2802V18.1734C8.8 18.5669 9.03078 18.9239 9.38964 19.0853L11.7896 20.1653C12.4514 20.4631 13.2 19.9791 13.2 19.2534V11.2802C13.2 11.0353 13.2899 10.7989 13.4526 10.6158L20.5206 2.66436Z"
+                stroke="black"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
+      <div className="pl-6 mt-3 pb-4 border-b">{data?.length} 건</div>
+      {modal ? <SearchFilter /> : null}
       <div>
         {data?.map(quest => (
-          <Quest key={quest.questId} quest={quest} />
+          <QuestInSearch key={quest.questId} quest={quest} />
         ))}
       </div>
     </div>

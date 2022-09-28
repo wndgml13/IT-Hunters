@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { BookmarkApi } from "../APIs/BookmarkApi";
@@ -18,25 +18,17 @@ import convertDateText from "../lib/convertDateText";
 import { loginInfoState } from "../store/loginInfoState";
 import { CommentGet, OffersPost } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
+import { DeletePostModal } from "./DeletePostMdoal";
+import { PageHeader } from "./PageHeader";
 
 export const PostsDetail = () => {
   const navigate = useNavigate();
 
-  const { elementLocation, onMoveToElementLocation } = useMoveScroolLocation(); // 작업 기간 스크롤 고정
-  const { elementStack, onMoveToElementStack } = useMoveScroolStack(); // 요구 스택 스크롤 고정
-  const { elementInfo, onMoveToElementInfo } = useMoveScroolInfo(); // 상세 정보 스크롤 고정
-
-  const [locationTabLine, setLocationTabLine] = useState(false); // 작업 기간 탭
-  const [stackTabLine, setStackTabLine] = useState(false); // 요구 스택 탭
-  const [infoTabLine, setInfoTabLine] = useState(false); // 상세 정보 탭
   const [editDeleteToggle, setEditDeleteToggle] = useState(false); // 수정,삭제 점 3개 토글
   const [classes, setClasses] = useState({}); // 직군 아이콘
 
   const [deleteModal, setDeleteModal] = useState(false); // 게시글 삭제하기 모달창 띄우고 닫기
-  // const [actionModal, setActionModal] = useState(false); // 모달 바깥 창을 클릭했을 때 모달창 닫기
-  // const node = useRef(); // 모달 바깥 창을 클릭했을 때 모달창 닫기
 
-  const userToken = getCookieToken();
   const queryClient = useQueryClient();
   const { id } = useParams();
   const [comment, setComment] = useState(""); // 댓글 작성
@@ -88,9 +80,6 @@ export const PostsDetail = () => {
       const { data } = await instance.post<OffersPost>(
         `api/quests/${id}/offers`,
         { classType: "FRONTEND" },
-        {
-          headers: { authorization: userToken },
-        },
       );
       alert("합류요청 완료!!");
       return data;
@@ -135,124 +124,69 @@ export const PostsDetail = () => {
       setClasses(quest?.classes);
     }
   });
+  const durationTab = useRef<HTMLDivElement>(null);
+  const stacksTab = useRef<HTMLDivElement>(null);
+  const contentTab = useRef<HTMLDivElement>(null);
 
-  // 모달 바깥 창을 클릭했을 때 모달창 닫기
-  // useEffect(() => {
-  //   const clickOutside = e => {
-  //     // 모달이 열려 있고 모달의 바깥쪽을 눌렀을 때 창 닫기
-  //     if (actionModal && node.current && !node.current.contains(e.target)) {
-  //       setActionModal(false);
-  //     }
-  //   };
-  // });
+  console.log(durationTab);
 
   return (
-    <div className="w-full h-full overflow-y-scroll pb-[3.5rem] bg-slate-50">
-      <button onClick={onBookMarkHandler}>⭐</button>☆
-      <div className="flex my-3 ml-4">
-        <button
-          className="text-brandBlue text-2xl"
-          onClick={() => navigate(-1)}
-        >
-          &lt;
-        </button>
-        <p className="ml-4 text-lg">게시판</p>
+    <div className="w-full h-full overflow-y-scroll pb-[3.5rem] bg-[#f5f5f5]">
+      <div className="flex ml-6">
+        <PageHeader pgTitle={"게시판"} />
       </div>
-      <div className="flex justify-start">
-        <div className="m-4 relative w-[59px] h-[59px] bg-white rounded-full">
+      <div className="flex mx-6 mt-[28px] mb-[18px]">
+        <div className="w-[59px] h-[59px rounded-full">
           <img
             className="w-full h-full border rounded-full"
             src={quest?.profileImg}
           />
         </div>
-
-        <p className="text-[14px] grid justify-items-start mt-8">
-          {quest?.nickname}
-        </p>
+        <p className="text-[14px] ml-[10px] py-5">{quest?.nickname}</p>
       </div>
       <hr />
       <div className="flex justify-around text-[14px] mt-3 ">
-        {locationTabLine ? (
-          <button
-            className="border-b-[3px] outline-none border-brandBlue text-black"
-            onClick={() => {
-              setLocationTabLine(locationTabLine);
-              setStackTabLine(!stackTabLine);
-              setInfoTabLine(!infoTabLine);
-              onMoveToElementLocation();
-            }}
-          >
-            작업 기간
-          </button>
-        ) : (
-          <button
-            className=" outline-none  text-gray-400/100 "
-            onClick={() => {
-              setLocationTabLine(!locationTabLine);
-            }}
-          >
-            작업 기간
-          </button>
-        )}
-        {stackTabLine ? (
-          <button
-            className="border-b-[3px] outline-none border-brandBlue text-black"
-            onClick={() => {
-              setStackTabLine(stackTabLine);
-              setLocationTabLine(!locationTabLine);
-              setInfoTabLine(!infoTabLine);
-              onMoveToElementStack();
-            }}
-          >
-            요구 스택
-          </button>
-        ) : (
-          <button
-            className=" outline-none  text-gray-400/100 "
-            onClick={() => {
-              setStackTabLine(!stackTabLine);
-            }}
-          >
-            요구 스택
-          </button>
-        )}
-        {infoTabLine ? (
-          <button
-            className="border-b-[3px] outline-none border-brandBlue text-black"
-            onClick={() => {
-              setInfoTabLine(infoTabLine);
-              setLocationTabLine(!locationTabLine);
-              setStackTabLine(!stackTabLine);
-              onMoveToElementInfo();
-            }}
-          >
-            상세 정보
-          </button>
-        ) : (
-          <button
-            className=" outline-none  text-gray-400/100 "
-            onClick={() => {
-              setInfoTabLine(!infoTabLine);
-            }}
-          >
-            상세 정보
-          </button>
-        )}
+        <button
+          className="border-b-[2px] pb-2 px-2 outline-none focus-within:border-brandBlue text-black"
+          onClick={() =>
+            durationTab.current?.scrollIntoView({ behavior: "smooth" })
+          }
+        >
+          작업 기간
+        </button>
+
+        <button
+          className="border-b-[2px] pb-2 px-2 outline-none focus-within:border-brandBlue text-black"
+          onClick={() =>
+            stacksTab.current?.scrollIntoView({ behavior: "smooth" })
+          }
+        >
+          요구 스택
+        </button>
+
+        <button
+          className="border-b-[2px] pb-2 px-2 outline-none focus-within:border-brandBlue text-black"
+          onClick={() =>
+            contentTab.current?.scrollIntoView({ behavior: "smooth" })
+          }
+        >
+          상세 정보
+        </button>
       </div>
       {/* width 조절 해야 함 */}
       <div
-        ref={elementLocation}
-        className="flex justify-between bg-white  w-full h-[61px]"
+        className="flex justify-between bg-white w-full py-5"
+        ref={durationTab}
       >
-        <p className="text-[20px] text-brandBlue ml-10 mt-5">
+        <p className="text-[20px] text-brandBlue ml-[49px]">
           {quest?.duration}주
         </p>
-        <p className="mt-5 mr-3">시작일: {quest?.createdAt.slice(0, 10)}</p>
+        <p className="mr-7">시작일: {quest?.createdAt.slice(0, 10)}</p>
       </div>
       {/* 요구 스택 heigt 조절 필요 */}
-      <div ref={elementStack} className="bg-white w-full mt-3 p-5">
+      <div className="bg-white w-full mt-3 p-6" ref={stacksTab}>
         <p>요구 스택</p>
-        <ul className="grid gap-1 w-full grid-cols-3 mt-3">
+        <ul className="grid gap-2 w-full grid-cols-3 mt-3">
           {quest?.stacks.map((stack, idx) => (
             <li key={idx}>
               <p className="flex justify-center p-2 w-full text-[14px] border-2 rounded-lg border-black">
@@ -262,28 +196,41 @@ export const PostsDetail = () => {
           ))}
         </ul>
       </div>
-      <div ref={elementInfo} className="relative bg-white w-full mt-3 p-5">
-        <p>상세 정보</p>
+      <div className="relative bg-white w-full mt-3 pt-7" ref={contentTab}>
+        <p className="px-6">상세 정보</p>
         <div className="flex justify-between">
-          <p className="text-xl font-normal font-cookie mt-3">{quest?.title}</p>
+          <p className="text-xl font-normal font-cookie px-6 mt-[10px]">
+            {quest?.title}
+          </p>
 
           {quest?.nickname === userinfo?.nickname ? (
             <button
-              className="cursor-pointer"
+              className="cursor-pointer mr-6"
               onClick={() => {
                 setEditDeleteToggle(!editDeleteToggle);
               }}
             >
-              ...
+              <svg
+                width="5"
+                height="23"
+                viewBox="0 0 5 23"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2.20019 17.6016C2.63535 17.6016 3.06074 17.7306 3.42256 17.9724C3.78438 18.2141 4.06638 18.5577 4.23291 18.9598C4.39944 19.3618 4.44301 19.8042 4.35811 20.231C4.27322 20.6578 4.06367 21.0498 3.75597 21.3575C3.44826 21.6652 3.05623 21.8748 2.62943 21.9597C2.20263 22.0446 1.76025 22.001 1.35822 21.8345C0.956182 21.6679 0.612559 21.3859 0.370798 21.0241C0.129037 20.6623 -1.83826e-06 20.2369 -1.81924e-06 19.8018C-1.79373e-06 19.2182 0.231804 18.6586 0.644421 18.246C1.05704 17.8334 1.61667 17.6016 2.20019 17.6016ZM2.20019 8.80078C2.63535 8.80078 3.06074 8.92982 3.42256 9.17158C3.78438 9.41334 4.06638 9.75696 4.23291 10.159C4.39944 10.561 4.44301 11.0034 4.35811 11.4302C4.27322 11.857 4.06367 12.249 3.75597 12.5568C3.44826 12.8645 3.05623 13.074 2.62943 13.1589C2.20263 13.2438 1.76025 13.2002 1.35822 13.0337C0.956182 12.8672 0.612559 12.5852 0.370799 12.2233C0.129038 11.8615 -1.45356e-06 11.4361 -1.43454e-06 11.001C-1.40904e-06 10.4174 0.231804 9.85782 0.644421 9.4452C1.05704 9.03259 1.61667 8.80078 2.20019 8.80078ZM2.20019 -9.61736e-08C2.63535 -7.71523e-08 3.06074 0.129039 3.42256 0.3708C3.78438 0.61256 4.06638 0.956184 4.23291 1.35822C4.39944 1.76025 4.44301 2.20264 4.35811 2.62943C4.27322 3.05623 4.06367 3.44827 3.75597 3.75597C3.44826 4.06367 3.05623 4.27322 2.62943 4.35811C2.20263 4.44301 1.76025 4.39944 1.35822 4.23291C0.956183 4.06638 0.612559 3.78438 0.370799 3.42256C0.129038 3.06074 -1.06887e-06 2.63535 -1.04985e-06 2.2002C-1.02434e-06 1.61667 0.231805 1.05704 0.644421 0.644422C1.05704 0.231805 1.61667 -1.2168e-07 2.20019 -9.61736e-08V-9.61736e-08Z"
+                  fill="#141124"
+                />
+              </svg>
             </button>
           ) : null}
         </div>
-        <p className="text-xs text-gray-400">
+        <p className="text-xs mt-1 mx-6 text-gray-400">
           {quest?.createdAt && convertDateText(quest?.createdAt)}
         </p>
 
         {/* 제목 밑에 직군 아이콘 */}
-        <ul className="flex flex-row-reverse mt-3">
+        <ul className="flex flex-row-reverse mt-3 mr-6">
           {existStack.map(stack => {
             switch (stack) {
               case "frontend":
@@ -331,17 +278,21 @@ export const PostsDetail = () => {
             </button>
           </div>
         )}
-        <p className="my-5">{quest?.content}</p>
-        <hr />
-        <button
-          type="button"
-          className={
-            "mt-5 mb-5 text-white w-full h-[57px] bg-brandBlue font-bold rounded-lg text-lg px-5 py-2.5 mr-2 focus:outline-none shadow-[5px_5px_0_0_rgb(244,200,40)]"
-          }
-          onClick={onOfferHandler}
-        >
-          참가하기
-        </button>
+        <p className="my-5 w-full border-b border-b-[#ebebeb] px-6 pb-6">
+          {quest?.content}
+        </p>
+
+        <div className="p-5">
+          <button
+            type="button"
+            className={
+              "text-white w-full h-[57px] bg-brandBlue font-bold rounded-lg text-lg px-5 py-2.5 shadow-[5px_5px_0_0_rgb(244,200,40)]"
+            }
+            onClick={onOfferHandler}
+          >
+            참가하기
+          </button>
+        </div>
       </div>
       {/* 댓글시작 */}
       {comments?.map((co: CommentGet) => (
@@ -365,60 +316,13 @@ export const PostsDetail = () => {
           댓글달기
         </button>
       </div>
-      {/* 게시글 삭제 모달창 */}
-      {deleteModal && (
-        <>
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-          <div className="fixed inset-0 z-10 overflow-y-auto">
-            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-              <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-[250px] sm:max-w-lg">
-                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                  <div className="sm:flex sm:items-start">
-                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <svg
-                        className="h-6 w-6 text-red-600"
-                        fill="none"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                      >
-                        <path d="M12 10.5v3.75m-9.303 3.376C1.83 19.126 2.914 21 4.645 21h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 4.88c-.866-1.501-3.032-1.501-3.898 0L2.697 17.626zM12 17.25h.007v.008H12v-.008z" />
-                      </svg>
-                    </div>
-                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                      <span
-                        className="text-xl font-normal font-cookie"
-                        id="modal-title"
-                      >
-                        삭제하겠는가?
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                  {deleteModal && (
-                    <button
-                      type="button"
-                      className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                      onClick={() => {
-                        setDeleteModal(!deleteModal);
-                      }}
-                    >
-                      취소
-                    </button>
-                  )}
 
-                  <button
-                    type="button"
-                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={onDeletepost}
-                  >
-                    확인
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
+      {deleteModal && (
+        <DeletePostModal
+          tgVal={deleteModal}
+          tg={setDeleteModal}
+          onDelete={onDeletepost}
+        />
       )}
     </div>
   );
