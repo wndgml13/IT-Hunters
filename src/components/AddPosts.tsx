@@ -42,6 +42,7 @@ export const AddPosts = () => {
     if (content && title) {
       submitPost(postInfo).then(() => {
         queryClient.invalidateQueries(["Postsdetail"]);
+        queryClient.invalidateQueries(["filterlist"]);
       });
       alert("게시글 작성 완료!");
       navigate("/search");

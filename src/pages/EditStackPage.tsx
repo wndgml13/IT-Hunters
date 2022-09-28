@@ -1,14 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { StackListDropdwon } from "../components/StackListDropdown";
 import { instance } from "../config/axios";
+import { useModal } from "../hooks/useModal";
 import { profilePortfolioType } from "../types/profileType";
 
 export const EditStackPage = ({
   myfolio,
+  tgVal,
   tg,
 }: {
   myfolio: profilePortfolioType;
+  tgVal: boolean;
   tg: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [stacks, setStacks] = useState<string[]>([]);
@@ -39,9 +42,16 @@ export const EditStackPage = ({
     tg(false);
   };
 
+  const node = useRef<null | HTMLDivElement>(null);
+
+  useModal({ node, tgVal, tg });
+
   return (
     <div className="h-full w-full absolute top-0 right-0 left-0 z-50 flex justify-center items-center bg-black bg-opacity-70">
-      <div className="absolute inset-x-0 bottom-0 bg-white z-50 rounded-t-2xl pb-[4rem] px-6">
+      <div
+        ref={node}
+        className="absolute inset-x-0 bottom-0 bg-white z-50 rounded-t-2xl pb-[4rem] px-6"
+      >
         <div className="my-4 flex justify-between">
           <h1 className="text-xl">스택 수정</h1>
           <button

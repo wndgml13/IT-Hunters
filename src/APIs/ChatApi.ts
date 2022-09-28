@@ -30,4 +30,10 @@ export const chatApi = {
       // { refetchInterval: 500 },
     );
   },
+  getChatRoomInfo: (channelId: number | undefined) => {
+    return useQuery(["chatInfo"], async () => {
+      const { data } = await instance.get(`/api/channels/${channelId}/squad`);
+      return data;
+    });
+  },
 };
