@@ -1,9 +1,10 @@
 import { useCallback, useState } from "react";
 
 type onChangeType = (e: React.ChangeEvent<HTMLInputElement>) => void;
+type setBase64 = React.Dispatch<React.SetStateAction<string | undefined>>;
 
 export const useUploadImg = (initialValue: string | undefined) => {
-  const [imgBase64, setImgBase64] = useState(initialValue);
+  const [imgBase64, setImgBase64] = useState<string | undefined>(initialValue);
   const imagestate = useState<File | null>();
   const setImgFile = imagestate[1];
 
@@ -27,5 +28,9 @@ export const useUploadImg = (initialValue: string | undefined) => {
     [],
   );
 
-  return [imgBase64, handleChangeFile] as [string, onChangeType];
+  return [imgBase64, handleChangeFile, setImgBase64] as [
+    string,
+    onChangeType,
+    setBase64,
+  ];
 };
