@@ -1,65 +1,47 @@
-import { useState } from "react";
-
-import { useSetSlide } from "../../../hooks/useSetSlide";
-import { useInterval } from "../../../hooks/useInterval";
-import { Slides } from "./Slides";
-import { Pagination } from "./Pagination";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export const MainSlide = () => {
-  const [currentSlideIdx, setCurrentSlideIdx] = useState(1);
-  const [isSlideStop, setIsSlideStop] = useState(false);
-  const [isTransition, setIstransition] = useState(false);
-  const slideConfig = {
-    slideItems: useSetSlide(["#33a", "#8c9", "#f3e074"]),
-    delay: 2000,
-    transition: 1000,
+  const settings = {
+    className: "center",
+    centerMode: true,
+    infinite: true,
+    centerPadding: "25px",
+    slidesToShow: 1,
+    speed: 1000,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    pauseOnHover: true,
+    dots: true,
+    arrows: false,
+    touchMove: true,
   };
-
-  const handleSlide = (index: number) => {
-    if (currentSlideIdx >= slideConfig.slideItems.length - 1) {
-      setIstransition(true);
-      setCurrentSlideIdx(1);
-      setTimeout(() => {
-        setIsSlideStop(false);
-        setIstransition(false);
-      }, 10);
-      return;
-    }
-    setCurrentSlideIdx(index);
-  };
-
-  useInterval(
-    () => {
-      handleSlide(currentSlideIdx + 1);
-    },
-    !isSlideStop && !isTransition ? slideConfig.delay : null,
-  );
-
-  const handleSlideStop = () => {
-    setIsSlideStop(true);
-  };
-
-  const handleSlideOn = () => {
-    setIsSlideStop(false);
-  };
-
   return (
     <>
-      <Slides
-        slideItems={slideConfig.slideItems}
-        currentSlideIdx={currentSlideIdx}
-        transition={!isTransition ? slideConfig.transition : 0}
-        handleSlideStop={handleSlideStop}
-        handleSlideOn={handleSlideOn}
-      />
-      <Pagination
-        currentSlideIdx={currentSlideIdx}
-        transition={slideConfig.transition}
-        slideLength={slideConfig.slideItems.length}
-        handleSlideStop={handleSlideStop}
-        handleSlideOn={handleSlideOn}
-        handleCurrentSlide={handleSlide}
-      />
+      <Slider {...settings}>
+        <div>
+          <div className="px-[5px]">
+            <a
+              className="block"
+              href="https://forms.gle/YtXASLtocaJmGFRj7"
+              target={"_blank"}
+            >
+              <img src="/imgs/slides.png" alt="슬라이드 이벤트" />
+            </a>
+          </div>
+        </div>
+        <div>
+          <div className="px-[5px]">
+            <img src="/imgs/slides.png" alt="슬라이드 이벤트" />
+          </div>
+        </div>
+        <div>
+          <div className="px-[5px]">
+            <img src="/imgs/slides.png" alt="슬라이드 이벤트" />
+          </div>
+        </div>
+      </Slider>
     </>
   );
 };
