@@ -50,9 +50,9 @@ export const EditStackPage = ({
     <div className="h-full w-full absolute top-0 right-0 left-0 z-50 flex justify-center items-center bg-black bg-opacity-70">
       <div
         ref={node}
-        className="absolute inset-x-0 bottom-0 bg-white z-50 rounded-t-2xl pb-[4rem] px-6"
+        className="absolute inset-x-0 bottom-0 bg-white z-50 rounded-t-2xl pb-[4rem]"
       >
-        <div className="my-4 flex justify-between">
+        <div className="my-4 flex justify-between px-6">
           <h1 className="text-xl">스택 수정</h1>
           <button
             className="text-xl"
@@ -63,14 +63,17 @@ export const EditStackPage = ({
             X
           </button>
         </div>
-        <StackListDropdwon stacks={stacks} setStacks={setStacks} />
+        <div className="px-6">
+          <StackListDropdwon stacks={stacks} setStacks={setStacks} />{" "}
+        </div>
+
+        <button
+          onClick={onSubmitStack}
+          className="text-white z-50 bg-brandBlue focus:ring-4 focus:outline-none font-medium absolute bottom-0 w-full h-[3.5rem] text-XL px-5 py-2.5 text-center"
+        >
+          수정완료
+        </button>
       </div>
-      <button
-        onClick={onSubmitStack}
-        className="text-white z-50 bg-brandBlue focus:ring-4 focus:outline-none font-medium absolute bottom-0 w-full h-[3.5rem] text-XL px-5 py-2.5 text-center"
-      >
-        수정완료
-      </button>
     </div>
   );
 };
