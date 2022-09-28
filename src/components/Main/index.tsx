@@ -19,7 +19,7 @@ export const Main = () => {
 
   return (
     <main className="w-full m-auto overflow-y-scroll h-[calc(100%-100px)] overflow-x-hidden">
-      <section className="mb-[30px]">
+      <section className="pb-[30px]">
         <MainSlide />
       </section>
       <section className="p-6">
