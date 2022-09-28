@@ -3,17 +3,11 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { BookmarkApi } from "../APIs/BookmarkApi";
+// import { BookmarkApi } from "../APIs/BookmarkApi";
 import { CommentApi } from "../APIs/CommentApi";
 import { PostsApi } from "../APIs/PostsApi";
 import { DeIcon, FeIcon, FuIcon } from "../assets/icons";
 import { instance } from "../config/axios";
-import { getCookieToken } from "../config/cookies";
-import {
-  useMoveScroolLocation,
-  useMoveScroolStack,
-  useMoveScroolInfo,
-} from "../hooks/useMoveScrool";
 import convertDateText from "../lib/convertDateText";
 import { loginInfoState } from "../store/loginInfoState";
 import { CommentGet, OffersPost } from "../types/postsDetailType";
@@ -36,18 +30,16 @@ export const PostsDetail = () => {
 
   // 댓글, 답글 조회
   const { data: comments } = CommentApi.getComments(Number(id));
-  console.log(comments);
+
   // 댓글 작성
   const { mutateAsync: addComment } = CommentApi.addComment();
 
   const onSubmitComment = () => {
-    if (comment) {
-      const payload = { id: Number(id), comment: comment };
-      addComment(payload).then(() => {
-        queryClient.invalidateQueries(["comments"]);
-      });
-      setComment("");
-    }
+    const payload = { id: Number(id), comment: comment };
+    addComment(payload).then(() => {
+      queryClient.invalidateQueries(["comments"]);
+    });
+    setComment("");
   };
 
   const onEnterComment = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -106,11 +98,11 @@ export const PostsDetail = () => {
   };
 
   // 게시글 북마크 POST
-  const { mutateAsync: bookMarkpost } = BookmarkApi.bookMarkpost();
+  // const { mutateAsync: bookMarkpost } = BookmarkApi.bookMarkpost();
 
-  const onBookMarkHandler = () => {
-    bookMarkpost(Number(id));
-  };
+  // const onBookMarkHandler = () => {
+  //   bookMarkpost(Number(id));
+  // };
 
   // 직군 아이콘
   interface LooseObject {
@@ -130,10 +122,6 @@ export const PostsDetail = () => {
   const stacksTab = useRef<HTMLDivElement>(null);
   const contentTab = useRef<HTMLDivElement>(null);
 
-
-  console.log(durationTab);
-
-
   return (
     <div className="w-full h-full overflow-y-scroll pb-[3.5rem] bg-[#f5f5f5]">
       <div className="flex ml-6">
@@ -142,11 +130,8 @@ export const PostsDetail = () => {
       <div className="flex mx-6 mt-[28px] mb-[18px]">
         <div className="w-[59px] h-[59px rounded-full">
           <img
-            className="w-full h-full border rounded-full cursor-pointer"
+            className="w-full h-full border rounded-full"
             src={quest?.profileImg}
-            onClick={() => {
-              navigate(`/user/${userinfo.id}`);
-            }}
           />
         </div>
         <p className="text-[14px] ml-[10px] py-5">{quest?.nickname}</p>
@@ -270,13 +255,13 @@ export const PostsDetail = () => {
         {editDeleteToggle && (
           <div className="absolute right-5 top-[75px] flex-col grid justify-items-end drop-shadow-lg">
             <button
-              className="border-none text-brandBlue cursor-pointer inline-flex w-[90px] justify-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-50 focus:outline-none  focus:ring-offset-2 focus:ring-offset-gray-100"
+              className="border-none text-brandBlue cursor-pointer inline-flex w-[90px] justify-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100"
               onClick={onEditPosts}
             >
               수정하기
             </button>
             <button
-              className=" border-none border text-red-400 cursor-pointer inline-flex w-[90px] justify-center bg-white px-4 py-2 text-sm font-medium  hover:bg-gray-50 focus:outline-none focus:ring-offset-2 focus:ring-offset-gray-100"
+              className=" border-none border text-red-400 cursor-pointer inline-flex w-[90px] justify-center bg-white px-4 py-2 text-sm font-medium  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100"
               onClick={() => {
                 setDeleteModal(!deleteModal);
               }}
@@ -307,12 +292,8 @@ export const PostsDetail = () => {
       ))}
       {/* 댓글 입력란 */}
       <div className="flex row mt-5  gap-2 p-2">
-        <img
-          className="mt-1 w-12 h-12 border rounded-full"
-          src={userinfo?.profileImage}
-        />
         <input
-          className="bg-gray-50 border-2 border-brandBlue text-gray-900 text-sm rounded-3xl focus:outline-none focus:ring focus:ring-brandBlue w-full h-14 p-2.5 mx-1"
+          className="bg-gray-50 border border-black text-gray-900 text-sm rounded-2xl focus:ring-blue-500 focus:border-blue-500 w-full h-14 p-2.5 mx-1"
           value={comment}
           placeholder="댓글을 입력해주세요."
           onChange={e => setComment(e.target.value)}
@@ -321,13 +302,12 @@ export const PostsDetail = () => {
 
         <button
           type="button"
-          className="text-white text-sm w-20 h-[57px] bg-brandBlue font-bold rounded-2xl  px-5 py-1.5 mr-2 mb-3 focus:outline-none shadow-[5px_5px_0_0_rgb(244,200,40)]"
+          className="text-white w-20 h-[57px] bg-brandBlue font-bold rounded-lg  px-5 py-2.5 mr-2 mb-[58px] focus:outline-none shadow-[5px_5px_0_0_rgb(244,200,40)]"
           onClick={onSubmitComment}
         >
           댓글달기
         </button>
       </div>
-
 
       {deleteModal && (
         <DeletePostModal
@@ -335,7 +315,6 @@ export const PostsDetail = () => {
           tg={setDeleteModal}
           onDelete={onDeletepost}
         />
-
       )}
     </div>
   );
