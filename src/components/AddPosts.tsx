@@ -8,6 +8,7 @@ import { StackListDropdwon } from "./StackListDropdown";
 import { PostsApi } from "../APIs/PostsApi";
 import { NumMemberGet } from "./NumMemberGet";
 import { useQueryClient } from "@tanstack/react-query";
+import { PageHeader } from "./PageHeader";
 
 export const AddPosts = () => {
   const userToken = getCookieToken();
@@ -41,6 +42,7 @@ export const AddPosts = () => {
     if (content && title) {
       submitPost(postInfo).then(() => {
         queryClient.invalidateQueries(["Postsdetail"]);
+        queryClient.invalidateQueries(["filterlist"]);
       });
       alert("게시글 작성 완료!");
       navigate("/search");
@@ -52,12 +54,6 @@ export const AddPosts = () => {
     if (!content) {
       return alert("프로젝트 내용을 입력해 주세요!!");
     }
-    // if (!title) {
-    //   return alert("제목을 입력해 주세요!!");
-    // }
-    // if (!content) {
-    //   return alert("프로젝트 내용을 입력해 주세요!!");
-    // }
   };
   //로그인제어 리엑트라우터돔에서 하는걸로 바꾸기
   if (!userToken) {
@@ -66,19 +62,14 @@ export const AddPosts = () => {
 
   return (
     <div className="w-full h-full overflow-y-scroll pb-[3.5rem] px-6 ">
-      <div className="flex mt-3">
-        <button
-          className="text-brandBlue text-2xl"
-          onClick={() => navigate(-1)}
-        >
-          &lt;
-        </button>
-        <p className="ml-4 text-lg">파티 모집 글쓰기</p>
-      </div>
-      <h1 className="font-cookie my-6">좋은 파티를 구하길 바란다</h1>
+      <PageHeader pgTitle={"파티 모집 글쓰기"} />
+      <h1 className="font-cookie my-6">
+        좋은 <span className="text-brandBlue font-cookie">파티</span>를 구하길
+        바란다
+      </h1>
       <div>
         <h2 className="mb-4">필요직업군</h2>
-        <ul className="flex gap-x-[8px] overflow-x-scroll ">
+        <ul className="flex justify-between ">
           <NumMemberGet
             num={frontend}
             setNum={setFrontend}

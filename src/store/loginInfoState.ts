@@ -10,5 +10,6 @@ export const loginInfoState = atom<LoginInfoType>({
     nickname: "",
     profileImage: "",
     stacks: [],
+    className: "",
   },
 });

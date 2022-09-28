@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { SubCommentGet } from "../../types/postsDetailType";
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { subCommentApi } from "../../APIs/subCommentApi";
 import { useRecoilValue } from "recoil";
 import { loginInfoState } from "../../store/loginInfoState";
+import convertDateText from "../../lib/convertDateText";
 
 export const PostsSubComment = ({
   sc,
@@ -16,6 +17,7 @@ export const PostsSubComment = ({
   const queryClient = useQueryClient();
   const { id } = useParams();
   const userinfo = useRecoilValue(loginInfoState);
+  const navigate = useNavigate();
 
   const [editSubcomment, setEditsubComment] = useState(""); // 답글 수정
   const [editSubCommentToggle, setEditSubCommentToggle] = useState(false); // 답글 수정 토글
@@ -25,16 +27,18 @@ export const PostsSubComment = ({
     subCommentApi.modifiedSubComment();
 
   const onEditsubComment = () => {
-    const payload = {
-      id: Number(id),
-      commentId: coId,
-      subCommentId: sc.subCommentId,
-      editSubComment: editSubcomment,
-    };
-    modifiedSubComment(payload).then(() => {
-      queryClient.invalidateQueries(["comments"]);
-    });
-    setEditsubComment("");
+    if (editSubcomment) {
+      const payload = {
+        id: Number(id),
+        commentId: coId,
+        subCommentId: sc.subCommentId,
+        editSubComment: editSubcomment,
+      };
+      modifiedSubComment(payload).then(() => {
+        queryClient.invalidateQueries(["comments"]);
+      });
+      setEditsubComment("");
+    }
   };
 
   const onEntereditSubComment = async (
@@ -64,37 +68,56 @@ export const PostsSubComment = ({
     <>
       {/* 답글 추가 */}
       <>
-        <div key={sc.subCommentId} className="mx-14 my-5">
-          <span className="border border-black px-2 py-1">{sc.nickname}</span>
-          <span> {sc.content}</span>
+        <div key={sc.subCommentId} className="mx-10 my-2">
+          <div className="flex flex-row gap-2">
+            <img
+              className="cursor-pointer w-10 h-10 border rounded-full"
+              src={sc?.profileImage}
+              onClick={() => {
+                navigate(`/user/${sc.memberId}`);
+              }}
+            />
+            <div className="mt-2 h-full hover:outline-none hover:border-b-2 border-black">
+              <button
+                onClick={() => {
+                  navigate(`/user/${sc.memberId}`);
+                }}
+              >
+                {sc.nickname}
+              </button>
+            </div>
+            <p className="text-xs text-gray-400 mt-3 ml-2">
+              {sc?.createdAt && convertDateText(sc?.createdAt)}
+            </p>
+          </div>
+          <div className="p-2 rounded-xl text-sm text-black mt-2">
+            <span>{sc.content}</span>
+          </div>
           {sc?.nickname === userinfo.nickname ? (
-            <div className="ml-24 text-sm">
-              <a
-                type="button"
-                className="cursor-pointer mr-1 text-gray-400/100 hover:text-blue-600/100"
+            <div className="text-sm">
+              <button
+                className="text-sm text-gray-400/100 hover:text-brandBlue"
                 onClick={() => {
                   setEditSubCommentToggle(!editSubCommentToggle);
                 }}
               >
-                Edit
-              </a>
-              |
-              <a
-                type="button"
-                className="cursor-pointer ml-1 mr-1 text-gray-400/100 hover:text-blue-600/100"
+                수정
+              </button>
+              <button
+                className="text-sm text-gray-400/100 hover:text-red-400 ml-3"
                 onClick={onDeletesubComment}
               >
-                Delete
-              </a>
+                삭제
+              </button>
             </div>
           ) : null}
         </div>
         {/* 답글 Edit 버튼 */}
         {editSubCommentToggle && (
-          <div className="flex justify-between gap-2 ml-24 text-sm">
+          <div className="gap-1">
             <input
               id="message"
-              className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full h-14 mb-5 p-2.5 mx-1"
+              className="bg-gray-50 border border-gary text-gray-900 text-sm rounded-3xl w-full h-14 my-1 p-2.5 focus:outline-none"
               placeholder="답글 수정"
               value={editSubcomment}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,22 +125,24 @@ export const PostsSubComment = ({
               }}
               onKeyPress={onEntereditSubComment}
             />
-            <button
-              type="button"
-              className="cursor-pointer bg-blue-200 hover:bg-blue-400 w-20 h-10 mt-3 rounded-lg border-none"
-              onClick={onEditsubComment}
-            >
-              Edit
-            </button>
-            <button
-              type="button"
-              className="cursor-pointer bg-blue-200 hover:bg-blue-400 w-20 h-10 mt-3 rounded-lg border-none"
-              onClick={() => {
-                setEditSubCommentToggle(!editSubCommentToggle);
-              }}
-            >
-              Cancel
-            </button>
+            <div className="my-3 flex flex-row-reverse gap-2">
+              <button
+                type="button"
+                className="text-white w-12 h-10 bg-[#F4C828] font-bold rounded-lg focus:outline-none"
+                onClick={onEditsubComment}
+              >
+                수정
+              </button>
+              <button
+                type="button"
+                className="text-white w-12 h-10 bg-[#4B23B8] font-bold rounded-lg focus:outline-none"
+                onClick={() => {
+                  setEditSubCommentToggle(!editSubCommentToggle);
+                }}
+              >
+                닫기
+              </button>
+            </div>
           </div>
         )}
       </>

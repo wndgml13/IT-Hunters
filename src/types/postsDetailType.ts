@@ -17,31 +17,34 @@ export interface IQuestDetail {
   title: string;
   stacks: string[];
   id: number;
+  profileImg: string;
 }
 export interface SubCommentGet {
+  memberId: number;
   subCommentId: number;
   nickname: string;
   content: string;
-  createdAt: number;
-  modifiedAt: number;
+  createdAt: string;
+  modifiedAt: string;
   profileImage: string;
 }
 
 export interface CommentGet {
+  memberId: number;
   commentId: number;
   nickname: string;
   content: string;
-  createdAt: number;
-  modifiedAt: number;
+  createdAt: string;
+  modifiedAt: string;
   profileImage: string;
   subCommentList: SubCommentGet[];
 }
 
 export interface OffersPost {
   classType: {
-    BACKEND: number | null;
-    FRONTEND: number | null;
-    DESIGNER: number | null;
-    FULLSTACK: number | null;
+    BACKEND: string;
+    FRONTEND: string;
+    DESIGNER: string;
+    FULLSTACK: string;
   };
 }

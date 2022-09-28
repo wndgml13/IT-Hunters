@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { CommentGet } from "../../types/postsDetailType";
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PostsSubComment } from "./PostsSubComment";
 import { CommentApi } from "../../APIs/CommentApi";
 import { subCommentApi } from "../../APIs/subCommentApi";
 import { useRecoilValue } from "recoil";
 import { loginInfoState } from "../../store/loginInfoState";
+import convertDateText from "../../lib/convertDateText";
 
 export const PostsComment = ({ co }: { co: CommentGet }) => {
   const queryClient = useQueryClient();
   const { id } = useParams();
   const userinfo = useRecoilValue(loginInfoState);
-
+  const navigate = useNavigate();
+  console.log(userinfo);
   const [subComment, setSubcomment] = useState<string>(""); // 답글 추가
   const [editComment, seteditComment] = useState(""); // 댓글 수정
 
@@ -23,15 +25,17 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
   const { mutateAsync: modifiedComment } = CommentApi.modifiedComment();
 
   const onEditcomment = () => {
-    const payload = {
-      id: Number(id),
-      editComment: editComment,
-      commentId: co.commentId,
-    };
-    modifiedComment(payload).then(() => {
-      queryClient.invalidateQueries(["comments"]);
-    });
-    seteditComment("");
+    if (editComment) {
+      const payload = {
+        id: Number(id),
+        editComment: editComment,
+        commentId: co.commentId,
+      };
+      modifiedComment(payload).then(() => {
+        queryClient.invalidateQueries(["comments"]);
+      });
+      seteditComment("");
+    }
   };
 
   const onEntereditComment = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -40,7 +44,7 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
       seteditComment("");
     }
   };
-
+  console.log(co);
   // 댓글 삭제
   const { mutateAsync: deleteComment } = CommentApi.deleteComment();
 
@@ -58,15 +62,17 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
   const { mutateAsync: addSubComment } = subCommentApi.addSubComment();
 
   const onSubmitSubComment = () => {
-    const payload = {
-      id: Number(id),
-      commentId: co.commentId,
-      subComment: subComment,
-    };
-    addSubComment(payload).then(() => {
-      queryClient.invalidateQueries(["comments"]);
-    });
-    setSubcomment("");
+    if (subComment) {
+      const payload = {
+        id: Number(id),
+        commentId: co.commentId,
+        subComment: subComment,
+      };
+      addSubComment(payload).then(() => {
+        queryClient.invalidateQueries(["comments"]);
+      });
+      setSubcomment("");
+    }
   };
 
   const onEntersubComment = async (
@@ -81,73 +87,91 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
   return (
     <>
       {/* 댓글 추가 */}
-      <div key={co.commentId} className="my-8 border-b-2">
-        <span className="border border-black px-2 py-1">{co.nickname}</span>
-        <span className="text"> {co.content}</span>
+      <div key={co.commentId} className="bg-white w-full p-4 border-b-2 ">
+        <div className="flex flex-row gap-2">
+          <img
+            className="cursor-pointer w-10 h-10 border rounded-full"
+            src={co?.profileImage}
+            onClick={() => {
+              navigate(`/user/${co.memberId}`);
+            }}
+          />
+          <div className="mt-2 h-full hover:outline-none hover:border-b-2 border-black">
+            <button
+              onClick={() => {
+                navigate(`/user/${co.memberId}`);
+              }}
+            >
+              {co.nickname}
+            </button>
+          </div>
+          <p className="text-xs text-gray-400 mt-3 ml-2">
+            {co?.createdAt && convertDateText(co?.createdAt)}
+          </p>
+        </div>
+        <p className="mx-3 p-2 rounded-xl text-sm text-black mt-1">
+          {co.content}
+        </p>
 
-        <div className="ml-24 text-sm">
+        <div className=" text-sm flex flex-justify-start gap-3">
           {co?.nickname === userinfo?.nickname ? (
             <div>
-              <a
-                type="button"
-                className="cursor-pointer mr-1 text-gray-400/100 hover:text-blue-600/100"
+              <button
+                className="text-sm text-gray-400/100 hover:text-brandBlue"
                 onClick={() => {
                   setEditCommentToggle(!editCommentToggle);
                 }}
               >
-                Edit
-              </a>
-              |
-              <a
-                type="button"
-                className="cursor-pointer ml-1 mr-1 text-gray-400/100 hover:text-blue-600/100"
+                수정
+              </button>
+              <button
+                className="text-sm text-gray-400/100 hover:text-red-400 ml-3"
                 onClick={() => onDeletecomment()}
               >
-                Delete
-              </a>
+                삭제
+              </button>
             </div>
           ) : null}
-          <a
-            type="button"
-            className="mb-2 flex flex-row-reverse cursor-pointer ml-1 text-gray-400/100"
+          <button
+            className="mb-2 text-sm text-gray-400/100 hover:text-black"
             onClick={() => {
               setSubCommentToggle(!subCommentToggle);
             }}
           >
             답글 달기
-          </a>
-          {/* 댓글 Edit 버튼 */}
-          {editCommentToggle && (
-            <div className="flex justify-between gap-2 mb-2">
-              <input
-                id="message"
-                className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full h-14 my-3 p-2.5 mx-1"
-                placeholder="댓글 수정"
-                value={editComment}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  seteditComment(e.target.value);
-                }}
-                onKeyPress={onEntereditComment}
-              />
+          </button>
+        </div>
+        {/* 댓글 Edit 버튼 */}
+        {editCommentToggle && (
+          <div className="gap-1 mb-2">
+            <input
+              id="message"
+              className="bg-gray-50 border border-gary text-gray-900 text-sm rounded-3xl w-full h-14 my-1 p-2.5 focus:outline-none"
+              placeholder="댓글 수정"
+              value={editComment}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                seteditComment(e.target.value);
+              }}
+              onKeyPress={onEntereditComment}
+            />
+            <div className="mt-3 flex flex-row-reverse gap-2">
               <button
-                type="button"
-                className="cursor-pointer bg-blue-200 hover:bg-blue-400 w-20 h-10 mt-6 rounded-lg border-none"
+                className="text-white w-12 h-10 bg-[#F4C828] font-bold rounded-lg focus:outline-none"
                 onClick={onEditcomment}
               >
-                Edit
+                수정
               </button>
               <button
-                type="button"
-                className="cursor-pointer bg-blue-200 hover:bg-blue-400 w-20 h-10 mt-6 rounded-lg border-none"
+                className="text-white w-12 h-10 bg-[#4B23B8] font-bold rounded-lg focus:outline-none"
                 onClick={() => {
                   setEditCommentToggle(!editCommentToggle);
                 }}
               >
-                Cancel
+                닫기
               </button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
         {/* 답글 추가 */}
         {co?.subCommentList.map(sc => (
           <PostsSubComment key={sc.subCommentId} sc={sc} coId={co.commentId} />
@@ -155,10 +179,10 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
 
         {/* 답글 달기 버튼 */}
         {subCommentToggle && (
-          <div className="flex justify-between gap-2 ml-24 text-sm">
+          <div className="gap-1">
             <input
               id="message"
-              className="bg-gray-50 border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full h-14 mb-3 p-2.5 mx-1"
+              className="bg-gray-50 border border-gary text-gray-900 text-sm rounded-3xl w-full h-14 my-1 p-2.5 focus:outline-none"
               value={subComment}
               placeholder="답글 입력"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -166,24 +190,24 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
               }
               onKeyPress={onEntersubComment}
             />
-            <button
-              type="button"
-              className="cursor-pointer bg-blue-200 hover:bg-blue-400 w-20 h-10 mt-5 rounded-lg border-none"
-              onClick={() => {
-                onSubmitSubComment();
-              }}
-            >
-              Send
-            </button>
-            <button
-              type="button"
-              className="cursor-pointer bg-blue-200 hover:bg-blue-400 w-20 h-10 mt-5 rounded-lg border-none"
-              onClick={() => {
-                setSubCommentToggle(!subCommentToggle);
-              }}
-            >
-              Cencel
-            </button>
+            <div className="mt-3 flex flex-row-reverse gap-2">
+              <button
+                className="text-white w-12 h-10 bg-[#F4C828] font-bold rounded-lg focus:outline-none"
+                onClick={() => {
+                  onSubmitSubComment();
+                }}
+              >
+                저장
+              </button>
+              <button
+                className="text-white w-12 h-10 bg-[#4B23B8] font-bold rounded-lg focus:outline-none"
+                onClick={() => {
+                  setSubCommentToggle(!subCommentToggle);
+                }}
+              >
+                닫기
+              </button>
+            </div>
           </div>
         )}
       </div>

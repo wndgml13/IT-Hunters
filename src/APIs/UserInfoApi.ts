@@ -1,6 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
+
+export interface editedInfoType {
+  editedNickname: string | undefined;
+  myClasses: string | undefined;
+  profileImg: string | null;
+}
 
 export const UserInfoApi = {
   getUserInfo: () => {
@@ -16,5 +22,15 @@ export const UserInfoApi = {
         refetchOnWindowFocus: false,
       },
     );
+  },
+  editUserInfo: () => {
+    return useMutation(async (editInfo: editedInfoType) => {
+      const { data } = await instance.put(`/api/members/update`, {
+        nickname: editInfo.editedNickname,
+        className: editInfo.myClasses,
+        profileImage: editInfo.profileImg,
+      });
+      return data;
+    });
   },
 };
