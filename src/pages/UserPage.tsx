@@ -8,7 +8,9 @@ export const UserPage = () => {
 
   return (
     <div className="w-full overflow-y-scroll h-full pb-[4rem] overflow-x-hidden bg-[#F8F8FA]">
-      <PageHeader pgTitle={"페이지"} />
+      <div className="px-5">
+        <PageHeader pgTitle={`${userFolio?.nickname} 님의 페이지`} />
+      </div>
 
       <div className="my-10">
         <div className="relative flex justify-center">
