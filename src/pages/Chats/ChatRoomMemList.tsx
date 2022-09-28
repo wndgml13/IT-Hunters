@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
 import { UserInfoApi } from "../../APIs/UserInfoApi";
 
 import { useModal } from "../../hooks/useModal";
@@ -20,7 +19,6 @@ export const ChatRoomMemList = ({
   const node = useRef<null | HTMLDivElement>(null);
 
   const { data: userinfo } = UserInfoApi.getUserInfo();
-  console.log(userinfo);
 
   useModal({ node, tgVal, tg });
 
