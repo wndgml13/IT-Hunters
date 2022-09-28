@@ -17,6 +17,8 @@ export const Quest = ({ quest }: { quest: IQuest }) => {
     classes,
     createdAt,
     profileImg,
+    recentQuestId,
+    mainQuestId,
   } = quest;
 
   interface LooseObject {
@@ -27,10 +29,15 @@ export const Quest = ({ quest }: { quest: IQuest }) => {
     item => classesList[item] !== 0,
   );
 
-  console.log(quest);
   return (
     <li
-      onClick={() => navigate(`/posts/${questId}`)}
+      onClick={() =>
+        navigate(
+          `/posts/${
+            questId ? questId : mainQuestId ? mainQuestId : recentQuestId
+          }`,
+        )
+      }
       className="flex p-[10px] gap-x-[15px] bg-white rounded-lg border border-black shadow-md hover:bg-gray-100 cursor-pointer relative "
     >
       <div className="w-[66px]">
