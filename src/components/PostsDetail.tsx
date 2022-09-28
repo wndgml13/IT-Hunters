@@ -87,11 +87,12 @@ export const PostsDetail = () => {
     try {
       const { data } = await instance.post<OffersPost>(
         `api/quests/${id}/offers`,
-        { classType: "FRONTEND" },
+        { classType: "FRONTEND" || "BACKEND" || "DESIGNER" || "FULLSTACK" },
         {
           headers: { authorization: userToken },
         },
       );
+      console.log(data);
       alert("합류요청 완료!!");
       return data;
     } catch (err) {
@@ -140,14 +141,6 @@ export const PostsDetail = () => {
   const modalClose = () => {
     setDeleteModal(!deleteModal);
   };
-  // useEffect(() => {
-  //   const clickOutside = e => {
-  //     // 모달이 열려 있고 모달의 바깥쪽을 눌렀을 때 창 닫기
-  //     if (actionModal && node.current && !node.current.contains(e.target)) {
-  //       setActionModal(false);
-  //     }
-  //   };
-  // });
 
   return (
     <div className="w-full h-full overflow-y-scroll pb-[3.5rem] bg-slate-50">
