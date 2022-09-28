@@ -33,8 +33,6 @@ export const PostsDetail = () => {
   const [classes, setClasses] = useState({}); // 직군 아이콘
 
   const [deleteModal, setDeleteModal] = useState(false); // 게시글 삭제하기 모달창 띄우고 닫기
-  // const [actionModal, setActionModal] = useState(false); // 모달 바깥 창을 클릭했을 때 모달창 닫기
-  // const node = useRef(); // 모달 바깥 창을 클릭했을 때 모달창 닫기
 
   const userToken = getCookieToken();
   const queryClient = useQueryClient();
@@ -44,16 +42,18 @@ export const PostsDetail = () => {
 
   // 댓글, 답글 조회
   const { data: comments } = CommentApi.getComments(Number(id));
-
+  console.log(comments);
   // 댓글 작성
   const { mutateAsync: addComment } = CommentApi.addComment();
 
   const onSubmitComment = () => {
-    const payload = { id: Number(id), comment: comment };
-    addComment(payload).then(() => {
-      queryClient.invalidateQueries(["comments"]);
-    });
-    setComment("");
+    if (comment) {
+      const payload = { id: Number(id), comment: comment };
+      addComment(payload).then(() => {
+        queryClient.invalidateQueries(["comments"]);
+      });
+      setComment("");
+    }
   };
 
   const onEnterComment = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -137,6 +137,9 @@ export const PostsDetail = () => {
   });
 
   // 모달 바깥 창을 클릭했을 때 모달창 닫기
+  const modalClose = () => {
+    setDeleteModal(!deleteModal);
+  };
   // useEffect(() => {
   //   const clickOutside = e => {
   //     // 모달이 열려 있고 모달의 바깥쪽을 눌렀을 때 창 닫기
@@ -161,14 +164,21 @@ export const PostsDetail = () => {
       <div className="flex justify-start">
         <div className="m-4 relative w-[59px] h-[59px] bg-white rounded-full">
           <img
-            className="w-full h-full border rounded-full"
+            className="w-full h-full border rounded-full cursor-pointer"
             src={quest?.profileImg}
+            onClick={() => {
+              navigate(`/user/${userinfo.id}`);
+            }}
           />
         </div>
-
-        <p className="text-[14px] grid justify-items-start mt-8">
+        <button
+          className="h-full text-[14px] grid justify-items-start mt-8 hover:outline-none hover:border-b-2 border-black"
+          onClick={() => {
+            navigate(`/user/${userinfo.id}`);
+          }}
+        >
           {quest?.nickname}
-        </p>
+        </button>
       </div>
       <hr />
       <div className="flex justify-around text-[14px] mt-3 ">
@@ -316,13 +326,13 @@ export const PostsDetail = () => {
         {editDeleteToggle && (
           <div className="absolute right-5 top-[75px] flex-col grid justify-items-end drop-shadow-lg">
             <button
-              className="border-none text-brandBlue cursor-pointer inline-flex w-[90px] justify-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+              className="border-none text-brandBlue cursor-pointer inline-flex w-[90px] justify-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-50 focus:outline-none  focus:ring-offset-2 focus:ring-offset-gray-100"
               onClick={onEditPosts}
             >
               수정하기
             </button>
             <button
-              className=" border-none border text-red-400 cursor-pointer inline-flex w-[90px] justify-center bg-white px-4 py-2 text-sm font-medium  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+              className=" border-none border text-red-400 cursor-pointer inline-flex w-[90px] justify-center bg-white px-4 py-2 text-sm font-medium  hover:bg-gray-50 focus:outline-none focus:ring-offset-2 focus:ring-offset-gray-100"
               onClick={() => {
                 setDeleteModal(!deleteModal);
               }}
@@ -349,8 +359,12 @@ export const PostsDetail = () => {
       ))}
       {/* 댓글 입력란 */}
       <div className="flex row mt-5  gap-2 p-2">
+        <img
+          className="mt-1 w-12 h-12 border rounded-full"
+          src={userinfo?.profileImage}
+        />
         <input
-          className="bg-gray-50 border-2 border-brandBlue text-gray-900 text-sm rounded-2xl focus:outline-none focus:ring focus:ring-brandBlue  marker:w-full h-14 p-2.5 mx-1"
+          className="bg-gray-50 border-2 border-brandBlue text-gray-900 text-sm rounded-3xl focus:outline-none focus:ring focus:ring-brandBlue w-full h-14 p-2.5 mx-1"
           value={comment}
           placeholder="댓글을 입력해주세요."
           onChange={e => setComment(e.target.value)}
@@ -359,7 +373,7 @@ export const PostsDetail = () => {
 
         <button
           type="button"
-          className="text-white w-20 h-[57px] bg-brandBlue font-bold rounded-lg  px-5 py-2.5 mr-2 mb-[58px] focus:outline-none shadow-[5px_5px_0_0_rgb(244,200,40)]"
+          className="text-white text-sm w-20 h-[57px] bg-brandBlue font-bold rounded-2xl  px-5 py-1.5 mr-2 mb-3 focus:outline-none shadow-[5px_5px_0_0_rgb(244,200,40)]"
           onClick={onSubmitComment}
         >
           댓글달기
@@ -367,58 +381,57 @@ export const PostsDetail = () => {
       </div>
       {/* 게시글 삭제 모달창 */}
       {deleteModal && (
-        <>
+        <div onClick={modalClose}>
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
           <div className="fixed inset-0 z-10 overflow-y-auto">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
               <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-[250px] sm:max-w-lg">
-                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                  <div className="sm:flex sm:items-start">
-                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <svg
-                        className="h-6 w-6 text-red-600"
-                        fill="none"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                      >
-                        <path d="M12 10.5v3.75m-9.303 3.376C1.83 19.126 2.914 21 4.645 21h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 4.88c-.866-1.501-3.032-1.501-3.898 0L2.697 17.626zM12 17.25h.007v.008H12v-.008z" />
-                      </svg>
-                    </div>
-                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                      <span
-                        className="text-xl font-normal font-cookie"
-                        id="modal-title"
-                      >
-                        삭제하겠는가?
-                      </span>
+                <div onClick={e => e.stopPropagation()}>
+                  <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div className="sm:flex sm:items-start">
+                      <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <svg
+                          className="h-6 w-6 text-red-600"
+                          fill="none"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                        >
+                          <path d="M12 10.5v3.75m-9.303 3.376C1.83 19.126 2.914 21 4.645 21h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 4.88c-.866-1.501-3.032-1.501-3.898 0L2.697 17.626zM12 17.25h.007v.008H12v-.008z" />
+                        </svg>
+                      </div>
+                      <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <span
+                          className="text-xl font-normal font-cookie"
+                          id="modal-title"
+                        >
+                          삭제하겠는가?
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                  {deleteModal && (
+                  <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                    {deleteModal && (
+                      <button
+                        type="button"
+                        className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                        onClick={modalClose}
+                      >
+                        취소
+                      </button>
+                    )}
                     <button
                       type="button"
-                      className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                      onClick={() => {
-                        setDeleteModal(!deleteModal);
-                      }}
+                      className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                      onClick={onDeletepost}
                     >
-                      취소
+                      확인
                     </button>
-                  )}
-
-                  <button
-                    type="button"
-                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={onDeletepost}
-                  >
-                    확인
-                  </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

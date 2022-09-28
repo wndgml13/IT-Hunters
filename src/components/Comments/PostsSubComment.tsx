@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { SubCommentGet } from "../../types/postsDetailType";
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { subCommentApi } from "../../APIs/subCommentApi";
 import { useRecoilValue } from "recoil";
 import { loginInfoState } from "../../store/loginInfoState";
@@ -17,6 +17,7 @@ export const PostsSubComment = ({
   const queryClient = useQueryClient();
   const { id } = useParams();
   const userinfo = useRecoilValue(loginInfoState);
+  const navigate = useNavigate();
 
   const [editSubcomment, setEditsubComment] = useState(""); // 답글 수정
   const [editSubCommentToggle, setEditSubCommentToggle] = useState(false); // 답글 수정 토글
@@ -26,16 +27,18 @@ export const PostsSubComment = ({
     subCommentApi.modifiedSubComment();
 
   const onEditsubComment = () => {
-    const payload = {
-      id: Number(id),
-      commentId: coId,
-      subCommentId: sc.subCommentId,
-      editSubComment: editSubcomment,
-    };
-    modifiedSubComment(payload).then(() => {
-      queryClient.invalidateQueries(["comments"]);
-    });
-    setEditsubComment("");
+    if (editSubcomment) {
+      const payload = {
+        id: Number(id),
+        commentId: coId,
+        subCommentId: sc.subCommentId,
+        editSubComment: editSubcomment,
+      };
+      modifiedSubComment(payload).then(() => {
+        queryClient.invalidateQueries(["comments"]);
+      });
+      setEditsubComment("");
+    }
   };
 
   const onEntereditSubComment = async (
@@ -68,17 +71,28 @@ export const PostsSubComment = ({
         <div key={sc.subCommentId} className="mx-10 my-2">
           <div className="flex flex-row gap-2">
             <img
-              className="w-10 h-10 border rounded-full"
+              className="cursor-pointer w-10 h-10 border rounded-full"
               src={sc?.profileImage}
+              onClick={() => {
+                navigate(`/user/${sc.memberId}`);
+              }}
             />
-            <div className="mt-2">
-              <span>{sc.nickname}</span>
+            <div className="mt-2 h-full hover:outline-none hover:border-b-2 border-black">
+              <button
+                onClick={() => {
+                  navigate(`/user/${sc.memberId}`);
+                }}
+              >
+                {sc.nickname}
+              </button>
             </div>
             <p className="text-xs text-gray-400 mt-3 ml-2">
               {sc?.createdAt && convertDateText(sc?.createdAt)}
             </p>
           </div>
-          <span className="text-sm text-gray-700 mt-2">{sc.content}</span>
+          <div className="p-2 rounded-xl text-sm text-black mt-2">
+            <span>{sc.content}</span>
+          </div>
           {sc?.nickname === userinfo.nickname ? (
             <div className="text-sm">
               <button
@@ -103,7 +117,7 @@ export const PostsSubComment = ({
           <div className="gap-1">
             <input
               id="message"
-              className="bg-gray-50 border border-gary text-gray-900 text-sm rounded-2xl w-full h-14 my-1 p-2.5 focus:outline-none"
+              className="bg-gray-50 border border-gary text-gray-900 text-sm rounded-3xl w-full h-14 my-1 p-2.5 focus:outline-none"
               placeholder="답글 수정"
               value={editSubcomment}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,7 +125,7 @@ export const PostsSubComment = ({
               }}
               onKeyPress={onEntereditSubComment}
             />
-            <div className="mt-3 flex flex-row-reverse gap-2">
+            <div className="my-3 flex flex-row-reverse gap-2">
               <button
                 type="button"
                 className="text-white w-12 h-10 bg-[#F4C828] font-bold rounded-lg focus:outline-none"
