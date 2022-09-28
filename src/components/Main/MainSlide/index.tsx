@@ -15,6 +15,7 @@ export const MainSlide = () => {
     pauseOnHover: true,
     dots: true,
     arrows: false,
+    touchMove: true,
   };
   return (
     <>

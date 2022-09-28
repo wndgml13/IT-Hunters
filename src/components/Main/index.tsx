@@ -1,6 +1,6 @@
-import { MonthMonster } from "./MonthMonster";
 import { Quest } from "../Quest";
 import { MainSlide } from "./MainSlide";
+import { MonthMonsterList } from "./MonthMonsterSlide/MonthMonsterList";
 
 import { mainPageAPis } from "../../APIs/mainPageApis";
 
@@ -11,11 +11,11 @@ export const Main = () => {
   const { data: recentQuests }: { data: undefined | IQuest[] } =
     mainPageAPis.getRecentQuests();
 
-  const { data: monthMonster }: { data: undefined | IMonthMonster[] } =
-    mainPageAPis.getMonthMonter();
-
   const { data: popularQuests }: { data: undefined | IQuest[] } =
     mainPageAPis.getPopularQuests();
+
+  const { data: monthMonster }: { data: undefined | IMonthMonster[] } =
+    mainPageAPis.getMonthMonter();
 
   return (
     <main className="w-full m-auto overflow-y-scroll h-[calc(100%-100px)] overflow-x-hidden">
@@ -105,11 +105,7 @@ export const Main = () => {
           </h3>
           <button className="text-xs">더보기</button>
         </div>
-        <ul className="flex gap-x-[21px]">
-          {monthMonster?.map((monster: IMonthMonster) => (
-            <MonthMonster key={monster.nickname} monster={monster} />
-          ))}
-        </ul>
+        <MonthMonsterList monthMonster={monthMonster} />
       </section>
     </main>
   );
