@@ -1,13 +1,12 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 // import { BookmarkApi } from "../APIs/BookmarkApi";
 import { CommentApi } from "../APIs/CommentApi";
 import { PostsApi } from "../APIs/PostsApi";
 import { DeIcon, FeIcon, FuIcon } from "../assets/icons";
+import { getCookieToken } from "../config/cookies";
 import convertDateText from "../lib/convertDateText";
 import { loginInfoState } from "../store/loginInfoState";
 import { CommentGet } from "../types/postsDetailType";
@@ -71,7 +70,6 @@ export const PostsDetail = () => {
     navigate("/search");
   };
 
-
   // 게시글 북마크 POST
   // const { mutateAsync: bookMarkpost } = BookmarkApi.bookMarkpost();
 
@@ -105,7 +103,7 @@ export const PostsDetail = () => {
         <PageHeader pgTitle={"게시판"} />
       </div>
       <div className="flex mx-6 mt-[28px] mb-[18px]">
-        <div className="w-[59px] h-[59px rounded-full">
+        <div className="w-[59px] h-[59px] rounded-full">
           <img
             className="cursor-pointer w-full h-full border rounded-full"
             src={quest?.profileImg}
@@ -123,7 +121,6 @@ export const PostsDetail = () => {
             {quest?.nickname}
           </button>
         </div>
-
       </div>
       <hr />
       <div className="flex justify-around text-[14px] mt-3 ">
@@ -286,7 +283,6 @@ export const PostsDetail = () => {
             className="text-white w-full h-[57px] bg-brandBlue font-bold rounded-lg text-lg px-5 py-2.5 shadow-[5px_5px_0_0_rgb(244,200,40)]"
             onClick={() => {
               setOfferClassModal(!offerClassModal);
-              // onOfferHandler();
             }}
           >
             참가하기
@@ -298,24 +294,24 @@ export const PostsDetail = () => {
         <PostsComment key={co.commentId} co={co} />
       ))}
       {/* 댓글 입력란 */}
-      <div className="flex row mt-5  gap-2 p-2">
-        <input
-          className="bg-gray-50 border border-black text-gray-900 text-sm rounded-2xl focus:ring-blue-500 focus:border-blue-500 w-full h-14 p-2.5 mx-1"
-          value={comment}
-          placeholder="댓글을 입력해주세요."
-          onChange={e => setComment(e.target.value)}
-          onKeyPress={onEnterComment}
-        />
-
-        <button
-          type="button"
-          className="text-white w-20 h-[57px] bg-brandBlue font-bold rounded-lg  px-5 py-2.5 mr-2 mb-[58px] focus:outline-none shadow-[5px_5px_0_0_rgb(244,200,40)]"
-          onClick={onSubmitComment}
-        >
-          댓글달기
-        </button>
-      </div>
-
+      {getCookieToken() ? (
+        <div className="flex row mt-5  gap-2 p-2">
+          <input
+            className="bg-gray-50 border border-black text-gray-900 text-sm rounded-2xl focus:ring-blue-500 focus:border-blue-500 w-full h-14 p-2.5 mx-1"
+            value={comment}
+            placeholder="댓글을 입력해주세요."
+            onChange={e => setComment(e.target.value)}
+            onKeyPress={onEnterComment}
+          />
+          <button
+            type="button"
+            className="text-white w-20 h-[57px] bg-brandBlue font-bold rounded-lg  px-5 py-2.5 mr-2 mb-[20px] focus:outline-none shadow-[5px_5px_0_0_rgb(244,200,40)]"
+            onClick={onSubmitComment}
+          >
+            댓글달기
+          </button>
+        </div>
+      ) : null}
       {deleteModal && (
         <DeletePostModal
           tgVal={deleteModal}
