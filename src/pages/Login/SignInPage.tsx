@@ -67,7 +67,9 @@ export const SignInPage = () => {
 
   return (
     <div className="w-full h-full overflow-y-scroll pb-[3.5rem] p-6">
-      <h1 className="text-xl">로그인</h1>
+      <h1 className="text-xl">
+        <img src="/imgs/logo.png" alt="it몬스터 로고" className="w-[50%]" />
+      </h1>
       <div className="text-[28px] font-cookie mt-[70px]">
         <p className="font-cookie leading-10">
           <span className="font-cookie text-brandBlue">

@@ -1,4 +1,5 @@
 export interface IMonthMonster {
+  id: number;
   folioTitle: string;
   nickname: string;
   profileImage: string;

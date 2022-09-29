@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import { Quest } from "../Quest";
 import { MainSlide } from "./MainSlide";
 import { MonthMonsterList } from "./MonthMonsterSlide/MonthMonsterList";
@@ -10,6 +12,8 @@ import { getCookieToken } from "../../config/cookies";
 import { Link } from "react-router-dom";
 
 export const Main = () => {
+  const navigate = useNavigate();
+
   const { data: recentQuests }: { data: undefined | IQuest[] } =
     mainPageAPis.getRecentQuests();
 
@@ -50,25 +54,44 @@ export const Main = () => {
           <p>검색하고픈 직업을 선택하세요.</p>
         </div>
         <ul className="flex gap-[6.666%] pt-[20px]">
-          <li className="w-[20%] text-center">
+          <li
+            className="w-[20%] text-center cursor-pointer"
+            onClick={() => {
+              navigate("search", { state: "classType=frontend" });
+            }}
+          >
             <div
               className="p-[56%] bg-center"
               style={{
                 background: "center / 100% no-repeat url(/imgs/goBack.png)",
               }}
             ></div>
-            <p>백엔드</p>
+
+            <p>프론트엔드</p>
+
           </li>
-          <li className="w-[20%] text-center">
+          <li
+            className="w-[20%] text-center cursor-pointer"
+            onClick={() => {
+              navigate("search", { state: "classType=backend" });
+            }}
+          >
             <div
               className="p-[56%] bg-center"
               style={{
                 background: "left / 100% no-repeat url(/imgs/puu.png)",
               }}
             ></div>
-            <p>프론트</p>
+
+            <p>백엔드</p>
+
           </li>
-          <li className="w-[20%] text-center">
+          <li
+            className="w-[20%] text-center cursor-pointer"
+            onClick={() => {
+              navigate("search", { state: "classType=fullstack" });
+            }}
+          >
             <div
               className="p-[56%] bg-center"
               style={{
@@ -77,14 +100,19 @@ export const Main = () => {
             ></div>
             <p>디자이너</p>
           </li>
-          <li className="w-[20%] text-center">
+          <li
+            className="w-[20%] text-center cursor-pointer"
+            onClick={() => {
+              navigate("search", { state: "classType=designer" });
+            }}
+          >
             <div
               className="p-[56%] bg-center"
               style={{
                 background: "left / 100% no-repeat url(/imgs/pulls.png)",
               }}
             ></div>
-            <p>풀스택</p>
+            <p>풀스텍</p>
           </li>
         </ul>
       </section>
@@ -94,7 +122,6 @@ export const Main = () => {
             지금 가장{" "}
             <span className="text-brandBlue font-cookie">인기있는</span> 파티다!
           </h3>
-          <button className="text-xs">더보기</button>
         </div>
         <ul className="flex flex-col gap-y-3">
           {popularQuests?.map((quest: IQuest) => (
@@ -108,7 +135,6 @@ export const Main = () => {
             지금 모집하는{" "}
             <span className="text-brandBlue font-cookie">최신 파티</span>다!
           </h3>
-          <button className="text-xs">더보기</button>
         </div>
         <ul className="flex flex-col gap-y-3">
           {recentQuests?.map((quest: IQuest) => (

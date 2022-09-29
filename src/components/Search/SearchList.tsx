@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { questApi } from "../../APIs/QuestApi";
 import { filterState } from "../../store/filterState";
@@ -11,7 +12,7 @@ export const SearchList = () => {
   const [modal, setModal] = useRecoilState(modalState);
   const [filterParam, setFilterParam] = useRecoilState(filterState);
   const [title, setTitle] = useState("");
-
+  const selectClass = useLocation().state;
   const { data } = questApi.getFilteredQuests(filterParam);
 
   const searchParam = filterParam + "&title=" + title;
@@ -21,6 +22,12 @@ export const SearchList = () => {
       setFilterParam(searchParam);
     }
   };
+
+  useEffect(() => {
+    if (selectClass) {
+      setFilterParam(selectClass);
+    }
+  }, [selectClass]);
 
   return (
     <div className="h-full overflow-y-scroll pb-[3.5rem]">
@@ -62,9 +69,9 @@ export const SearchList = () => {
                 <path
                   d="M20.5206 2.66436C21.0938 2.01946 20.636 1 19.7732 1H2.22684C1.36399 1 0.906189 2.01946 1.47943 2.66436L8.54741 10.6158C8.71012 10.7989 8.8 11.0353 8.8 11.2802V18.1734C8.8 18.5669 9.03078 18.9239 9.38964 19.0853L11.7896 20.1653C12.4514 20.4631 13.2 19.9791 13.2 19.2534V11.2802C13.2 11.0353 13.2899 10.7989 13.4526 10.6158L20.5206 2.66436Z"
                   stroke="black"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             </div>

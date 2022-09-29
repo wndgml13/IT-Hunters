@@ -15,7 +15,7 @@ export const MonthMonsterList = ({
     centerPadding: "15%",
     slidesToShow: 1,
     speed: 1000,
-    autoplay: true,
+    // autoplay: true,
     autoplaySpeed: 2000,
     arrows: false,
     swipe: true,

@@ -13,7 +13,7 @@ export const questApi = {
     });
     return data;
   },
-  getFilteredQuests: (filterval: string) => {
+  getFilteredQuests: (filterval: string | unknown) => {
     return useQuery<IQuest[]>(["filterlist", filterval], () =>
       instance
         .get<IQuest[]>(`api/quests/search?${filterval}`)
