@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
-import { SearchIcon } from "../../assets/icons";
 import { filterState } from "../../store/filterState";
 import { modalState } from "../../store/modalState";
 import { DurationRange } from "../DurationRange";
@@ -28,7 +27,6 @@ export const SearchFilter = () => {
     const durationQuery = "duration=" + duration;
     const queryString = [...classQuery, ...stackQuery, durationQuery].join("&");
 
-    console.log(queryString);
     setFilter(queryString);
     setModal(false);
   };

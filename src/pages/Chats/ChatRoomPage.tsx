@@ -117,7 +117,7 @@ export const ChatRoomPage = () => {
         className="w-full absolute top-0 left-0 right-0 z-40 rounded-b-lg bg-white"
         style={{ boxShadow: "0px 4px 30px rgba(0, 0, 0, 0.05)" }}
       >
-        <div className="flex justify-between px-6 py-2 ">
+        <div className="flex justify-between px-6 py-3 ">
           <button onClick={() => navigate(-1)} className="mr-4 text-white">
             <svg
               width="10"
@@ -132,7 +132,7 @@ export const ChatRoomPage = () => {
               />
             </svg>
           </button>
-          <h1 className="text-2xl truncate font-cookie">
+          <h1 className="text-2xl truncate font-cookie py-1">
             {thisChatRoom?.channelName}
           </h1>
 
