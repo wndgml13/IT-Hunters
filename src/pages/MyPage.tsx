@@ -7,14 +7,12 @@ import { PortfolioApi } from "../APIs/PortfolioAPI";
 import { editedInfoType, UserInfoApi } from "../APIs/UserInfoApi";
 import { PageHeader } from "../components/PageHeader";
 // import { PortfolioApi } from "../APIs/PortfolioAPI";
-import { getCookieToken, removeCookieToken } from "../config/cookies";
+import { removeCookieToken } from "../config/cookies";
 import { useUploadImg } from "../hooks/useUploadImg";
-
 import { loginInfoState } from "../store/loginInfoState";
 import { LoginInfoType } from "../types/loginInfoType";
 import { EditPortFolio } from "./EditPortfoilio";
 import { EditStackPage } from "./EditStackPage";
-import { NoLoginError } from "./ErrorPage/NoLoginError";
 
 interface squad {
   memberId: number;
@@ -28,22 +26,20 @@ export const MyPage = () => {
   const [EUItoggle, setEUItoggle] = useState(false);
   const [folioToggle, setFolioToggle] = useState(false);
   const [stacksToggle, setStacksToggle] = useState(false);
-  const usertoken = getCookieToken();
   const queryClient = useQueryClient();
   const [profileImg, profileImgHandler, setProfileImg] = useUploadImg("");
-
-  console.log(profileImg);
+  const [editedNickname, setEditedNickname] = useState<string | undefined>();
   const { data: mysquad } = notificationApi.getMySquads();
 
   const userinfo = useRecoilValue(loginInfoState);
 
-  const [editedNickname, setEditedNickname] = useState<string | undefined>();
   const classes = ["프론트엔드", "백엔드", "디자이너", "풀스택"];
-  const [myClasses, setMyClasses] = useState(userinfo.className);
+  const [myClasses, setMyClasses] = useState("");
 
   const { mutateAsync: editInfo } = UserInfoApi.editUserInfo();
   const editedInfo: editedInfoType = { editedNickname, myClasses, profileImg };
 
+  const { data: myfolio } = PortfolioApi.getPortfolio(userinfo.id);
   const onSubmitUserInfo = () => {
     const editedData = { ...editedInfo };
     if (editedData.profileImg === userProfile?.profileImage) {
@@ -61,13 +57,9 @@ export const MyPage = () => {
   useEffect(() => {
     setUserProfile(userinfo);
     setProfileImg(userinfo.profileImage);
+    setMyClasses(userinfo.className);
+    setEditedNickname(userinfo.nickname);
   }, [userinfo]);
-
-  const { data: myfolio } = PortfolioApi.getPortfolio(userinfo.id);
-
-  if (!usertoken) {
-    return <NoLoginError />;
-  }
 
   return (
     <div className="w-full overflow-y-scroll h-full pb-[4rem] overflow-x-hidden bg-[#F8F8FA]">
@@ -80,7 +72,7 @@ export const MyPage = () => {
           <>
             <div className="relative flex justify-center">
               <img
-                className="w-[70px] h-[70px] rounded-full"
+                className="w-[70px] h-[70px] rounded-full overflow-hidden"
                 src={userProfile?.profileImage}
               />
 
@@ -142,7 +134,7 @@ export const MyPage = () => {
                 placeholder="닉네임을 입력해주세요"
                 value={editedNickname}
                 onChange={e => setEditedNickname(e.target.value)}
-                className="pl-2.5 py-2 border-b-[2px] text-center bg-[#f8f8fa] outline-none focus:border-brandBlue"
+                className="pl-2.5 py-2 mb-1 border-b-[2px] text-center bg-[#f8f8fa] outline-none focus:border-brandBlue"
               />
             </div>
             <ul className="flex justify-center gap-x-2">
@@ -158,7 +150,7 @@ export const MyPage = () => {
                   />
                   <label
                     htmlFor={c}
-                    className="text-center text-sm text-gray-300 cursor-pointer peer-checked:text-black "
+                    className="text-center text-mg text-gray-400 cursor-pointer peer-checked:text-black "
                   >
                     <p>{c}</p>
                   </label>
@@ -241,7 +233,26 @@ export const MyPage = () => {
         </div>
 
         <div className="mt-8">
-          <p className="text-lg font-bold">포트폴리오</p>{" "}
+          <p className="text-lg font-bold">
+            포트폴리오{" "}
+            <button
+              className="text-blue-600 ml-2"
+              onClick={() => setFolioToggle(!folioToggle)}
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4.19739 18H0.812264C0.596933 17.9997 0.390507 17.914 0.238245 17.7617C0.0859831 17.6094 0.000311476 17.403 1.38518e-05 17.1876V13.8006C-0.00106965 13.4806 0.0614222 13.1634 0.183862 12.8677C0.306302 12.572 0.486251 12.3035 0.713264 12.0779L12.0758 0.713089C12.5325 0.256494 13.1518 0 13.7976 0C14.4433 0 15.0627 0.256494 15.5194 0.713089L17.2879 2.47182C17.7439 2.92913 18 3.54866 18 4.19455C18 4.84044 17.7439 5.45997 17.2879 5.91728L5.92539 17.2821C5.69927 17.5103 5.43007 17.6913 5.13342 17.8145C4.83678 17.9377 4.51861 18.0008 4.19739 18ZM10.5548 4.53099L1.86189 13.2268C1.78638 13.302 1.72653 13.3914 1.68578 13.4899C1.64504 13.5884 1.62422 13.694 1.62451 13.8006V16.3763H4.19739C4.30414 16.3767 4.40991 16.3559 4.50859 16.3151C4.60726 16.2744 4.69688 16.2145 4.77226 16.1389L13.4651 7.44421L10.5548 4.53099ZM13.8026 1.62002C13.6959 1.6197 13.5901 1.64051 13.4915 1.68126C13.3928 1.72201 13.3032 1.78189 13.2278 1.85745L11.7 3.38326L14.6138 6.2976L16.1393 4.77179C16.2907 4.61919 16.3756 4.41292 16.3756 4.19793C16.3756 3.98293 16.2907 3.77666 16.1393 3.62406L14.3753 1.85745C14.3001 1.78187 14.2107 1.72197 14.1122 1.68122C14.0137 1.64046 13.9081 1.61966 13.8015 1.62002H13.8026Z"
+                  fill="black"
+                />
+              </svg>
+            </button>
+          </p>{" "}
           <div className="flex justify-between mt-6">
             {myfolio?.notionUrl !== "" && myfolio?.notionUrl !== null ? (
               <a
@@ -309,13 +320,13 @@ export const MyPage = () => {
         </div>
       </div>
       <button
-        className="text-red-600 bg-white w-full mt-4 py-6"
+        className="text-white font-cookie bg-brandBlue text-lg w-full mt-4 py-6"
         onClick={() => {
           removeCookieToken();
           window.location.href = "/";
         }}
       >
-        logout
+        LOGOUT
       </button>
     </div>
   );

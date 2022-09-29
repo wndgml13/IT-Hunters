@@ -1,5 +1,7 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { chatApi } from "../../APIs/ChatApi";
 import { UserInfoApi } from "../../APIs/UserInfoApi";
 
 import { useModal } from "../../hooks/useModal";
@@ -15,6 +17,19 @@ export const ChatRoomMemList = ({
   tg: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { mutateAsync: exitChatroom } = chatApi.exitChatRoom();
+
+  console.log(roomInfo.channelId);
+
+  const onExitChatroom = () => {
+    exitChatroom(roomInfo.channelId).then(() => {
+      queryClient.invalidateQueries(["chatlist"]);
+      alert("스쿼드를 나갑니다");
+      navigate("/chats");
+    });
+  };
 
   const node = useRef<null | HTMLDivElement>(null);
 
@@ -56,35 +71,37 @@ export const ChatRoomMemList = ({
         </div>
         <div className="absolute bottom-0 w-full p-3 bg-white">
           {" "}
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M21.6011 11.9067L8.27091 11.9067"
-              stroke="#4B23B8"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M16.7538 17.9658L22.813 11.9067L16.7538 5.84749"
-              stroke="#4B23B8"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M1 22.813L0.999998 0.999999"
-              stroke="#4B23B8"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <button onClick={onExitChatroom}>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M21.6011 11.9067L8.27091 11.9067"
+                stroke="#4B23B8"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M16.7538 17.9658L22.813 11.9067L16.7538 5.84749"
+                stroke="#4B23B8"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M1 22.813L0.999998 0.999999"
+                stroke="#4B23B8"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
         </div>
       </div>
     </div>

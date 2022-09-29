@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import { Quest } from "../Quest";
 import { MainSlide } from "./MainSlide";
 import { MonthMonsterList } from "./MonthMonsterSlide/MonthMonsterList";
@@ -10,6 +12,8 @@ import { getCookieToken } from "../../config/cookies";
 import { Link } from "react-router-dom";
 
 export const Main = () => {
+  const navigate = useNavigate();
+
   const { data: recentQuests }: { data: undefined | IQuest[] } =
     mainPageAPis.getRecentQuests();
 
@@ -20,13 +24,13 @@ export const Main = () => {
     mainPageAPis.getMonthMonter();
 
   return (
-    <main className="w-full m-auto overflow-y-scroll h-[calc(100%-100px)] overflow-x-hidden">
+    <main className="w-full m-auto overflow-y-scroll h-full overflow-x-hidden">
       <section className="pb-[30px]">
         <MainSlide />
       </section>
       {!getCookieToken() ? (
-        <div className="bg-brandBlue mx-6 py-6 rounded-lg">
-          <p className="text-white text-center font-cookie text-xl px-12">
+        <div className="bg-brandBlue mx-6 my-2 py-6 rounded-lg">
+          <p className="text-white text-center font-cookie text-xl px-8">
             함께 IT괴물을 무찌를 용맹한 <br />
             몬스터를 모집한다! 지원하겠는가?{" "}
           </p>
@@ -50,25 +54,42 @@ export const Main = () => {
           <p>검색하고픈 직업을 선택하세요.</p>
         </div>
         <ul className="flex gap-[6.666%] pt-[20px]">
-          <li className="w-[20%] text-center">
+          <li
+            className="w-[20%] text-center cursor-pointer"
+            onClick={() => {
+              navigate("search", { state: "classType=frontend" });
+            }}
+          >
             <div
               className="p-[56%] bg-center"
               style={{
                 background: "center / 100% no-repeat url(/imgs/goBack.png)",
               }}
             ></div>
-            <p>백엔드</p>
+
+            <p>프론트엔드</p>
           </li>
-          <li className="w-[20%] text-center">
+          <li
+            className="w-[20%] text-center cursor-pointer"
+            onClick={() => {
+              navigate("search", { state: "classType=backend" });
+            }}
+          >
             <div
               className="p-[56%] bg-center"
               style={{
                 background: "left / 100% no-repeat url(/imgs/puu.png)",
               }}
             ></div>
-            <p>프론트</p>
+
+            <p>백엔드</p>
           </li>
-          <li className="w-[20%] text-center">
+          <li
+            className="w-[20%] text-center cursor-pointer"
+            onClick={() => {
+              navigate("search", { state: "classType=fullstack" });
+            }}
+          >
             <div
               className="p-[56%] bg-center"
               style={{
@@ -77,14 +98,19 @@ export const Main = () => {
             ></div>
             <p>디자이너</p>
           </li>
-          <li className="w-[20%] text-center">
+          <li
+            className="w-[20%] text-center cursor-pointer"
+            onClick={() => {
+              navigate("search", { state: "classType=designer" });
+            }}
+          >
             <div
               className="p-[56%] bg-center"
               style={{
                 background: "left / 100% no-repeat url(/imgs/pulls.png)",
               }}
             ></div>
-            <p>풀스택</p>
+            <p>풀스텍</p>
           </li>
         </ul>
       </section>
@@ -94,7 +120,6 @@ export const Main = () => {
             지금 가장{" "}
             <span className="text-brandBlue font-cookie">인기있는</span> 파티다!
           </h3>
-          <button className="text-xs">더보기</button>
         </div>
         <ul className="flex flex-col gap-y-3">
           {popularQuests?.map((quest: IQuest) => (
@@ -108,7 +133,6 @@ export const Main = () => {
             지금 모집하는{" "}
             <span className="text-brandBlue font-cookie">최신 파티</span>다!
           </h3>
-          <button className="text-xs">더보기</button>
         </div>
         <ul className="flex flex-col gap-y-3">
           {recentQuests?.map((quest: IQuest) => (
@@ -122,9 +146,23 @@ export const Main = () => {
             <span className="text-brandBlue font-cookie">이달의 몬스터</span>
             다! 잘 확인하도록.
           </h3>
-          <button className="text-xs">더보기</button>
         </div>
         <MonthMonsterList monthMonster={monthMonster} />
+      </section>
+      <section className="px-6 mt-40 mb-[5rem] text-xs">
+        <img src="/imgs/logo.png" alt="IT몬스터즈 로고" className="w-[40%]" />
+        <p className="mt-6 mb-3">
+          <span className="font-bold">FRONTEND - </span> Noh Jinseo . Won
+          JungHui . Hwang TaeYoung{" "}
+        </p>
+        <p className="mb-3">
+          <span className="font-bold">BACKEND - </span> Jeon Jiman . Rhee Wonkyu
+          . Lee Dong Gyu . Kim JinMoo{" "}
+        </p>
+        <p>
+          <span className="font-bold">DESIGNER - </span> Jeong A Yoon
+        </p>
+        <p className="text-end mt-6">@ 2022 IT-Monsters ALL RIGHT RESERVED</p>
       </section>
     </main>
   );
