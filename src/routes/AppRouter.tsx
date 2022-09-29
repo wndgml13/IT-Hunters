@@ -17,8 +17,11 @@ import { OAuthKakao } from "../pages/Login/OAuthKakao";
 import { OAuthGoogle } from "../pages/Login/OAuthGoogle";
 import { OAuthNaver } from "../pages/Login/OAuthNaver";
 import { UserPage } from "../pages/UserPage";
+import { getCookieToken } from "../config/cookies";
+import { NoLoginError } from "../pages/ErrorPage/NoLoginError";
 
 const AppRouter = () => {
+  const usertoken = getCookieToken();
   return (
     <BrowserRouter>
       <Routes>
@@ -37,14 +40,29 @@ const AppRouter = () => {
         <Route path="/oauth/naver/callback/*" element={<OAuthNaver />} />
         <Route path="auth" element={<OAuthGoogle />} />
         <Route path="/findmyemail" element={<FindMyEmail />} />
-        <Route path="/mypage" element={<MyPage />} />
+        <Route
+          path="/mypage"
+          element={usertoken ? <MyPage /> : <NoLoginError />}
+        />
         <Route path="/user/:id" element={<UserPage />} />
         <Route path="/posts/:id" element={<PostsDetail />} />
-        <Route path="/addposts" element={<AddPosts />} />
+        <Route
+          path="/addposts"
+          element={usertoken ? <AddPosts /> : <NoLoginError />}
+        />
         <Route path="/search" element={<SearchPage />} />
-        <Route path="/chats" element={<ChatListPage />} />
-        <Route path="/chats/:id" element={<ChatRoomPage />} />
-        <Route path="notification" element={<NotificationPage />} />
+        <Route
+          path="/chats"
+          element={usertoken ? <ChatListPage /> : <NoLoginError />}
+        />
+        <Route
+          path="/chats/:id"
+          element={usertoken ? <ChatRoomPage /> : <NoLoginError />}
+        />
+        <Route
+          path="notification"
+          element={usertoken ? <NotificationPage /> : <NoLoginError />}
+        />
         <Route path="/editposts/:id" element={<EditPosts />} />
       </Routes>
       <FooterNavBar />

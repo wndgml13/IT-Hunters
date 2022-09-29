@@ -1,9 +1,8 @@
 import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { OAuthAPI } from "../../APIs/OAuthApi";
 
 export const OAuthNaver = () => {
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const naverToken = searchParams.get("code");
@@ -14,9 +13,9 @@ export const OAuthNaver = () => {
       if (naverToken && naverState) {
         OAuthAPI.loginWithNaver(naverToken, naverState);
       }
-      navigate("/");
+      window.location.replace("/");
     } catch (err) {
-      console.log(err);
+      alert("네이버 로그인에 실패하였습니다.");
     }
   }, []);
   return <div>Login ~~</div>;

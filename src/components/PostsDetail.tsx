@@ -1,5 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 // import { BookmarkApi } from "../APIs/BookmarkApi";
@@ -69,6 +71,7 @@ export const PostsDetail = () => {
     navigate("/search");
   };
 
+
   // 게시글 북마크 POST
   // const { mutateAsync: bookMarkpost } = BookmarkApi.bookMarkpost();
 
@@ -120,6 +123,7 @@ export const PostsDetail = () => {
             {quest?.nickname}
           </button>
         </div>
+
       </div>
       <hr />
       <div className="flex justify-around text-[14px] mt-3 ">
@@ -171,6 +175,23 @@ export const PostsDetail = () => {
               </p>
             </li>
           ))}
+        </ul>
+      </div>
+      <div className="bg-white w-full mt-3 p-6">
+        <p>남은 직업군</p>
+        <ul className="grid gap-2 w-full grid-cols-2 mt-3">
+          <li className="grid gap-2 grid-cols-2">
+            <p>프론트엔드</p> <p>: {quest?.classes.frontend} 명</p>
+          </li>
+          <li className="grid gap-2 grid-cols-2">
+            <p>백엔드 </p> <p>: {quest?.classes.backend} 명</p>
+          </li>
+          <li className="grid gap-2 grid-cols-2">
+            <p>디자이너 </p> <p>: {quest?.classes.designer} 명</p>
+          </li>
+          <li className="grid gap-2 grid-cols-2">
+            <p>풀스택 </p> <p>: {quest?.classes.fullstack} 명</p>
+          </li>
         </ul>
       </div>
       <div className="relative bg-white w-full mt-3 pt-7" ref={contentTab}>

@@ -14,7 +14,6 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
   const { id } = useParams();
   const userinfo = useRecoilValue(loginInfoState);
   const navigate = useNavigate();
-
   const [subComment, setSubcomment] = useState<string>(""); // 답글 추가
   const [editComment, seteditComment] = useState(""); // 댓글 수정
 
