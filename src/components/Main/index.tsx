@@ -68,7 +68,6 @@ export const Main = () => {
             ></div>
 
             <p>프론트엔드</p>
-
           </li>
           <li
             className="w-[20%] text-center cursor-pointer"
@@ -84,7 +83,6 @@ export const Main = () => {
             ></div>
 
             <p>백엔드</p>
-
           </li>
           <li
             className="w-[20%] text-center cursor-pointer"
