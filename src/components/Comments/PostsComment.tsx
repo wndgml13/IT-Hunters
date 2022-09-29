@@ -8,6 +8,7 @@ import { subCommentApi } from "../../APIs/subCommentApi";
 import { useRecoilValue } from "recoil";
 import { loginInfoState } from "../../store/loginInfoState";
 import convertDateText from "../../lib/convertDateText";
+import { getCookieToken } from "../../config/cookies";
 
 export const PostsComment = ({ co }: { co: CommentGet }) => {
   const queryClient = useQueryClient();
@@ -131,14 +132,16 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
               </button>
             </div>
           ) : null}
-          <button
-            className="mb-2 text-sm text-gray-400/100 hover:text-black"
-            onClick={() => {
-              setSubCommentToggle(!subCommentToggle);
-            }}
-          >
-            답글 달기
-          </button>
+          {getCookieToken() ? (
+            <button
+              className="mb-2 text-sm text-gray-400/100 hover:text-black"
+              onClick={() => {
+                setSubCommentToggle(!subCommentToggle);
+              }}
+            >
+              답글 달기
+            </button>
+          ) : null}
         </div>
         {/* 댓글 Edit 버튼 */}
         {editCommentToggle && (
