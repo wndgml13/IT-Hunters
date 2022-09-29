@@ -69,8 +69,6 @@ export const PostsDetail = () => {
     navigate("/search");
   };
 
-  // 신청하기(합류요청) POST -- 작업중
-
   // 게시글 북마크 POST
   // const { mutateAsync: bookMarkpost } = BookmarkApi.bookMarkpost();
 

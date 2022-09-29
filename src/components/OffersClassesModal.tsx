@@ -39,10 +39,12 @@ export const OffersClassesModal = ({
         { classType: classesList[myClasses] },
       );
       alert("합류요청 완료!!");
+      tg(!tgVal); // 합류요청 시 모달창 닫기
       return data;
     } catch (err) {
       if (err instanceof AxiosError) {
         alert(err.response?.data.message);
+        tg(!tgVal); // 합류요청 시 모달창 닫기
       }
     }
   };
