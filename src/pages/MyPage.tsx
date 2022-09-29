@@ -72,7 +72,7 @@ export const MyPage = () => {
           <>
             <div className="relative flex justify-center">
               <img
-                className="w-[70px] h-[70px] rounded-full"
+                className="w-[70px] h-[70px] rounded-full overflow-hidden"
                 src={userProfile?.profileImage}
               />
 
@@ -320,7 +320,7 @@ export const MyPage = () => {
         </div>
       </div>
       <button
-        className="text-red-600 bg-white text-lg w-full mt-4 py-6"
+        className="text-white font-cookie bg-brandBlue text-lg w-full mt-4 py-6"
         onClick={() => {
           removeCookieToken();
           window.location.href = "/";

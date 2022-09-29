@@ -5,6 +5,16 @@ module.exports = {
     fontFamily: {
       cookie: ["It-Monsters", "Noto Sans KR", "sans-serif"],
     },
+    screens: {
+      sm: { max: "375px" },
+      md: { max: "640px" },
+      lg: { max: "960px" },
+      xl: { max: "1366px" },
+      min_sm: { min: "375px" },
+      min_md: { min: "640px" },
+      min_lg: { min: "960px" },
+      min_xl: { min: "1366px" },
+    },
     extend: {
       colors: {
         fontBlack: "#191919",

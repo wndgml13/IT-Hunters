@@ -1,7 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 // import { BookmarkApi } from "../APIs/BookmarkApi";
@@ -71,7 +69,6 @@ export const PostsDetail = () => {
     navigate("/search");
   };
 
-
   // 게시글 북마크 POST
   // const { mutateAsync: bookMarkpost } = BookmarkApi.bookMarkpost();
 
@@ -105,7 +102,7 @@ export const PostsDetail = () => {
         <PageHeader pgTitle={"게시판"} />
       </div>
       <div className="flex mx-6 mt-[28px] mb-[18px]">
-        <div className="w-[59px] h-[59px rounded-full">
+        <div className="w-[59px] h-[59px] rounded-full">
           <img
             className="cursor-pointer w-full h-full border rounded-full"
             src={quest?.profileImg}
@@ -123,7 +120,6 @@ export const PostsDetail = () => {
             {quest?.nickname}
           </button>
         </div>
-
       </div>
       <hr />
       <div className="flex justify-around text-[14px] mt-3 ">
