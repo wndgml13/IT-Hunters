@@ -27,7 +27,6 @@ export const SearchFilter = () => {
     const durationQuery = "duration=" + duration;
     const queryString = [...classQuery, ...stackQuery, durationQuery].join("&");
 
-    console.log(queryString);
     setFilter(queryString);
     setModal(false);
   };

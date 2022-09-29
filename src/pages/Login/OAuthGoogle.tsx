@@ -7,7 +7,6 @@ export const OAuthGoogle = () => {
 
   const googleToken = searchParams.get("accessToken");
 
-  console.log(googleToken);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,7 +14,7 @@ export const OAuthGoogle = () => {
       setAccessToken(`BEARAR ${googleToken}`);
       navigate("/");
     } catch (err) {
-      console.log(err);
+      alert("구글 로그인에 실패하였습니다.");
     }
   }, []);
   return <div>Login ~~</div>;

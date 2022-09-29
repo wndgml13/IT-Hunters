@@ -1,6 +1,7 @@
 import { AxiosError } from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { PageHeader } from "../../components/PageHeader";
 import { instance } from "../../config/axios";
 import { validSuccess, validError } from "./formStyle";
 
@@ -44,12 +45,10 @@ export const SignUpPage = () => {
       const { data } = await instance.post("/api/members/checkId", {
         email,
       });
-      console.log(data);
       setEmailValid(true);
       setEmailCheckMsg(data.data);
     } catch (err) {
       if (err instanceof AxiosError) {
-        console.log(err.response?.data.message);
         setEmailValid(false);
         setEmailCheckMsg(err.response?.data.message);
       }
@@ -61,12 +60,10 @@ export const SignUpPage = () => {
       const { data } = await instance.post("/api/members/checkNickname", {
         nickname,
       });
-      console.log(data);
       setNicknameValid(true);
       setNicknameCheckMsg(data.data);
     } catch (err) {
       if (err instanceof AxiosError) {
-        console.log(err.response?.data.message);
         setNicknameValid(false);
         setNicknameCheckMsg(err.response?.data.message);
       }
@@ -78,10 +75,13 @@ export const SignUpPage = () => {
       const { data } = await instance.post("/api/members/sendSmsForSignup", {
         phoneNumber: phoneNum,
       });
-      console.log(data);
+      alert("인증번호 발송");
       setPhoneNumValidToggle(true);
+      return data;
     } catch (err) {
-      console.log(err);
+      if (err instanceof AxiosError) {
+        alert(err.response?.data.message);
+      }
     }
   };
 
@@ -91,9 +91,12 @@ export const SignUpPage = () => {
         phoneNumber: phoneNum,
         authNumber: authPhoneNum,
       });
-      console.log(data);
+      alert("인증성공");
+      return data;
     } catch (err) {
-      console.log(err);
+      if (err instanceof AxiosError) {
+        alert(err.response?.data.message);
+      }
     }
   };
 
@@ -106,15 +109,15 @@ export const SignUpPage = () => {
           nickname,
           phoneNumber: phoneNum,
         });
-        console.log(data);
         alert("회원가입 성공");
         setEmail("");
         setPassword("");
         setPasswordConfirm("");
         setNickname("");
         navigate("/signin");
+        return data;
       } catch (error) {
-        console.log(error);
+        alert("회원가입에 실패하였습니다.");
       }
     } else {
       alert("입력이 잘못되었습니다");
@@ -122,8 +125,11 @@ export const SignUpPage = () => {
   };
 
   return (
-    <div className="w-full h-full overflow-y-scroll pb-[10rem] p-6">
-      <h1 className="text-xl">회원가입</h1>
+    <div className="w-full h-full overflow-y-scroll pb-[10rem] px-6">
+      <h1 className="text-xl">
+        <PageHeader pgTitle={"회원가입"} />
+      </h1>
+
       <div className="text-[28px] font-cookie mt-[32px]">
         <p className="font-cookie leading-10">
           IT의 세계에 온것을

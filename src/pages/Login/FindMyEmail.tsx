@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { instance } from "../../config/axios";
@@ -7,16 +8,19 @@ export const FindMyEmail = () => {
   const [phoneNum, setPhoneNum] = useState("");
   const [phoneNumValidToggle, setPhoneNumValidToggle] = useState(false);
   const [authPhoneNum, setAuthPhoneNum] = useState("");
-  // const [myEmail, setMyEmail] = useState<string>();
+  const [myemail, setMyemail] = useState("");
+  const [error, setError] = useState("");
+
   const checkPhoneNum = async () => {
     try {
       const { data } = await instance.post("/api/members/sendAuth", {
         phoneNumber: phoneNum,
       });
-      console.log(data);
       setPhoneNumValidToggle(true);
+      return data;
     } catch (err) {
-      console.log(err);
+      alert("인증번호 발송에 실패하였습니다. 다시 시도해주세요");
+      return err;
     }
   };
   const findMyID = async () => {
@@ -25,9 +29,11 @@ export const FindMyEmail = () => {
         phoneNumber: phoneNum,
         authNumber: authPhoneNum,
       });
-      console.log(data);
+      setMyemail(data.data);
     } catch (err) {
-      console.log(err);
+      if (err instanceof AxiosError) {
+        setError(err.response?.data.message);
+      }
     }
   };
 
@@ -53,7 +59,10 @@ export const FindMyEmail = () => {
         </button>
         <p className="ml-4 text-lg">아이디 찾기</p>
       </div>
-      <div className="mt-20 flex justify-center">
+      <div className="flex justify-center mt-16">
+        <img src="/imgs/puu.png" className="w-[60%] h-[60%]" />
+      </div>
+      <div className="mt-14 flex justify-center">
         <p className="w-4/5 text-sm text-center">
           회원가입시 등록한
           <br /> 전화번호로 아이디를 확인할수 있습니다.
@@ -100,6 +109,8 @@ export const FindMyEmail = () => {
           </div>
         </div>
       ) : null}
+      {error && <p className="text-red-500 mt-2 ml-2 text-sm">{error}</p>}
+      {myemail && <p className="text-center mt-10">{myemail}</p>}
       <button
         type="button"
         onClick={findMyID}
