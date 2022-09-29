@@ -9,7 +9,7 @@ const userToken = {
 export const notificationApi = {
   getQuestOffer: () => {
     return useQuery(["questoffer"], async () => {
-      const { data } = await instance.get("/api/offers", userToken);
+      const { data } = await instance.get("/api/offers");
       return data;
     });
   },

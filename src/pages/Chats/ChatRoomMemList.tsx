@@ -21,8 +21,6 @@ export const ChatRoomMemList = ({
 
   const { mutateAsync: exitChatroom } = chatApi.exitChatRoom();
 
-  console.log(roomInfo.channelId);
-
   const onExitChatroom = () => {
     exitChatroom(roomInfo.channelId).then(() => {
       queryClient.invalidateQueries(["chatlist"]);
