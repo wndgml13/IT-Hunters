@@ -30,7 +30,7 @@ export const MonsterStack = ({
 }) => {
   const iConCss = "w-[29px] h-[29px] rounded-[50%] border";
   interface IStackList {
-    [key: string]: number | JSX.Element;
+    [key: string]: JSX.Element;
   }
   const stackList: IStackList = {
     Typescript: <TsIcon className={iConCss} />,

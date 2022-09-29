@@ -1,20 +1,11 @@
 import { Link } from "react-router-dom";
 
-import { SearchIcon } from "../assets/icons";
-
 export const Header = () => {
   return (
     <header className="w-full sticky">
-      <ul className="flex  justify-between px-[26px] w-full h-[45px] items-center ">
-        <li>
-          <Link to="/">ITmonsters</Link>
-        </li>
-        <li>
-          <Link to="/search">
-            <SearchIcon />
-          </Link>
-        </li>
-      </ul>
+      <Link to="/" className="w-full sticky py-[10px] block">
+        <img src="/imgs/logo.png" alt="IT몬스터즈 로고" className="w-[40%]" />
+      </Link>
     </header>
   );
 };
