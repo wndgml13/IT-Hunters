@@ -38,7 +38,7 @@ export const EditPosts = () => {
   const { mutateAsync: editPosts } = PostsApi.editPosts();
 
   const onEditPostsHandler = () => {
-    if (content && title) {
+    if (content && title && backend + frontend + designer + fullstack > 0) {
       try {
         const payload = {
           id: Number(id),
@@ -58,7 +58,7 @@ export const EditPosts = () => {
         alert("게시글 수정 완료!");
         navigate("/search");
       } catch (error) {
-        console.log(error);
+        alert("게시글 수정에 실패하셨습니다.");
       }
     } else {
       alert("제목과 프로젝트 내용을 입력해 주세요!!");

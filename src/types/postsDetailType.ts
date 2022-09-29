@@ -18,8 +18,10 @@ export interface IQuestDetail {
   stacks: string[];
   id: number;
   profileImg: string;
+  memberId: number;
 }
 export interface SubCommentGet {
+  memberId: number;
   subCommentId: number;
   nickname: string;
   content: string;
@@ -29,6 +31,7 @@ export interface SubCommentGet {
 }
 
 export interface CommentGet {
+  memberId: number;
   commentId: number;
   nickname: string;
   content: string;

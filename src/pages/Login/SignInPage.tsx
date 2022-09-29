@@ -48,10 +48,10 @@ export const SignInPage = () => {
         setPassword("");
         navigate("/");
       } catch (error) {
-        console.log(error);
+        alert("아이디 혹은 비밀번호가 맞지않습니다. 다시한번 확인해주세요.");
       }
     } else {
-      console.log("입력이 잘못되었습니다");
+      alert("입력이 잘못되었습니다");
     }
   };
 
@@ -114,15 +114,15 @@ export const SignInPage = () => {
       </div>
 
       <div className="flex justify-end mb-[24px]">
-        <p className="text-sm font-extralight">
+        <p className="text-sm font-extralight mr-2">
           계정을 잊으셨나요?{" "}
           <Link to="#" className="text-blue-500">
             아이디찾기
           </Link>{" "}
-          혹은{" "}
+          {/* 혹은{" "}
           <Link to="#" className="text-blue-500">
             비밀번호찾기
-          </Link>{" "}
+          </Link>{" "} */}
         </p>
       </div>
 
@@ -137,25 +137,19 @@ export const SignInPage = () => {
       </button>
 
       <div className="grid grid-cols-3 place-items-center mb-[69px]">
-        <button
-          className="w-[68px] h-[68px] rounded-full bg-gray-300 "
-          onClick={onKakaoLogin}
-        >
+        <button className="w-[64px] h-[64px]" onClick={onKakaoLogin}>
           <img
             className="w-full h-full rounded-full"
             src="https://play-lh.googleusercontent.com/KwGCiEolNEeR9Q4RFOnDtb8Pvqs3LNiQEdE07wMCnoULO3yLUprHbGGLBYNEt8k7WJY"
           />
         </button>
-        <button
-          className="w-[68px] h-[68px] rounded-full bg-gray-300 "
-          onClick={onNaverLogin}
-        >
-          {/* <img className= 'w-full h-full' alt='profileImg' /> */}
+        <button className="w-[64px] h-[64px]" onClick={onNaverLogin}>
+          <img
+            className="w-full h-full rounded-full"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFAIptpOidYLp81FCTWsAHPyW4wvlxM3wENhodrjHSRYgLE60WPvKvgEQmKWS5ETj9g-k&usqp=CAU"
+          />
         </button>
-        <button
-          className="w-[68px] h-[68px] rounded-full bg-gray-300 "
-          onClick={onGoogleLogin}
-        >
+        <button className="w-[64px] h-[64px]" onClick={onGoogleLogin}>
           <img
             className="w-full h-full rounded-full"
             src="https://staffordonline.org/wp-content/uploads/2019/01/Google.jpg"

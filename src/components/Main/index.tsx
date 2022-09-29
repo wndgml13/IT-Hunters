@@ -8,6 +8,8 @@ import { mainPageAPis } from "../../APIs/mainPageApis";
 
 import { IMonthMonster } from "../../types/mainpageType";
 import { IQuest } from "../../types/questType";
+import { getCookieToken } from "../../config/cookies";
+import { Link } from "react-router-dom";
 
 export const Main = () => {
   const navigate = useNavigate();
@@ -26,6 +28,23 @@ export const Main = () => {
       <section className="pb-[30px]">
         <MainSlide />
       </section>
+      {!getCookieToken() ? (
+        <div className="bg-brandBlue mx-6 py-6 rounded-lg">
+          <p className="text-white text-center font-cookie text-xl px-12">
+            함께 IT괴물을 무찌를 용맹한 <br />
+            몬스터를 모집한다! 지원하겠는가?{" "}
+          </p>
+          <div className="flex justify-center mt-4">
+            <Link
+              to="/signin"
+              className="bg-white text-xl font-cookie rounded-3xl text-brandBlue py-2 px-12 "
+            >
+              로그인하기
+            </Link>
+          </div>
+        </div>
+      ) : null}
+      <section></section>
       <section className="p-6">
         <div className="mb-[20px]">
           <h3 className="mb-[10px] text-xl font-normal font-cookie">
@@ -47,7 +66,9 @@ export const Main = () => {
                 background: "center / 100% no-repeat url(/imgs/goBack.png)",
               }}
             ></div>
+
             <p>프론트엔드</p>
+
           </li>
           <li
             className="w-[20%] text-center cursor-pointer"
@@ -61,7 +82,9 @@ export const Main = () => {
                 background: "left / 100% no-repeat url(/imgs/puu.png)",
               }}
             ></div>
+
             <p>백엔드</p>
+
           </li>
           <li
             className="w-[20%] text-center cursor-pointer"

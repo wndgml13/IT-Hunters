@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { getCookieToken } from "../config/cookies";
 import { useNavigate } from "react-router-dom";
 import { useInput } from "../hooks/useInput";
-import { NoLoginError } from "../pages/ErrorPage/NoLoginError";
 import { DurationRange } from "./DurationRange";
 import { StackListDropdwon } from "./StackListDropdown";
 import { PostsApi } from "../APIs/PostsApi";
@@ -11,7 +9,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { PageHeader } from "./PageHeader";
 
 export const AddPosts = () => {
-  const userToken = getCookieToken();
   const navigate = useNavigate();
 
   const [title, titleHandler] = useInput("");
@@ -39,7 +36,7 @@ export const AddPosts = () => {
 
   // 등록하기 버튼 catch error 해야함
   const onSubmitHandler = async () => {
-    if (content && title) {
+    if (content && title && backend + frontend + designer + fullstack > 0) {
       submitPost(postInfo).then(() => {
         queryClient.invalidateQueries(["Postsdetail"]);
         queryClient.invalidateQueries(["filterlist"]);
@@ -50,23 +47,25 @@ export const AddPosts = () => {
     }
     if (!title) {
       return alert("제목을 입력해 주세요!!");
-    }
-    if (!content) {
+    } else if (!content) {
       return alert("프로젝트 내용을 입력해 주세요!!");
+    } else if (backend + frontend + designer + fullstack === 0) {
+      return alert("프로젝트에 필요한 직군을 선택해주세요!");
     }
   };
-  //로그인제어 리엑트라우터돔에서 하는걸로 바꾸기
-  if (!userToken) {
-    return <NoLoginError />;
-  }
 
   return (
     <div className="w-full h-full overflow-y-scroll pb-[3.5rem] px-6 ">
       <PageHeader pgTitle={"파티 모집 글쓰기"} />
-      <h1 className="font-cookie my-6">좋은 파티를 구하길 바란다</h1>
+      <h1 className="font-cookie my-6">
+        좋은 <span className="text-brandBlue font-cookie">파티</span>를 구하길
+        바란다
+      </h1>
       <div>
-        <h2 className="mb-4">필요직업군</h2>
-        <ul className="flex gap-x-[8px] overflow-x-scroll ">
+        <h2 className="mb-4">
+          필요직업군 <span className="text-red-500">*</span>
+        </h2>
+        <ul className="flex justify-between ">
           <NumMemberGet
             num={frontend}
             setNum={setFrontend}
@@ -91,7 +90,9 @@ export const AddPosts = () => {
       <StackListDropdwon stacks={stacks} setStacks={setStacks} />
 
       <div className="my-4">
-        <p className="mb-4">글쓰기</p>
+        <p className="mb-4">
+          글쓰기 <span className="text-red-500">*</span>
+        </p>
         <input
           className="w-full pl-2.5 py-2 border-b-[2px] outline-none focus:border-brandBlue"
           placeholder="제목을 입력해주세요."

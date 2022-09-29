@@ -1,19 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { chatApi } from "../../APIs/ChatApi";
-import { getCookieToken } from "../../config/cookies";
-import { NoLoginError } from "../ErrorPage/NoLoginError";
 
 export const ChatListPage = () => {
   const navigate = useNavigate();
-  const usertoken = getCookieToken();
-
-  if (!usertoken) {
-    return <NoLoginError />;
-  }
 
   const { data: chat } = chatApi.getChatRoomlist();
 
-  console.log(chat);
   return (
     <div className="w-full overflow-y-scroll h-full pb-[4rem] overflow-x-hidden">
       {/* 채팅탭 헤더 */}

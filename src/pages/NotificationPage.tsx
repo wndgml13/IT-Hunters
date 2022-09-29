@@ -6,7 +6,6 @@ import { notiType } from "../types/notificationType";
 export const NotificationPage = () => {
   const { data: notifications } = notificationApi.getQuestOffer();
   const queryClient = useQueryClient();
-  //const { data: getapprovedmember } = notificationApi.getApprovedQuestMember(8);
 
   const { mutateAsync: approveQuestoffer } =
     notificationApi.approveQuestOffer();
@@ -95,12 +94,3 @@ export const NotificationPage = () => {
     </div>
   );
 };
-// export const NotificationPage = () => {
-//   const { data } = notificationApi.getQuestOffer();
-//   console.log(data);
-//   return (
-//     <div className="w-full m-auto overflow-y-scroll h-full pb-[3.5rem] p-6 overflow-x-hidde">
-//       <h1 className="text-xl pb-10">알림</h1>
-//     </div>
-//   );
-// };

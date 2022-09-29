@@ -58,7 +58,7 @@ export const EditPortFolio = ({
   useModal({ node, tgVal, tg });
 
   return (
-    <div className="h-full w-full absolute top-0 right-0 left-0 z-50 flex justify-center items-center bg-black bg-opacity-70">
+    <div className="h-full w-full absolute top-0 right-0 left-0 z-50 flex justify-center items-center bg-[#c2c2c2] bg-opacity-50">
       <div
         className="absolute inset-x-0 bottom-0 bg-white z-50 rounded-t-2xl"
         ref={node}
