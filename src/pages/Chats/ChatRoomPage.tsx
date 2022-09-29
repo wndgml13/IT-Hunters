@@ -13,16 +13,11 @@ import { chatDataState } from "../../store/chatDataState";
 import { chatData } from "../../types/chatType";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChatRoomMemList } from "./ChatRoomMemList";
-const baseURL = process.env.REACT_APP_API_BASEURL;
-const sock = new SockJs(`${baseURL}socket`);
-const client = Stomp.over(sock);
 
 export const ChatRoomPage = ({ mobile }: { mobile: string }) => {
   const textRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const usertoken = {
-    Authorization: getCookieToken(),
-  };
+
   const [chatdata, setChatData] = useRecoilState<chatData[]>(chatDataState);
   const { id } = useParams();
   const [chatInfosToggle, setChatInfosToggle] = useState(false);
@@ -33,8 +28,14 @@ export const ChatRoomPage = ({ mobile }: { mobile: string }) => {
 
   const { data: chatolddata, isSuccess } = chatApi.getChatData(channelNum);
   const { data: userinfo } = UserInfoApi.getUserInfo();
-  client.debug = f => f;
 
+  const baseURL = process.env.REACT_APP_API_BASEURL;
+  const sock = new SockJs(`${baseURL}socket`);
+  const client = Stomp.over(sock);
+  const usertoken = {
+    Authorization: getCookieToken(),
+  };
+  client.debug = f => f;
   useEffect(() => {
     if (isSuccess) {
       queryClient.invalidateQueries(["chat", channelNum]);

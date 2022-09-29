@@ -22,23 +22,23 @@ export const MainSlide = () => {
     <>
       <Slider {...settings}>
         <div>
-          <div className="px-[5px]">
+          <div className="px-[5px] h-[230px]">
             <Link to="/event">
               <img src="/imgs/slides.png" alt="슬라이드 이벤트" />
             </Link>
           </div>
         </div>
         <div>
-          <div className="px-[5px]">
+          <div className="px-[5px] ">
             <Link to="/event">
-              <img src="/imgs/slides.png" alt="슬라이드 이벤트" />
+              <img src="/imgs/event_2.png" alt="슬라이드 이벤트" />
             </Link>
           </div>
         </div>
         <div>
-          <div className="px-[5px]">
+          <div className="px-[5px] h-[230px]">
             <Link to="/event">
-              <img src="/imgs/slides.png" alt="슬라이드 이벤트" />
+              <img src="/imgs/event_3.png" alt="슬라이드 이벤트" />
             </Link>
           </div>
         </div>
