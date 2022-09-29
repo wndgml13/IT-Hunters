@@ -8,12 +8,12 @@ import { useRecoilValue } from "recoil";
 import { CommentApi } from "../APIs/CommentApi";
 import { PostsApi } from "../APIs/PostsApi";
 import { DeIcon, FeIcon, FuIcon } from "../assets/icons";
-import { instance } from "../config/axios";
 import convertDateText from "../lib/convertDateText";
 import { loginInfoState } from "../store/loginInfoState";
-import { CommentGet, OffersPost } from "../types/postsDetailType";
+import { CommentGet } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
 import { DeletePostModal } from "./DeletePostMdoal";
+import { OffersClassesModal } from "./OffersClassesModal";
 import { PageHeader } from "./PageHeader";
 
 export const PostsDetail = () => {
@@ -23,6 +23,7 @@ export const PostsDetail = () => {
   const [classes, setClasses] = useState({}); // 직군 아이콘
 
   const [deleteModal, setDeleteModal] = useState(false); // 게시글 삭제하기 모달창 띄우고 닫기
+  const [offerClassModal, setOfferClassModal] = useState(false); // 직군 선택이 되지 않은 몬스터가 참가하기 버튼을 눌렀을 때 직군 선택 모달
 
   const queryClient = useQueryClient();
   const { id } = useParams();
@@ -36,11 +37,13 @@ export const PostsDetail = () => {
   const { mutateAsync: addComment } = CommentApi.addComment();
 
   const onSubmitComment = () => {
-    const payload = { id: Number(id), comment: comment };
-    addComment(payload).then(() => {
-      queryClient.invalidateQueries(["comments"]);
-    });
-    setComment("");
+    if (comment) {
+      const payload = { id: Number(id), comment: comment };
+      addComment(payload).then(() => {
+        queryClient.invalidateQueries(["comments"]);
+      });
+      setComment("");
+    }
   };
 
   const onEnterComment = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -68,35 +71,6 @@ export const PostsDetail = () => {
     navigate("/search");
   };
 
-  // 신청하기(합류요청) POST -- 작업중
-  const offerPost = async () => {
-    try {
-      const { data } = await instance.post<OffersPost>(
-        `api/quests/${id}/offers`,
-        { classType: "FRONTEND" },
-      );
-      alert("합류요청 완료!!");
-      return data;
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        alert(err.response?.data.message);
-        // if (err.response?.status === 400) {
-        //   // 모집인원이 0명이면 400에러가 뜸
-        //   alert("본인 게시글에는 신청할 수 없습니다.");
-        // } else if (err.response?.status === 409) {
-        //   alert("이미 신청이 완료되었습니다.");
-        // } else if (err.response?.status === 401) {
-        //   alert("로그인 하신 후 신청해 주세요.");
-        //   navigate("/signin");
-        // }
-      }
-    }
-  };
-
-  const onOfferHandler = () => {
-    offerPost();
-    return;
-  };
 
   // 게시글 북마크 POST
   // const { mutateAsync: bookMarkpost } = BookmarkApi.bookMarkpost();
@@ -119,6 +93,8 @@ export const PostsDetail = () => {
       setClasses(quest?.classes);
     }
   });
+
+  // 작업 기간, 요구 스택, 상세 정보 탭
   const durationTab = useRef<HTMLDivElement>(null);
   const stacksTab = useRef<HTMLDivElement>(null);
   const contentTab = useRef<HTMLDivElement>(null);
@@ -129,17 +105,25 @@ export const PostsDetail = () => {
         <PageHeader pgTitle={"게시판"} />
       </div>
       <div className="flex mx-6 mt-[28px] mb-[18px]">
-        <div className="w-[59px] h-[59px]">
-          <Link to={`/user/${quest?.memberId}`}>
-            <img
-              className="w-full h-full border rounded-full"
-              src={quest?.profileImg}
-            />
-          </Link>
+        <div className="w-[59px] h-[59px rounded-full">
+          <img
+            className="cursor-pointer w-full h-full border rounded-full"
+            src={quest?.profileImg}
+            onClick={() => {
+              navigate(`/user/${quest?.memberId}`);
+            }}
+          />
         </div>
-        <p className="text-[14px] ml-[10px] py-5">
-          <Link to={`/user/${quest?.memberId}`}> {quest?.nickname}</Link>
-        </p>
+        <div className="text-[14px] ml-3 mt-5 h-full hover:outline-none hover:border-b-2 border-black">
+          <button
+            onClick={() => {
+              navigate(`/user/${quest?.memberId}`);
+            }}
+          >
+            {quest?.nickname}
+          </button>
+        </div>
+
       </div>
       <hr />
       <div className="flex justify-around text-[14px] mt-3 ">
@@ -299,10 +283,11 @@ export const PostsDetail = () => {
         <div className="p-5">
           <button
             type="button"
-            className={
-              "text-white w-full h-[57px] bg-brandBlue font-bold rounded-lg text-lg px-5 py-2.5 shadow-[5px_5px_0_0_rgb(244,200,40)]"
-            }
-            onClick={onOfferHandler}
+            className="text-white w-full h-[57px] bg-brandBlue font-bold rounded-lg text-lg px-5 py-2.5 shadow-[5px_5px_0_0_rgb(244,200,40)]"
+            onClick={() => {
+              setOfferClassModal(!offerClassModal);
+              // onOfferHandler();
+            }}
           >
             참가하기
           </button>
@@ -336,6 +321,13 @@ export const PostsDetail = () => {
           tgVal={deleteModal}
           tg={setDeleteModal}
           onDelete={onDeletepost}
+        />
+      )}
+      {offerClassModal && (
+        <OffersClassesModal
+          tgVal={offerClassModal}
+          tg={setOfferClassModal}
+          questId={quest?.questId}
         />
       )}
     </div>
