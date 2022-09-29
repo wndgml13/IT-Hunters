@@ -5,7 +5,6 @@ import { PageHeader } from "../components/PageHeader";
 export const UserPage = () => {
   const { id } = useParams();
   const { data: userFolio } = PortfolioApi.getPortfolio(Number(id));
-  console.log(userFolio);
 
   return (
     <div className="w-full overflow-y-scroll h-full pb-[4rem] overflow-x-hidden bg-[#F8F8FA]">

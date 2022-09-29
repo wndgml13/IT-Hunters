@@ -7,7 +7,7 @@ export const Header = () => {
   const token = getCookieToken();
   const navigate = useNavigate();
   const { data: notifications } = notificationApi.getQuestOffer();
-  console.log(notifications);
+
   return (
     <header className="w-full sticky flex p-[10px] justify-between">
       <img src="/imgs/logo.png" alt="IT몬스터즈 로고" className="w-[40%]" />
