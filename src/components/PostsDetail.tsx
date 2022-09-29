@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import { AxiosError } from "axios";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 // import { BookmarkApi } from "../APIs/BookmarkApi";
@@ -51,7 +52,6 @@ export const PostsDetail = () => {
 
   // 게시글 조회
   const { data: quest } = PostsApi.getDetailPosts(Number(id));
-  console.log(quest);
 
   // 게시글 수정
   const onEditPosts = () => {
@@ -78,16 +78,17 @@ export const PostsDetail = () => {
       alert("합류요청 완료!!");
       return data;
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        if (err.response?.status === 400) {
-          // 모집인원이 0명이면 400에러가 뜸
-          alert("본인 게시글에는 신청할 수 없습니다.");
-        } else if (err.response?.status === 409) {
-          alert("이미 신청이 완료되었습니다.");
-        } else if (err.response?.status === 401) {
-          alert("로그인 하신 후 신청해 주세요.");
-          navigate("/signin");
-        }
+      if (err instanceof AxiosError) {
+        alert(err.response?.data.message);
+        // if (err.response?.status === 400) {
+        //   // 모집인원이 0명이면 400에러가 뜸
+        //   alert("본인 게시글에는 신청할 수 없습니다.");
+        // } else if (err.response?.status === 409) {
+        //   alert("이미 신청이 완료되었습니다.");
+        // } else if (err.response?.status === 401) {
+        //   alert("로그인 하신 후 신청해 주세요.");
+        //   navigate("/signin");
+        // }
       }
     }
   };
@@ -128,13 +129,17 @@ export const PostsDetail = () => {
         <PageHeader pgTitle={"게시판"} />
       </div>
       <div className="flex mx-6 mt-[28px] mb-[18px]">
-        <div className="w-[59px] h-[59px rounded-full">
-          <img
-            className="w-full h-full border rounded-full"
-            src={quest?.profileImg}
-          />
+        <div className="w-[59px] h-[59px]">
+          <Link to={`/user/${quest?.memberId}`}>
+            <img
+              className="w-full h-full border rounded-full"
+              src={quest?.profileImg}
+            />
+          </Link>
         </div>
-        <p className="text-[14px] ml-[10px] py-5">{quest?.nickname}</p>
+        <p className="text-[14px] ml-[10px] py-5">
+          <Link to={`/user/${quest?.memberId}`}> {quest?.nickname}</Link>
+        </p>
       </div>
       <hr />
       <div className="flex justify-around text-[14px] mt-3 ">
@@ -186,6 +191,23 @@ export const PostsDetail = () => {
               </p>
             </li>
           ))}
+        </ul>
+      </div>
+      <div className="bg-white w-full mt-3 p-6">
+        <p>남은 직업군</p>
+        <ul className="grid gap-2 w-full grid-cols-2 mt-3">
+          <li className="grid gap-2 grid-cols-2">
+            <p>프론트엔드</p> <p>: {quest?.classes.frontend} 명</p>
+          </li>
+          <li className="grid gap-2 grid-cols-2">
+            <p>백엔드 </p> <p>: {quest?.classes.backend} 명</p>
+          </li>
+          <li className="grid gap-2 grid-cols-2">
+            <p>디자이너 </p> <p>: {quest?.classes.designer} 명</p>
+          </li>
+          <li className="grid gap-2 grid-cols-2">
+            <p>풀스택 </p> <p>: {quest?.classes.fullstack} 명</p>
+          </li>
         </ul>
       </div>
       <div className="relative bg-white w-full mt-3 pt-7" ref={contentTab}>

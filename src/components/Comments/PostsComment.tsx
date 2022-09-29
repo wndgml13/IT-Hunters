@@ -14,7 +14,6 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
   const { id } = useParams();
   const userinfo = useRecoilValue(loginInfoState);
   const navigate = useNavigate();
-  console.log(userinfo);
   const [subComment, setSubcomment] = useState<string>(""); // 답글 추가
   const [editComment, seteditComment] = useState(""); // 댓글 수정
 
@@ -44,7 +43,7 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
       seteditComment("");
     }
   };
-  console.log(co);
+
   // 댓글 삭제
   const { mutateAsync: deleteComment } = CommentApi.deleteComment();
 
