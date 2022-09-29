@@ -24,7 +24,7 @@ export const Main = () => {
     mainPageAPis.getMonthMonter();
 
   return (
-    <main className="w-full m-auto overflow-y-scroll h-[calc(100%-100px)] overflow-x-hidden">
+    <main className="w-full m-auto overflow-y-scroll h-full overflow-x-hidden">
       <section className="pb-[30px]">
         <MainSlide />
       </section>
@@ -68,7 +68,6 @@ export const Main = () => {
             ></div>
 
             <p>프론트엔드</p>
-
           </li>
           <li
             className="w-[20%] text-center cursor-pointer"
@@ -84,7 +83,6 @@ export const Main = () => {
             ></div>
 
             <p>백엔드</p>
-
           </li>
           <li
             className="w-[20%] text-center cursor-pointer"
