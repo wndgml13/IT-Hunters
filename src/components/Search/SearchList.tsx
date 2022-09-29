@@ -1,5 +1,5 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { questApi } from "../../APIs/QuestApi";
 import { filterState } from "../../store/filterState";
@@ -13,16 +13,22 @@ export const SearchList = () => {
   const [modal, setModal] = useRecoilState(modalState);
   const [filterParam, setFilterParam] = useRecoilState(filterState);
   const [title, setTitle] = useState("");
+  const selectClass = useLocation().state;
   const { data } = questApi.getFilteredQuests(filterParam);
 
   const searchParam = filterParam + "&title=" + title;
 
   const onEnterInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      console.log(searchParam);
       setFilterParam(searchParam);
     }
   };
+
+  useEffect(() => {
+    if (selectClass) {
+      setFilterParam(selectClass);
+    }
+  }, [selectClass]);
 
   return (
     <div className="p-4 h-full overflow-y-scroll pb-[3.5rem]">

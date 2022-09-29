@@ -11,6 +11,7 @@ import { IQuest } from "../../types/questType";
 
 export const Main = () => {
   const navigate = useNavigate();
+
   const { data: recentQuests }: { data: undefined | IQuest[] } =
     mainPageAPis.getRecentQuests();
 
@@ -34,7 +35,12 @@ export const Main = () => {
           <p>검색하고픈 직업을 선택하세요.</p>
         </div>
         <ul className="flex gap-[6.666%] pt-[20px]">
-          <li className="w-[20%] text-center cursor-pointer">
+          <li
+            className="w-[20%] text-center cursor-pointer"
+            onClick={() => {
+              navigate("search", { state: "classType=frontend" });
+            }}
+          >
             <div
               className="p-[56%] bg-center"
               style={{
@@ -43,7 +49,12 @@ export const Main = () => {
             ></div>
             <p>프론트엔드</p>
           </li>
-          <li className="w-[20%] text-center cursor-pointer">
+          <li
+            className="w-[20%] text-center cursor-pointer"
+            onClick={() => {
+              navigate("search", { state: "classType=backend" });
+            }}
+          >
             <div
               className="p-[56%] bg-center"
               style={{
@@ -52,7 +63,12 @@ export const Main = () => {
             ></div>
             <p>백엔드</p>
           </li>
-          <li className="w-[20%] text-center">
+          <li
+            className="w-[20%] text-center cursor-pointer"
+            onClick={() => {
+              navigate("search", { state: "classType=fullstack" });
+            }}
+          >
             <div
               className="p-[56%] bg-center"
               style={{
@@ -61,7 +77,12 @@ export const Main = () => {
             ></div>
             <p>디자이너</p>
           </li>
-          <li className="w-[20%] text-center cursor-pointer">
+          <li
+            className="w-[20%] text-center cursor-pointer"
+            onClick={() => {
+              navigate("search", { state: "classType=designer" });
+            }}
+          >
             <div
               className="p-[56%] bg-center"
               style={{
