@@ -102,7 +102,7 @@ export const PostsDetail = () => {
         <PageHeader pgTitle={"게시판"} />
       </div>
       <div className="flex mx-6 mt-[28px] mb-[18px]">
-        <div className="w-[59px] h-[59px rounded-full">
+        <div className="w-[59px] h-[59px] rounded-full">
           <img
             className="cursor-pointer w-full h-full border rounded-full"
             src={quest?.profileImg}
@@ -265,7 +265,6 @@ export const PostsDetail = () => {
             className="text-white w-full h-[57px] bg-brandBlue font-bold rounded-lg text-lg px-5 py-2.5 shadow-[5px_5px_0_0_rgb(244,200,40)]"
             onClick={() => {
               setOfferClassModal(!offerClassModal);
-              // onOfferHandler();
             }}
           >
             참가하기
