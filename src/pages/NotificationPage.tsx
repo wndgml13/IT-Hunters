@@ -6,7 +6,6 @@ import { notiType } from "../types/notificationType";
 export const NotificationPage = () => {
   const { data: notifications } = notificationApi.getQuestOffer();
   const queryClient = useQueryClient();
-  console.log(notifications);
   //const { data: getapprovedmember } = notificationApi.getApprovedQuestMember(8);
 
   const { mutateAsync: approveQuestoffer } =

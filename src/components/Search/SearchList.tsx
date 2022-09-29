@@ -13,9 +13,7 @@ export const SearchList = () => {
   const [modal, setModal] = useRecoilState(modalState);
   const [filterParam, setFilterParam] = useRecoilState(filterState);
   const [title, setTitle] = useState("");
-
   const { data } = questApi.getFilteredQuests(filterParam);
-  console.log(filterParam);
 
   const searchParam = filterParam + "&title=" + title;
 

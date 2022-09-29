@@ -6,6 +6,7 @@ import { ReactComponent as FeIcon } from "./feIcon.svg";
 import { ReactComponent as DeIcon } from "./deIcon.svg";
 import { ReactComponent as FuIcon } from "./fuIcon.svg";
 import { ReactComponent as SearchIcon } from "./search.svg";
+import { ReactComponent as Bell } from "./bell.svg";
 
 export {
   ChatIcon,
@@ -16,4 +17,5 @@ export {
   DeIcon,
   FuIcon,
   SearchIcon,
+  Bell,
 };
