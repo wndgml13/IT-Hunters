@@ -48,11 +48,11 @@ export const Quest = ({ quest }: { quest: IQuest }) => {
           {nickname}
         </p>
       </div>
-      <div className="flex-1  flex flex-col gap-y-[3px] ">
-        <h2 className="w-full font-bold text-sm mb-[2px] line-clamp-1">
+      <div className="flex-1  flex flex-col gap-y-[3px] w-[75%] ">
+        <h2 className="font-bold text-sm mb-[2px] line-clamp-1 truncate">
           {title}
         </h2>
-        <p className="text-xs text-ellipsis overflow-hidden line-clamp-2 mb-[3px]">
+        <p className="text-xs text-ellipsis overflow-hidden line-clamp-2 mb-[3px] truncate">
           {content}
         </p>
         <p className="text-xs">
