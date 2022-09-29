@@ -152,6 +152,21 @@ export const Main = () => {
         </div>
         <MonthMonsterList monthMonster={monthMonster} />
       </section>
+      <section className="px-6 mt-40 mb-10 text-xs">
+        여기에는 로고
+        <p className="mt-6 mb-3">
+          <span className="font-bold">FRONTEND - </span> Noh Jinseo . Won
+          JungHui . Hwang TaeYoung{" "}
+        </p>
+        <p className="mb-3">
+          <span className="font-bold">BACKEND - </span> Jeon Jiman . Rhee Wonkyu
+          . Lee Dong Gyu . Kim JinMoo{" "}
+        </p>
+        <p>
+          <span className="font-bold">DESIGNER - </span> Jeong A Yoon
+        </p>
+        <p className="text-end mt-6">@ 2022 IT-Monsters ALL RIGHT RESERVED</p>
+      </section>
     </main>
   );
 };

@@ -1,6 +1,7 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Link } from "react-router-dom";
 
 export const MainSlide = () => {
   const settings = {
@@ -22,23 +23,23 @@ export const MainSlide = () => {
       <Slider {...settings}>
         <div>
           <div className="px-[5px]">
-            <a
-              className="block"
-              href="https://forms.gle/YtXASLtocaJmGFRj7"
-              target={"_blank"}
-            >
+            <Link to="/event">
               <img src="/imgs/slides.png" alt="슬라이드 이벤트" />
-            </a>
+            </Link>
           </div>
         </div>
         <div>
           <div className="px-[5px]">
-            <img src="/imgs/slides.png" alt="슬라이드 이벤트" />
+            <Link to="/event">
+              <img src="/imgs/slides.png" alt="슬라이드 이벤트" />
+            </Link>
           </div>
         </div>
         <div>
           <div className="px-[5px]">
-            <img src="/imgs/slides.png" alt="슬라이드 이벤트" />
+            <Link to="/event">
+              <img src="/imgs/slides.png" alt="슬라이드 이벤트" />
+            </Link>
           </div>
         </div>
       </Slider>

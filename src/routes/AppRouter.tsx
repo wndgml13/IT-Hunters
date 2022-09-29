@@ -19,6 +19,7 @@ import { OAuthNaver } from "../pages/Login/OAuthNaver";
 import { UserPage } from "../pages/UserPage";
 import { getCookieToken } from "../config/cookies";
 import { NoLoginError } from "../pages/ErrorPage/NoLoginError";
+import { EventPage } from "../pages/EventPage";
 
 const AppRouter = () => {
   const usertoken = getCookieToken();
@@ -34,6 +35,7 @@ const AppRouter = () => {
             </>
           }
         />
+        <Route path="/event" element={<EventPage />} />
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/oauth/kakao/callback/*" element={<OAuthKakao />} />
