@@ -5,6 +5,7 @@ import { PageHeader } from "../components/PageHeader";
 export const UserPage = () => {
   const { id } = useParams();
   const { data: userFolio } = PortfolioApi.getPortfolio(Number(id));
+  console.log(userFolio);
 
   return (
     <div className="w-full overflow-y-scroll h-full pb-[4rem] overflow-x-hidden bg-[#F8F8FA]">
@@ -22,8 +23,9 @@ export const UserPage = () => {
         <p className="text-2xl font-bold text-center">{userFolio?.nickname}</p>
 
         <p className="text-sm font-medium text-center">
-          {/* {userProfile?.className} */}
-          프론트엔드
+          {userFolio?.className
+            ? userFolio.className
+            : "직군을 선택하지 않았습니다"}
         </p>
       </div>
 

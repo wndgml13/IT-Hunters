@@ -51,6 +51,8 @@ export const MyPage = () => {
         queryClient.invalidateQueries(["userinfo"]);
       });
       setEUItoggle(!EUItoggle);
+    } else {
+      alert("직군을 선택해주세요!");
     }
   };
 
@@ -86,7 +88,11 @@ export const MyPage = () => {
             <p className="text-2xl font-bold text-center">
               {userProfile?.nickname}
             </p>
-
+            {!myClasses ? (
+              <p className="text-sm font-medium text-center">
+                직군을 선택해주세요
+              </p>
+            ) : null}
             <p className="text-sm font-medium text-center">
               {userProfile?.className}
             </p>
@@ -161,7 +167,7 @@ export const MyPage = () => {
         )}
       </div>
 
-      <div className="pt-4 w-full rounded-t-[40px] px-6 pb-10 bg-white">
+      <div className="pt-4 w-full rounded-t-[40px] px-6 pb-10 bg-white drop-shadow-2xl">
         <div className="mt-8">
           <h2 className="text-lg font-bold">
             한줄 소개{" "}
