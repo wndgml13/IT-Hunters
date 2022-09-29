@@ -18,11 +18,15 @@ export const MonthMonster = ({ monster }: { monster: IMonthMonster }) => {
             {nickname}
           </p>
         </div>
-        <h3 className="text-center font-cookie">{folioTitle}</h3>
-        <ul className="mb-[14px]">
+        <h3 className="text-center font-cookie line-clamp-1">{folioTitle}</h3>
+        <ul className="mb-[14px] flex mt-[12px]">
           {stacks.length !== 0
-            ? stacks?.map(stack => (
-                <MonsterStack key={stack.stackName} stack={stack.stackName} />
+            ? stacks?.map((stack, idx) => (
+                <MonsterStack
+                  key={stack.stackName}
+                  stack={stack.stackName}
+                  index={idx}
+                />
               ))
             : null}
         </ul>

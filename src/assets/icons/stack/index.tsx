@@ -10,6 +10,15 @@ import { ReactComponent as NodeIcon } from "./node.svg";
 import { ReactComponent as PythonIcon } from "./python.svg";
 import { ReactComponent as DjangoIcon } from "./django.svg";
 import { ReactComponent as CIcon } from "./c.svg";
+import { ReactComponent as CsIcon } from "./c#.svg";
+import { ReactComponent as CpIcon } from "./c+.svg";
+import { ReactComponent as MySqlIcon } from "./mySql.svg";
+import { ReactComponent as OracleIcon } from "./oracle.svg";
+import { ReactComponent as FigmaIcon } from "./figma.svg";
+import { ReactComponent as AdobeIcon } from "./adobe.svg";
+import { ReactComponent as SketchIcon } from "./sketch.svg";
+import { ReactComponent as AdobeIlIcon } from "./adobeil.svg";
+import { ReactComponent as AdobePoIcon } from "./adobePo.svg";
 
 export {
   ReactIcon,
@@ -24,4 +33,13 @@ export {
   PythonIcon,
   DjangoIcon,
   CIcon,
+  CsIcon,
+  CpIcon,
+  MySqlIcon,
+  OracleIcon,
+  FigmaIcon,
+  AdobeIcon,
+  SketchIcon,
+  AdobeIlIcon,
+  AdobePoIcon,
 };
