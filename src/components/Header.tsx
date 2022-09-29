@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { checkMobile } from "../lib/checkMobile";
 import { notificationApi } from "../APIs/NotificationApi";
-
 import { Bell } from "../assets/icons";
 import { getCookieToken } from "../config/cookies";
 
