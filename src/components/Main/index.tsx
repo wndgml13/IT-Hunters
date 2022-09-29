@@ -29,8 +29,8 @@ export const Main = () => {
         <MainSlide />
       </section>
       {!getCookieToken() ? (
-        <div className="bg-brandBlue mx-6 py-6 rounded-lg">
-          <p className="text-white text-center font-cookie text-xl px-12">
+        <div className="bg-brandBlue mx-6 my-2 py-6 rounded-lg">
+          <p className="text-white text-center font-cookie text-xl px-8">
             함께 IT괴물을 무찌를 용맹한 <br />
             몬스터를 모집한다! 지원하겠는가?{" "}
           </p>
