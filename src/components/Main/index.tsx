@@ -149,7 +149,7 @@ export const Main = () => {
         </div>
         <MonthMonsterList monthMonster={monthMonster} />
       </section>
-      <section className="px-6 mt-40 mb-10 text-xs">
+      <section className="px-6 mt-40 mb-[5rem] text-xs">
         <img src="/imgs/logo.png" alt="IT몬스터즈 로고" className="w-[40%]" />
         <p className="mt-6 mb-3">
           <span className="font-bold">FRONTEND - </span> Noh Jinseo . Won

@@ -29,9 +29,9 @@ export const FooterNavBar = ({ mobile }: { mobile: string }) => {
         "flex  justify-center items-center gap-x-11 w-full z-[9999] left-0 bottom-0 shadow-[4px_0_3px_1px_rgba(194,194,194,0.5)]",
         {
           "h-[70px]": mobile === "other" || mobile === "kakao",
-          "h-[130px]": mobile === "IOS",
+          "h-[80px]": mobile === "IOS",
           "h-[120px]": mobile === "android",
-          "pb-[70px]": mobile === "android" || mobile === "IOS",
+          "pb-[70px]": mobile === "android",
           hidden: pathname.includes("/chats/"),
         },
       )}

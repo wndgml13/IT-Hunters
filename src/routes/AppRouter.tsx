@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import classNames from "classnames";
-
 import { SignInPage } from "../pages/Login/SignInPage";
 import { SignUpPage } from "../pages/Login/SignUpPage";
 import { MainPage } from "../pages/MainPage";
@@ -22,7 +21,6 @@ import { UserPage } from "../pages/UserPage";
 import { getCookieToken } from "../config/cookies";
 import { NoLoginError } from "../pages/ErrorPage/NoLoginError";
 import { EventPage } from "../pages/EventPage";
-
 import { checkMobile } from "../lib/checkMobile";
 
 const AppRouter = () => {
@@ -33,7 +31,7 @@ const AppRouter = () => {
       <div
         className={classNames("overflow-hidden", {
           "h-[calc(100%-70px)]": mobile === "other" || mobile === "kakao",
-          "h-[calc(100%-111px)]": mobile === "IOS",
+          "h-[calc(100%-200px)]": mobile === "IOS",
           "h-[calc(100%-110px)]": mobile === "android",
         })}
       >
