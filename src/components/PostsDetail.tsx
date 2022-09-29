@@ -176,7 +176,7 @@ export const PostsDetail = () => {
       </div>
       <div className="bg-white w-full mt-3 p-6">
         <p>남은 직업군</p>
-        <ul className="grid gap-2 w-full grid-cols-2 mt-3">
+        <ul className="grid gap-2 w-full grid-cols-2 mt-6 px-5">
           <li className="grid gap-2 grid-cols-2">
             <p>프론트엔드</p> <p>: {quest?.classes.frontend} 명</p>
           </li>

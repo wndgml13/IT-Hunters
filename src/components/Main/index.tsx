@@ -68,7 +68,6 @@ export const Main = () => {
             ></div>
 
             <p>프론트엔드</p>
-
           </li>
           <li
             className="w-[20%] text-center cursor-pointer"
@@ -84,7 +83,6 @@ export const Main = () => {
             ></div>
 
             <p>백엔드</p>
-
           </li>
           <li
             className="w-[20%] text-center cursor-pointer"
@@ -148,12 +146,11 @@ export const Main = () => {
             <span className="text-brandBlue font-cookie">이달의 몬스터</span>
             다! 잘 확인하도록.
           </h3>
-          <button className="text-xs">더보기</button>
         </div>
         <MonthMonsterList monthMonster={monthMonster} />
       </section>
       <section className="px-6 mt-40 mb-10 text-xs">
-        여기에는 로고
+        <img src="/imgs/logo.png" alt="IT몬스터즈 로고" className="w-[40%]" />
         <p className="mt-6 mb-3">
           <span className="font-bold">FRONTEND - </span> Noh Jinseo . Won
           JungHui . Hwang TaeYoung{" "}
