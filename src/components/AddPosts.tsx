@@ -110,7 +110,7 @@ export const AddPosts = () => {
         />
       </div>
 
-      <div className="w-full absolute bottom-0 left-0 right-0 z-50">
+      <div className="w-full shadow-[5px_5px_0_0_rgb(244,200,40)]">
         <button
           type="button"
           onClick={onSubmitHandler}

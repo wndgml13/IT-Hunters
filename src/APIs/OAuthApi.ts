@@ -7,6 +7,9 @@ export const OAuthAPI = {
       .get(`oauth/kakao/callback?code=${kakaoToken}`)
       .then(data => {
         setAccessToken(data.headers.authorization);
+      })
+      .then(() => {
+        window.location.href = "/";
       });
   },
   loginWithNaver: async (naverToken: string, naverState: string) => {
@@ -14,6 +17,9 @@ export const OAuthAPI = {
       .get(`oauth/naver/callback?code=${naverToken}&state=${naverState}`)
       .then(data => {
         setAccessToken(data.headers.authorization);
+      })
+      .then(() => {
+        window.location.href = "/";
       });
   },
 };

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { OAuthAPI } from "../../APIs/OAuthApi";
+import { LoginLoading } from "./LoginLoading";
 
 export const OAuthKakao = () => {
   const kakaoToken = new URL(window.location.href).searchParams.get("code");
@@ -9,10 +10,13 @@ export const OAuthKakao = () => {
       if (kakaoToken) {
         OAuthAPI.loginWithKakao(kakaoToken);
       }
-      window.location.replace("/");
     } catch (err) {
-      alert("카카오 로그인에 실패하였습니다.");
+      alert("카카오 로그인에 실패하셨습니다.");
     }
   }, []);
-  return <div>Login ~~</div>;
+  return (
+    <>
+      <LoginLoading />
+    </>
+  );
 };

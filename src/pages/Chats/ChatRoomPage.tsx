@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
+import classNames from "classnames";
 import moment from "moment";
 import "moment/locale/ko";
 import SockJs from "sockjs-client";
@@ -16,7 +17,7 @@ const baseURL = process.env.REACT_APP_API_BASEURL;
 const sock = new SockJs(`${baseURL}socket`);
 const client = Stomp.over(sock);
 
-export const ChatRoomPage = () => {
+export const ChatRoomPage = ({ mobile }: { mobile: string }) => {
   const textRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const usertoken = {
@@ -198,7 +199,11 @@ export const ChatRoomPage = () => {
       </div>
 
       {/* 채팅입력창 */}
-      <div className="w-full absolute bottom-0 left-0 right-0 z-40">
+      <div
+        className={classNames("w-full absolute bottom-0 left-0 right-0 z-40", {
+          "bottom-[20px]": mobile === "other",
+        })}
+      >
         <div className="flex bg-white my-2 mx-4 rounded-3xl border-[2px] focus-within:border-brandBlue">
           {/* <button className="cursor-pointer  hover:bg-gray-400  bg-white w-20 h-12 text-2xl border-none">
             +
@@ -223,13 +228,13 @@ export const ChatRoomPage = () => {
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M20.9325 9.82509L3.8445 1.21509C3.39802 0.953927 2.85163 0.929114 2.38332 1.14874C1.915 1.36837 1.5847 1.80432 1.5 2.31459C1.50585 2.48413 1.54671 2.65061 1.62 2.80359L4.8735 10.6636C5.03679 11.1855 5.12566 11.7279 5.1375 12.2746C5.1257 12.8213 5.03683 13.3637 4.8735 13.8856L1.62 21.7456C1.54671 21.8986 1.50585 22.0651 1.5 22.2346C1.58531 22.7441 1.91554 23.1792 2.38335 23.3985C2.85117 23.6177 3.39684 23.5931 3.843 23.3326L20.9325 14.7226C21.8855 14.28 22.4951 13.3246 22.4951 12.2738C22.4951 11.2231 21.8855 10.2677 20.9325 9.82509V9.82509Z"
                 stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           </button>

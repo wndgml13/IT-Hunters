@@ -24,13 +24,13 @@ export const Main = () => {
     mainPageAPis.getMonthMonter();
 
   return (
-    <main className="w-full m-auto overflow-y-scroll h-[calc(100%-100px)] overflow-x-hidden">
+    <main className="w-full m-auto overflow-y-scroll h-full overflow-x-hidden">
       <section className="pb-[30px]">
         <MainSlide />
       </section>
       {!getCookieToken() ? (
-        <div className="bg-brandBlue mx-6 py-6 rounded-lg">
-          <p className="text-white text-center font-cookie text-xl px-12">
+        <div className="bg-brandBlue mx-6 my-2 py-6 rounded-lg">
+          <p className="text-white text-center font-cookie text-xl px-8">
             함께 IT괴물을 무찌를 용맹한 <br />
             몬스터를 모집한다! 지원하겠는가?{" "}
           </p>
@@ -146,12 +146,11 @@ export const Main = () => {
             <span className="text-brandBlue font-cookie">이달의 몬스터</span>
             다! 잘 확인하도록.
           </h3>
-          <button className="text-xs">더보기</button>
         </div>
         <MonthMonsterList monthMonster={monthMonster} />
       </section>
-      <section className="px-6 mt-40 mb-10 text-xs">
-        여기에는 로고
+      <section className="px-6 mt-40 mb-[5rem] text-xs">
+        <img src="/imgs/logo.png" alt="IT몬스터즈 로고" className="w-[40%]" />
         <p className="mt-6 mb-3">
           <span className="font-bold">FRONTEND - </span> Noh Jinseo . Won
           JungHui . Hwang TaeYoung{" "}
