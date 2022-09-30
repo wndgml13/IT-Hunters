@@ -1,4 +1,5 @@
 
+![로고](public/imgs/github_프론트엔드.png)
 
 # IT 몬스터즈
 
