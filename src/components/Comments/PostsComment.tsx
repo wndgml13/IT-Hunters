@@ -109,7 +109,7 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
             {co?.createdAt && convertDateText(co?.createdAt)}
           </p>
         </div>
-        <p className="mx-3 p-2 rounded-xl text-sm text-black mt-1">
+        <p className="mx-3 p-2 rounded-xl text-sm text-black mt-1 break-all">
           {co.content}
         </p>
 

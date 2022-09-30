@@ -194,7 +194,7 @@ export const PostsDetail = () => {
       <div className="relative bg-white w-full mt-3 pt-7" ref={contentTab}>
         <p className="px-6">상세 정보</p>
         <div className="flex justify-between">
-          <p className="text-xl font-normal font-cookie px-6 mt-[10px]">
+          <p className="text-xl font-normal font-cookie px-6 mt-[10px] break-all">
             {quest?.title}
           </p>
 
@@ -273,7 +273,7 @@ export const PostsDetail = () => {
             </button>
           </div>
         )}
-        <p className="my-5 w-full border-b border-b-[#ebebeb] px-6 pb-6">
+        <p className="my-5 w-full border-b border-b-[#ebebeb] px-6 pb-6 break-all">
           {quest?.content}
         </p>
 

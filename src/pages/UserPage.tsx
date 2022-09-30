@@ -22,8 +22,9 @@ export const UserPage = () => {
         <p className="text-2xl font-bold text-center">{userFolio?.nickname}</p>
 
         <p className="text-sm font-medium text-center">
-          {/* {userProfile?.className} */}
-          프론트엔드
+          {userFolio?.className
+            ? userFolio.className
+            : "직군을 선택하지 않았습니다"}
         </p>
       </div>
 

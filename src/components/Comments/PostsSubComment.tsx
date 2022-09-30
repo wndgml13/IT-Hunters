@@ -90,9 +90,9 @@ export const PostsSubComment = ({
               {sc?.createdAt && convertDateText(sc?.createdAt)}
             </p>
           </div>
-          <div className="p-2 rounded-xl text-sm text-black mt-2">
-            <span>{sc.content}</span>
-          </div>
+          <p className="p-2 rounded-xl text-sm text-black mt-2 break-all">
+            {sc.content}
+          </p>
           {sc?.nickname === userinfo.nickname ? (
             <div className="text-sm">
               <button
