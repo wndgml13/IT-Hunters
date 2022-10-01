@@ -34,7 +34,7 @@ export const EditPosts = () => {
     }
   }, [isSuccess]);
 
-  // 게시글 수정 -- 작업중
+  // 게시글 수정
   const { mutateAsync: editPosts } = PostsApi.editPosts();
 
   const onEditPostsHandler = () => {
