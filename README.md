@@ -1,7 +1,7 @@
 
 ![로고](public/imgs/github_프론트엔드.png)
 
-# IT 몬스터즈
+# IT 몬스터즈 (IT MONSTERS)
 
 
 믿음직한 프로젝트 팀원이 필요할 때?
