@@ -36,9 +36,17 @@ export const ChatRoomMemList = ({
   useModal({ node, tgVal, tg });
 
   return (
-    <div className="h-full w-full absolute top-0 right-0 left-0 z-50 flex justify-center items-center bg-[#c2c2c2] bg-opacity-50">
+    <div
+      className={`${
+        tgVal
+          ? "h-full w-full absolute top-0 right-0 left-0 z-40 flex justify-center items-center bg-[#c2c2c2] bg-opacity-50"
+          : null
+      }`}
+    >
       <div
-        className="bg-bgGray2 w-[60%] h-full absolute z-50 right-0 top-0 shadow-inner"
+        className={`bg-bgGray2 w-[60%] h-full absolute z-50 right-0 top-0 shadow-inner ${
+          tgVal ? "translate-x-0" : "translate-x-full"
+        } ease-in-out duration-300`}
         ref={node}
       >
         <div className="my-8 mx-3 p-4 relative rounded-lg bg-white shadow-md">
@@ -56,10 +64,13 @@ export const ChatRoomMemList = ({
               onClick={() => navigate(`/user/${sqm.memberId}`)}
             >
               <div className="w-[40px] h-[40px]">
-                <img src={sqm.profileImg} className="rounded-2xl" />
+                <img
+                  src={sqm.profileImg}
+                  className="w-full h-full rounded-2xl"
+                />
               </div>
               <h1 className="ml-2 my-2">
-                {sqm.memberId === userinfo.id ? (
+                {sqm.memberId === userinfo?.id ? (
                   <span className="text-xs mx-1">나</span>
                 ) : null}
                 {sqm.nickname}

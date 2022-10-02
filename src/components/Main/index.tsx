@@ -24,7 +24,7 @@ export const Main = () => {
     mainPageAPis.getMonthMonter();
 
   return (
-    <main className="w-full m-auto overflow-y-scroll h-full overflow-x-hidden">
+    <main className="w-full h-full overflow-x-hidden mt-[3.5rem]">
       <section className="pb-[30px]">
         <MainSlide />
       </section>
@@ -149,7 +149,7 @@ export const Main = () => {
         </div>
         <MonthMonsterList monthMonster={monthMonster} />
       </section>
-      <section className="px-6 mt-40 mb-[5rem] text-xs">
+      <section className="px-6 mt-32 mb-[10rem] text-xs">
         <img src="/imgs/logo.png" alt="IT몬스터즈 로고" className="w-[40%]" />
         <p className="mt-6 mb-3">
           <span className="font-bold">FRONTEND - </span> Noh Jinseo . Won

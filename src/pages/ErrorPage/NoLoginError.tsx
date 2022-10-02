@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export const NoLoginError = () => {
   return (
-    <div className="border flex justify-center items-center  w-full h-full text-center">
+    <div className="border flex justify-center items-center  w-full h-screen text-center">
       <div>
         <div className="flex justify-center mb-10">
           <img src="/imgs/dia.png" className="w-[60%] h-[60%] animate-bounce" />

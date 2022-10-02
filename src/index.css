@@ -39,8 +39,9 @@
 html,
 body {
   margin: 0;
-  height: 100%;
-  overflow: hidden;
+  height: 100vh;
+  height: -webkit-fill-available;
+  height: stretch;
 }
 
 /* 슬릭 커스텀 */

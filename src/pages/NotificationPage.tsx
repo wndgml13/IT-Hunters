@@ -25,7 +25,7 @@ export const NotificationPage = () => {
   };
 
   return (
-    <div className="w-full m-auto overflow-y-scroll h-full pb-[3.5rem] p-6 overflow-x-hidde">
+    <div className="w-full h-full overflow-y-scroll pb-[4.5rem]">
       <div className="flex py-4 px-6 absolute top-0 left-0 right-0 z-50 bg-white border-b-2">
         <h1 className="mr-2 text-2xl font-cookie">알림</h1>{" "}
         <svg
@@ -41,7 +41,7 @@ export const NotificationPage = () => {
           />
         </svg>
       </div>
-      <ul className="pt-[4rem]">
+      <ul className="mx-6 mt-[5rem]">
         {notifications?.map((noti: notiType) => (
           <li
             className="flex flex-col mb-4 bg-white rounded-lg border shadow-md hover:bg-gray-100"

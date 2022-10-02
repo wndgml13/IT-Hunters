@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import classNames from "classnames";
 import moment from "moment";
 import "moment/locale/ko";
-import SockJs from "sockjs-client";
 import Stomp from "stompjs";
 import { chatApi } from "../../APIs/ChatApi";
 import { UserInfoApi } from "../../APIs/UserInfoApi";
@@ -14,7 +13,7 @@ import { chatData } from "../../types/chatType";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChatRoomMemList } from "./ChatRoomMemList";
 
-export const ChatRoomPage = ({ mobile }: { mobile: string }) => {
+export const ChatRoomPage = ({ client }: { client: Stomp.Client }) => {
   const textRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -25,17 +24,12 @@ export const ChatRoomPage = ({ mobile }: { mobile: string }) => {
   const queryClient = useQueryClient();
 
   const { data: thisChatRoom } = chatApi.getChatRoomInfo(Number(id));
-
   const { data: chatolddata, isSuccess } = chatApi.getChatData(channelNum);
   const { data: userinfo } = UserInfoApi.getUserInfo();
 
-  const baseURL = process.env.REACT_APP_API_BASEURL;
-  const sock = new SockJs(`${baseURL}socket`);
-  const client = Stomp.over(sock);
   const usertoken = {
     Authorization: getCookieToken(),
   };
-  client.debug = f => f;
   useEffect(() => {
     if (isSuccess) {
       queryClient.invalidateQueries(["chat", channelNum]);
@@ -44,9 +38,8 @@ export const ChatRoomPage = ({ mobile }: { mobile: string }) => {
   }, [isSuccess]);
 
   useEffect(() => {
-    if (chatdata) {
-      chatConnect();
-    }
+    chatConnect();
+
     return () => {
       chatDisconnect();
     };
@@ -64,22 +57,31 @@ export const ChatRoomPage = ({ mobile }: { mobile: string }) => {
   });
   // 채팅 연결
   const chatConnect = () => {
-    client.connect(usertoken, () => {
-      client.subscribe(
-        `/sub/channels/${id}`,
-        data => {
-          const newMessage = JSON.parse(data.body);
-          setChatData(chatdatas => [newMessage, ...chatdatas]);
-        },
-        usertoken,
-      );
-    });
+    if (client.connected) {
+      chatSub();
+    } else {
+      client.connect(usertoken, () => {
+        chatSub();
+      });
+    }
   };
+  // 콜백함수를 통해 한번만 렌더링 되게.
+  const chatSub = useCallback(() => {
+    client.subscribe(
+      `/sub/channels/${id}`,
+      data => {
+        const newMessage = JSON.parse(data.body);
+        setChatData(chatdatas => [newMessage, ...chatdatas]);
+      },
+      { id },
+    );
+  }, []);
+
   // 채팅 연결해제
   const chatDisconnect = () => {
-    client.disconnect(() => {
-      client.unsubscribe("sub-0");
-    }, usertoken);
+    if (client !== null) {
+      if (client.connected) client.unsubscribe(`${id}`);
+    }
   };
 
   // 채팅보내기
@@ -150,7 +152,7 @@ export const ChatRoomPage = ({ mobile }: { mobile: string }) => {
       </div>
       {/* 채팅글들 */}
       <div>
-        <div className="h-full w-full bottom-16 overflow-y-scroll scroll flex flex-col-reverse pt-14 pb-6">
+        <div className="h-full w-full overflow-y-scroll flex flex-col-reverse pt-14 pb-10">
           {chatdata?.map((cD, idx) =>
             cD.memberId !== userinfo.id ? (
               <div className="pt-3" key={idx}>
@@ -201,17 +203,12 @@ export const ChatRoomPage = ({ mobile }: { mobile: string }) => {
 
       {/* 채팅입력창 */}
       <div
-        className={classNames("w-full absolute bottom-0 left-0 right-0 z-40", {
-          "bottom-[20px]": mobile === "other",
-        })}
+        className={classNames(
+          "w-full absolute bottom-0 left-0 right-0 z-40 bg-white",
+        )}
       >
-        <div className="flex bg-white my-2 mx-4 rounded-3xl border-[2px] focus-within:border-brandBlue">
-          {/* <button className="cursor-pointer  hover:bg-gray-400  bg-white w-20 h-12 text-2xl border-none">
-            +
-          </button> */}
+        <div className="flex bg-white my-4 mx-4 rounded-3xl border-[2px] focus-within:border-brandBlue">
           <input
-            // value={chatInput}
-            // onChange={InputHandler}
             ref={textRef}
             onKeyUp={enterToSendChat}
             placeholder="채팅을 입력해주세요!"
@@ -241,13 +238,13 @@ export const ChatRoomPage = ({ mobile }: { mobile: string }) => {
           </button>
         </div>
       </div>
-      {chatInfosToggle ? (
+      {thisChatRoom && (
         <ChatRoomMemList
           roomInfo={thisChatRoom}
           tgVal={chatInfosToggle}
           tg={setChatInfosToggle}
         />
-      ) : null}
+      )}
     </div>
   );
 };

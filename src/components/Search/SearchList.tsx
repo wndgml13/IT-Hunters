@@ -30,7 +30,7 @@ export const SearchList = () => {
   }, [selectClass]);
 
   return (
-    <div className="h-full overflow-y-scroll">
+    <div className="h-screen overflow-y-scroll pb-[5rem]">
       <div className="flex py-3 px-6 absolute top-0 left-0 right-0 z-50 bg-white">
         <h1 className="mr-5 text-2xl w-14 font-cookie">파티</h1>{" "}
         <div className="flex w-full rounded-2xl border focus-within:border-brandBlue">
