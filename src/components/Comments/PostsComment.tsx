@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CommentGet } from "../../types/postsDetailType";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,6 +15,7 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
   const { id } = useParams();
   const userinfo = useRecoilValue(loginInfoState);
   const navigate = useNavigate();
+
   const [subComment, setSubcomment] = useState<string>(""); // 답글 추가
   const [editComment, seteditComment] = useState(""); // 댓글 수정
 
@@ -39,11 +40,16 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
   };
 
   const onEntereditComment = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && editComment) {
       onEditcomment();
       seteditComment("");
+      setEditCommentToggle(!editCommentToggle); // 43번째 줄 editComment 값이 있을 때만 인풋 창이 사라짐
     }
   };
+
+  useEffect(() => {
+    seteditComment(co.content);
+  }, [editCommentToggle]); // 수정 토글이 열릴 때마다 기존 댓글 내용이 보임
 
   // 댓글 삭제
   const { mutateAsync: deleteComment } = CommentApi.deleteComment();
@@ -110,9 +116,43 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
           </p>
         </div>
         <p className="mx-3 p-2 rounded-xl text-sm text-black mt-1 break-all">
-          {co.content}
+          {editCommentToggle ? !co.content : co.content}
         </p>
-
+        {/* 댓글 수정 폼 */}
+        {editCommentToggle && (
+          <div className="gap-1 mb-2">
+            <input
+              id="message"
+              className="bg-gray-50 border border-gary text-gray-900 text-sm rounded-3xl w-full h-14 my-1 p-2.5 focus:outline-none"
+              placeholder="댓글 수정"
+              value={editComment}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                seteditComment(e.target.value);
+              }}
+              onKeyPress={onEntereditComment}
+            />
+            <div className="mt-3 flex flex-row-reverse gap-2">
+              <button
+                className="text-white w-12 h-10 bg-[#F4C828] font-bold rounded-lg focus:outline-none"
+                onClick={() => {
+                  onEditcomment();
+                  editComment && setEditCommentToggle(!editCommentToggle);
+                }}
+              >
+                수정
+              </button>
+              <button
+                className="text-white w-12 h-10 bg-[#4B23B8] font-bold rounded-lg focus:outline-none"
+                onClick={() => {
+                  setEditCommentToggle(!editCommentToggle);
+                }}
+              >
+                닫기
+              </button>
+            </div>
+          </div>
+        )}
+        {/* 댓글 수정 버튼 */}
         <div className=" text-sm flex flex-justify-start gap-3">
           {co?.nickname === userinfo?.nickname ? (
             <div>
@@ -120,6 +160,7 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
                 className="text-sm text-gray-400/100 hover:text-brandBlue"
                 onClick={() => {
                   setEditCommentToggle(!editCommentToggle);
+                  setSubCommentToggle(false);
                 }}
               >
                 수정
@@ -137,43 +178,14 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
               className="mb-2 text-sm text-gray-400/100 hover:text-black"
               onClick={() => {
                 setSubCommentToggle(!subCommentToggle);
+                setEditCommentToggle(false);
               }}
             >
               답글 달기
             </button>
           ) : null}
         </div>
-        {/* 댓글 Edit 버튼 */}
-        {editCommentToggle && (
-          <div className="gap-1 mb-2">
-            <input
-              id="message"
-              className="bg-gray-50 border border-gary text-gray-900 text-sm rounded-3xl w-full h-14 my-1 p-2.5 focus:outline-none"
-              placeholder="댓글 수정"
-              value={editComment}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                seteditComment(e.target.value);
-              }}
-              onKeyPress={onEntereditComment}
-            />
-            <div className="mt-3 flex flex-row-reverse gap-2">
-              <button
-                className="text-white w-12 h-10 bg-[#F4C828] font-bold rounded-lg focus:outline-none"
-                onClick={onEditcomment}
-              >
-                수정
-              </button>
-              <button
-                className="text-white w-12 h-10 bg-[#4B23B8] font-bold rounded-lg focus:outline-none"
-                onClick={() => {
-                  setEditCommentToggle(!editCommentToggle);
-                }}
-              >
-                닫기
-              </button>
-            </div>
-          </div>
-        )}
+
         {/* 답글 추가 */}
         {co?.subCommentList.map(sc => (
           <PostsSubComment key={sc.subCommentId} sc={sc} coId={co.commentId} />
