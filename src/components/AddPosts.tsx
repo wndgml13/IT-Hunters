@@ -55,7 +55,7 @@ export const AddPosts = () => {
   };
 
   return (
-    <div className="w-full h-full overflow-y-scroll pb-[3.5rem] px-6 ">
+    <div className="w-full h-screen overflow-y-scroll pb-[5rem] px-6 ">
       <PageHeader pgTitle={"파티 모집 글쓰기"} />
       <h1 className="font-cookie my-6">
         좋은 <span className="text-brandBlue font-cookie">파티</span>를 구하길
