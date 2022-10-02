@@ -58,9 +58,17 @@ export const EditPortFolio = ({
   useModal({ node, tgVal, tg });
 
   return (
-    <div className="h-full w-full absolute top-0 right-0 left-0 z-50 flex justify-center items-center bg-[#c2c2c2] bg-opacity-50">
+    <div
+      className={`${
+        tgVal
+          ? "h-full w-full absolute top-0 right-0 left-0 z-[9999] flex justify-center items-center bg-[#c2c2c2] bg-opacity-50"
+          : "hidden"
+      }`}
+    >
       <div
-        className="absolute inset-x-0 bottom-0 bg-white z-50 rounded-t-2xl"
+        className={`absolute inset-x-0 bottom-0  bg-white z-50 rounded-t-2xl ${
+          tgVal ? "translate-y-0" : "translate-y-full"
+        } ease-in-out duration-300`}
         ref={node}
       >
         <div className="mt-6 px-6 flex justify-between">

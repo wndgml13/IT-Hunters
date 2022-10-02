@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import classNames from "classnames";
 import { SignInPage } from "../pages/Login/SignInPage";
 import { SignUpPage } from "../pages/Login/SignUpPage";
 import { MainPage } from "../pages/MainPage";
@@ -21,20 +20,28 @@ import { UserPage } from "../pages/UserPage";
 import { getCookieToken } from "../config/cookies";
 import { NoLoginError } from "../pages/ErrorPage/NoLoginError";
 import { EventPage } from "../pages/EventPage";
-import { checkMobile } from "../lib/checkMobile";
+import SockJs from "sockjs-client";
+import Stomp from "stompjs";
+
+const baseURL = process.env.REACT_APP_API_BASEURL;
+const usertoken = {
+  Authorization: getCookieToken(),
+};
+const sock = new SockJs(`${baseURL}socket`);
+const client = Stomp.over(sock);
+client.heartbeat.outgoing = 20000;
+client.heartbeat.incoming = 20000;
+
+client.connect(usertoken, f => f);
+
+client.debug = f => f;
 
 const AppRouter = () => {
   const usertoken = getCookieToken();
-  const mobile = checkMobile();
+
   return (
     <BrowserRouter>
-      <div
-        className={classNames("overflow-hidden", {
-          "h-[calc(100%-70px)]": mobile === "other" || mobile === "kakao",
-          "h-[calc(100%-200px)]": mobile === "IOS",
-          "h-[calc(100%-110px)]": mobile === "android",
-        })}
-      >
+      <div className="h-screen relative">
         <Routes>
           <Route
             path="/"
@@ -70,7 +77,7 @@ const AppRouter = () => {
           <Route
             path="/chats/:id"
             element={
-              usertoken ? <ChatRoomPage mobile={mobile} /> : <NoLoginError />
+              usertoken ? <ChatRoomPage client={client} /> : <NoLoginError />
             }
           />
           <Route
@@ -80,7 +87,8 @@ const AppRouter = () => {
           <Route path="/editposts/:id" element={<EditPosts />} />
         </Routes>
       </div>
-      <FooterNavBar mobile={mobile} />
+
+      <FooterNavBar />
     </BrowserRouter>
   );
 };

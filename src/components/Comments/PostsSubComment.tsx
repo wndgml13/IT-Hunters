@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubCommentGet } from "../../types/postsDetailType";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
@@ -44,11 +44,16 @@ export const PostsSubComment = ({
   const onEntereditSubComment = async (
     e: React.KeyboardEvent<HTMLInputElement>,
   ) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && editSubcomment) {
       onEditsubComment();
       setEditsubComment("");
+      setEditSubCommentToggle(!editSubCommentToggle); // 47번줄 editSubcomment 값이 있을 때만 인풋이 사라짐
     }
   };
+
+  useEffect(() => {
+    setEditsubComment(sc.content);
+  }, [editSubCommentToggle]); // 수정 토글이 열릴 때마다 기존 답글 내용이 보임
 
   // 답글 삭제 -- api파일로 옮겨야함!!
   const { mutateAsync: deleteSubComment } = subCommentApi.deleteSubComment();
@@ -91,8 +96,46 @@ export const PostsSubComment = ({
             </p>
           </div>
           <p className="p-2 rounded-xl text-sm text-black mt-2 break-all">
-            {sc.content}
+            {editSubCommentToggle ? !sc.content : sc.content}
           </p>
+          {/* 답글 수정 폼 */}
+          {editSubCommentToggle && (
+            <div className="gap-1">
+              <input
+                id="message"
+                className="bg-gray-50 border border-gary text-gray-900 text-sm rounded-3xl w-full h-14 my-1 p-2.5 focus:outline-none"
+                placeholder="답글 수정"
+                value={editSubcomment}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setEditsubComment(e.target.value);
+                }}
+                onKeyPress={onEntereditSubComment}
+              />
+              <div className="my-3 flex flex-row-reverse gap-2">
+                <button
+                  type="button"
+                  className="text-white w-12 h-10 bg-[#F4C828] font-bold rounded-lg focus:outline-none"
+                  onClick={() => {
+                    onEditsubComment();
+                    editSubcomment &&
+                      setEditSubCommentToggle(!editSubCommentToggle);
+                  }}
+                >
+                  수정
+                </button>
+                <button
+                  type="button"
+                  className="text-white w-12 h-10 bg-[#4B23B8] font-bold rounded-lg focus:outline-none"
+                  onClick={() => {
+                    setEditSubCommentToggle(!editSubCommentToggle);
+                  }}
+                >
+                  닫기
+                </button>
+              </div>
+            </div>
+          )}
+          {/* 답글 수정 버튼 */}
           {sc?.nickname === userinfo.nickname ? (
             <div className="text-sm">
               <button
@@ -112,40 +155,8 @@ export const PostsSubComment = ({
             </div>
           ) : null}
         </div>
-        {/* 답글 Edit 버튼 */}
-        {editSubCommentToggle && (
-          <div className="gap-1">
-            <input
-              id="message"
-              className="bg-gray-50 border border-gary text-gray-900 text-sm rounded-3xl w-full h-14 my-1 p-2.5 focus:outline-none"
-              placeholder="답글 수정"
-              value={editSubcomment}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setEditsubComment(e.target.value);
-              }}
-              onKeyPress={onEntereditSubComment}
-            />
-            <div className="my-3 flex flex-row-reverse gap-2">
-              <button
-                type="button"
-                className="text-white w-12 h-10 bg-[#F4C828] font-bold rounded-lg focus:outline-none"
-                onClick={onEditsubComment}
-              >
-                수정
-              </button>
-              <button
-                type="button"
-                className="text-white w-12 h-10 bg-[#4B23B8] font-bold rounded-lg focus:outline-none"
-                onClick={() => {
-                  setEditSubCommentToggle(!editSubCommentToggle);
-                }}
-              >
-                닫기
-              </button>
-            </div>
-          </div>
-        )}
       </>
+      {/* <PostsComment setEditSubCommentToggle={setEditSubCommentToggle} /> */}
     </>
   );
 };
