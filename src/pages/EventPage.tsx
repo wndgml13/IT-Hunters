@@ -2,7 +2,7 @@ import { PageHeader } from "../components/PageHeader";
 
 export const EventPage = () => {
   return (
-    <div className="w-full h-full overflow-y-scroll">
+    <div className="w-full h-screen overflow-y-scroll pb-20">
       <div className="px-6">
         <PageHeader pgTitle="이벤트" />
       </div>

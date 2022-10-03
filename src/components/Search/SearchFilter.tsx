@@ -1,6 +1,10 @@
-import { useState } from "react";
-import { useSetRecoilState } from "recoil";
-import { filterState } from "../../store/filterState";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  classesState,
+  durationState,
+  filterState,
+  stacksState,
+} from "../../store/filterState";
 import { modalState } from "../../store/modalState";
 import { DurationRange } from "../DurationRange";
 import { StackListDropdwon } from "../StackListDropdown";
@@ -8,9 +12,9 @@ import { StackListDropdwon } from "../StackListDropdown";
 export const SearchFilter = () => {
   const setModal = useSetRecoilState(modalState);
 
-  const [classes, setClasses] = useState<string[]>([]);
-  const [stacks, setStacks] = useState<string[]>([]);
-  const [duration, setDuration] = useState<number>(20);
+  const [classes, setClasses] = useRecoilState(classesState);
+  const [stacks, setStacks] = useRecoilState(stacksState);
+  const [duration, setDuration] = useRecoilState(durationState);
   const setFilter = useSetRecoilState(filterState);
 
   const onClassesHandelr = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -5,22 +5,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import { PostsSubComment } from "./PostsSubComment";
 import { CommentApi } from "../../APIs/CommentApi";
 import { subCommentApi } from "../../APIs/subCommentApi";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { loginInfoState } from "../../store/loginInfoState";
 import convertDateText from "../../lib/convertDateText";
 import { getCookieToken } from "../../config/cookies";
-import { commentState } from "../../store/commentState";
 
 export const PostsComment = ({ co }: { co: CommentGet }) => {
   const queryClient = useQueryClient();
   const { id } = useParams();
   const userinfo = useRecoilValue(loginInfoState);
   const navigate = useNavigate();
-  // const setCommentState = useSetRecoilState(commentState);
-  const [comment, setComment] = useRecoilState(commentState);
 
   const [subComment, setSubcomment] = useState<string>(""); // 답글 추가
-  const [editComment, seteditComment] = useState(""); // 댓글 수정
+  const [editComment, setEditComment] = useState(""); // 댓글 수정
 
   const [editCommentToggle, setEditCommentToggle] = useState(false); // 댓글 Edit 토글
   const [subCommentToggle, setSubCommentToggle] = useState(false); // 답글 달기 토글
@@ -28,7 +25,7 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
   // 댓글 수정
   const { mutateAsync: modifiedComment } = CommentApi.modifiedComment();
 
-  const onEditcomment = () => {
+  const onEditComment = () => {
     if (editComment) {
       const payload = {
         id: Number(id),
@@ -38,20 +35,27 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
       modifiedComment(payload).then(() => {
         queryClient.invalidateQueries(["comments"]);
       });
-      seteditComment("");
+      setEditComment("");
+    }
+  };
+
+  const onInputEditComment = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditComment(e.target.value);
+    if (e.target.value.length > 255) {
+      alert("최대 255자까지 입력 가능합니다.");
     }
   };
 
   const onEntereditComment = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && editComment) {
-      onEditcomment();
-      seteditComment("");
+      onEditComment();
+      setEditComment("");
       setEditCommentToggle(!editCommentToggle); // 43번째 줄 editComment 값이 있을 때만 인풋 창이 사라짐
     }
   };
 
   useEffect(() => {
-    seteditComment(co.content);
+    setEditComment(co.content);
   }, [editCommentToggle]); // 수정 토글이 열릴 때마다 기존 댓글 내용이 보임
 
   // 댓글 삭제
@@ -81,6 +85,13 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
         queryClient.invalidateQueries(["comments"]);
       });
       setSubcomment("");
+    }
+  };
+
+  const onInputSubComment = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSubcomment(e.target.value);
+    if (e.target.value.length > 255) {
+      alert("최대 255자까지 입력 가능합니다.");
     }
   };
 
@@ -129,16 +140,15 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
               className="bg-gray-50 border border-gary text-gray-900 text-sm rounded-3xl w-full h-14 my-1 p-2.5 focus:outline-none"
               placeholder="댓글 수정"
               value={editComment}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                seteditComment(e.target.value);
-              }}
+              onChange={onInputEditComment}
               onKeyPress={onEntereditComment}
+              maxLength={255}
             />
             <div className="mt-3 flex flex-row-reverse gap-2">
               <button
                 className="text-white w-12 h-10 bg-[#F4C828] font-bold rounded-lg focus:outline-none"
                 onClick={() => {
-                  onEditcomment();
+                  onEditComment();
                   editComment && setEditCommentToggle(!editCommentToggle);
                 }}
               >
@@ -182,7 +192,6 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
               onClick={() => {
                 setSubCommentToggle(!subCommentToggle);
                 setEditCommentToggle(false);
-                setComment(comment);
               }}
             >
               답글 달기
@@ -203,10 +212,9 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
               className="bg-gray-50 border border-gary text-gray-900 text-sm rounded-3xl w-full h-14 my-1 p-2.5 focus:outline-none"
               value={subComment}
               placeholder="답글 입력"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setSubcomment(e.target.value)
-              }
+              onChange={onInputSubComment}
               onKeyPress={onEntersubComment}
+              maxLength={255}
             />
             <div className="mt-3 flex flex-row-reverse gap-2">
               <button

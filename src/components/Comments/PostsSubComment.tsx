@@ -3,10 +3,9 @@ import { SubCommentGet } from "../../types/postsDetailType";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { subCommentApi } from "../../APIs/subCommentApi";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { loginInfoState } from "../../store/loginInfoState";
 import convertDateText from "../../lib/convertDateText";
-import { commentState } from "../../store/commentState";
 
 export const PostsSubComment = ({
   sc,
@@ -19,7 +18,6 @@ export const PostsSubComment = ({
   const { id } = useParams();
   const userinfo = useRecoilValue(loginInfoState);
   const navigate = useNavigate();
-  const setComment = useSetRecoilState(commentState);
 
   const [editSubcomment, setEditsubComment] = useState(""); // 답글 수정
   const [editSubCommentToggle, setEditSubCommentToggle] = useState(false); // 답글 수정 토글
@@ -40,6 +38,13 @@ export const PostsSubComment = ({
         queryClient.invalidateQueries(["comments"]);
       });
       setEditsubComment("");
+    }
+  };
+
+  const onInputEditSubComment = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditsubComment(e.target.value);
+    if (e.target.value.length > 255) {
+      alert("최대 255자까지 입력 가능합니다.");
     }
   };
 
@@ -108,10 +113,9 @@ export const PostsSubComment = ({
                 className="bg-gray-50 border border-gary text-gray-900 text-sm rounded-3xl w-full h-14 my-1 p-2.5 focus:outline-none"
                 placeholder="답글 수정"
                 value={editSubcomment}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setEditsubComment(e.target.value);
-                }}
+                onChange={onInputEditSubComment}
                 onKeyPress={onEntereditSubComment}
+                maxLength={255}
               />
               <div className="my-3 flex flex-row-reverse gap-2">
                 <button
@@ -144,7 +148,6 @@ export const PostsSubComment = ({
                 className="text-sm text-gray-400/100 hover:text-brandBlue"
                 onClick={() => {
                   setEditSubCommentToggle(!editSubCommentToggle);
-                  setComment(false);
                 }}
               >
                 수정

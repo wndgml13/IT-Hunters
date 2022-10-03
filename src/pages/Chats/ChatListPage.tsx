@@ -7,7 +7,7 @@ export const ChatListPage = () => {
   const { data: chat } = chatApi.getChatRoomlist();
 
   return (
-    <div className="w-full overflow-y-scroll h-full pb-[4rem] overflow-x-hidden">
+    <div className="w-full  min-h-screen pb-[4rem] overflow-x-hidden">
       {/* 채팅탭 헤더 */}
       <div className="flex py-4 px-6 absolute top-0 left-0 right-0 z-50 bg-white border-b-2">
         <h1 className="mr-2 text-2xl font-cookie">채팅</h1>{" "}

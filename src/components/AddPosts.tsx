@@ -19,6 +19,7 @@ export const AddPosts = () => {
   const [frontend, setFrontend] = useState<number>(0);
   const [designer, setDesigner] = useState<number>(0);
   const [fullstack, setFullstack] = useState<number>(0);
+  const [count, setCount] = useState<number>(0); // 프로젝트 내용 글자수 세기
 
   const postInfo = {
     title,
@@ -54,8 +55,16 @@ export const AddPosts = () => {
     }
   };
 
+  const onInputHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value.slice(0, 999));
+    setCount(e.target.value.length);
+    if (e.target.value.length > 999) {
+      alert("최대 1000자까지 입력 가능합니다.");
+    }
+  };
+
   return (
-    <div className="w-full h-full overflow-y-scroll pb-[3.5rem] px-6 ">
+    <div className="w-full h-screen overflow-y-scroll pb-[5rem] px-6 ">
       <PageHeader pgTitle={"파티 모집 글쓰기"} />
       <h1 className="font-cookie my-6">
         좋은 <span className="text-brandBlue font-cookie">파티</span>를 구하길
@@ -99,14 +108,20 @@ export const AddPosts = () => {
           value={title}
           onChange={titleHandler}
         />
+        <div className="mt-7 flex justify-between text-sm">
+          <p>
+            내용 <span className="text-red-500">*</span>
+          </p>
+          <p>{count}자/1000자</p>
+        </div>
         <textarea
           id="message"
           rows={15}
-          className="block p-2.5 mt-6 w-full text-sm text-gray-900 bg-gray-100 rounded-lg focus:ring-blue-500 focus:border-blue-500 "
+          className="block p-2.5 mt-3 w-full text-sm text-gray-900 bg-gray-100 rounded-lg focus:ring-blue-500 focus:border-blue-500 "
           placeholder="프로젝트 내용을 입력해주세요."
           style={{ resize: "none" }}
           value={content}
-          onChange={e => setContent(e.target.value)}
+          onChange={onInputHandler}
         />
       </div>
 
