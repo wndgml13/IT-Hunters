@@ -10,6 +10,8 @@ import { IMonthMonster } from "../../types/mainpageType";
 import { IQuest } from "../../types/questType";
 import { getCookieToken } from "../../config/cookies";
 import { Link } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { classesState } from "../../store/filterState";
 
 export const Main = () => {
   const navigate = useNavigate();
@@ -22,6 +24,8 @@ export const Main = () => {
 
   const { data: monthMonster }: { data: undefined | IMonthMonster[] } =
     mainPageAPis.getMonthMonter();
+
+  const setClasses = useSetRecoilState(classesState);
 
   return (
     <main className="w-full h-full overflow-x-hidden mt-[3.5rem]">
@@ -44,7 +48,7 @@ export const Main = () => {
           </div>
         </div>
       ) : null}
-      <section></section>
+
       <section className="p-6">
         <div className="mb-[20px]">
           <h3 className="mb-[10px] text-xl font-normal font-cookie">
@@ -57,7 +61,8 @@ export const Main = () => {
           <li
             className="w-[20%] text-center cursor-pointer"
             onClick={() => {
-              navigate("search", { state: "classType=frontend" });
+              setClasses(["backend"]);
+              navigate("search");
             }}
           >
             <div
@@ -72,7 +77,8 @@ export const Main = () => {
           <li
             className="w-[20%] text-center cursor-pointer"
             onClick={() => {
-              navigate("search", { state: "classType=backend" });
+              setClasses(["frontend"]);
+              navigate("search");
             }}
           >
             <div
@@ -87,7 +93,8 @@ export const Main = () => {
           <li
             className="w-[20%] text-center cursor-pointer"
             onClick={() => {
-              navigate("search", { state: "classType=fullstack" });
+              setClasses(["designer"]);
+              navigate("search");
             }}
           >
             <div
@@ -101,7 +108,8 @@ export const Main = () => {
           <li
             className="w-[20%] text-center cursor-pointer"
             onClick={() => {
-              navigate("search", { state: "classType=designer" });
+              setClasses(["fullstack"]);
+              navigate("search");
             }}
           >
             <div
