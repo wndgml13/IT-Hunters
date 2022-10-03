@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { questApi } from "../../APIs/QuestApi";
@@ -9,7 +9,7 @@ import {
 } from "../../store/filterState";
 import { modalState } from "../../store/modalState";
 import { SearchFilter } from "./SearchFilter";
-import { FilterIcon, SearchIcon } from "../../assets/icons";
+import { FilterIcon, SearchIcon, UpSignIcon } from "../../assets/icons";
 import { QuestInSearch } from "../QuestInSearch";
 import classNames from "classnames";
 
@@ -32,6 +32,8 @@ export const SearchList = () => {
   const stacks = useRecoilValue(stacksState);
 
   const filteredResultList = [...classes, ...stacks];
+
+  const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (selectClass) {
@@ -90,11 +92,17 @@ export const SearchList = () => {
       </div>
 
       {modal ? <SearchFilter /> : null}
-      <div className="mt-32">
+      <div className="pt-28" ref={listRef}>
         {data?.map(quest => (
           <QuestInSearch key={quest.questId} quest={quest} />
         ))}
       </div>
+      <button
+        onClick={() => listRef.current?.scrollIntoView({ behavior: "smooth" })}
+        className="absolute right-6 bottom-20 bg-brandBlue p-3 text-white rounded-full"
+      >
+        <UpSignIcon />
+      </button>
     </div>
   );
 };

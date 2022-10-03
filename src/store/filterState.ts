@@ -17,5 +17,5 @@ export const stacksState = atom<string[]>({
 
 export const durationState = atom<number>({
   key: "durationState",
-  default: 0,
+  default: 20,
 });
