@@ -8,6 +8,8 @@ import { ReactComponent as FuIcon } from "./fuIcon.svg";
 import { ReactComponent as SearchIcon } from "./search.svg";
 import { ReactComponent as Bell } from "./bell.svg";
 import { ReactComponent as FilterIcon } from "./filter.svg";
+import { ReactComponent as UpSignIcon } from "./upSign.svg";
+import { ReactComponent as SendIcon } from "./sendIcon.svg";
 export {
   ChatIcon,
   HomeIcon,
@@ -19,4 +21,6 @@ export {
   SearchIcon,
   Bell,
   FilterIcon,
+  UpSignIcon,
+  SendIcon,
 };

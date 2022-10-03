@@ -39,7 +39,7 @@ export const ChatListPage = () => {
                 <p className="truncate font-semibold text-sm">
                   {chat.channelName}
                 </p>
-                <p className="pt-2 text-sm text-[#c2c2c2]">
+                <p className="pt-2 text-sm text-[#c2c2c2] truncate">
                   {chat.lastMessage}
                 </p>
               </div>

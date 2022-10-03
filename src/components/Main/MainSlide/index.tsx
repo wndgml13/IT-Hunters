@@ -8,7 +8,7 @@ export const MainSlide = () => {
     className: "center",
     centerMode: true,
     infinite: true,
-    centerPadding: "25px",
+    centerPadding: "10px",
     slidesToShow: 1,
     speed: 1000,
     autoplay: true,

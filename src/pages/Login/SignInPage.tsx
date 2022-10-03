@@ -65,11 +65,11 @@ export const SignInPage = () => {
   };
 
   return (
-    <div className="w-full h-full overflow-y-scroll pb-[3.5rem] p-6">
-      <h1 className="text-xl">
-        <img src="/imgs/logo.png" alt="it몬스터 로고" className="w-[50%]" />
-      </h1>
-      <div className="text-[28px] font-cookie mt-[70px]">
+    <div className="w-full h-full overflow-y-scroll pb-[3.5rem] px-6">
+      <div className="mt-4">
+        <img src="/imgs/logo.png" alt="it몬스터 로고" className="w-[40%]" />
+      </div>
+      <div className="text-[28px] font-cookie mt-[60px]">
         <p className="font-cookie leading-10">
           <span className="font-cookie text-brandBlue">
             몬스터여,
@@ -136,19 +136,19 @@ export const SignInPage = () => {
       </button>
 
       <div className="grid grid-cols-3 place-items-center mb-[69px]">
-        <button className="w-[64px] h-[64px]" onClick={onKakaoLogin}>
+        <button className="w-[50px] h-[50px]" onClick={onKakaoLogin}>
           <img
             className="w-full h-full rounded-full"
             src="https://play-lh.googleusercontent.com/KwGCiEolNEeR9Q4RFOnDtb8Pvqs3LNiQEdE07wMCnoULO3yLUprHbGGLBYNEt8k7WJY"
           />
         </button>
-        <button className="w-[64px] h-[64px]" onClick={onNaverLogin}>
+        <button className="w-[50px] h-[50px]" onClick={onNaverLogin}>
           <img
             className="w-full h-full rounded-full"
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFAIptpOidYLp81FCTWsAHPyW4wvlxM3wENhodrjHSRYgLE60WPvKvgEQmKWS5ETj9g-k&usqp=CAU"
           />
         </button>
-        <button className="w-[64px] h-[64px]" onClick={onGoogleLogin}>
+        <button className="w-[50px] h-[50px]" onClick={onGoogleLogin}>
           <img
             className="w-full h-full rounded-full"
             src="https://staffordonline.org/wp-content/uploads/2019/01/Google.jpg"
