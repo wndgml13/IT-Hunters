@@ -3,9 +3,10 @@ import { SubCommentGet } from "../../types/postsDetailType";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { subCommentApi } from "../../APIs/subCommentApi";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loginInfoState } from "../../store/loginInfoState";
 import convertDateText from "../../lib/convertDateText";
+import { commentState } from "../../store/commentState";
 
 export const PostsSubComment = ({
   sc,
@@ -18,6 +19,7 @@ export const PostsSubComment = ({
   const { id } = useParams();
   const userinfo = useRecoilValue(loginInfoState);
   const navigate = useNavigate();
+  const setComment = useSetRecoilState(commentState);
 
   const [editSubcomment, setEditsubComment] = useState(""); // 답글 수정
   const [editSubCommentToggle, setEditSubCommentToggle] = useState(false); // 답글 수정 토글
@@ -55,7 +57,7 @@ export const PostsSubComment = ({
     setEditsubComment(sc.content);
   }, [editSubCommentToggle]); // 수정 토글이 열릴 때마다 기존 답글 내용이 보임
 
-  // 답글 삭제 -- api파일로 옮겨야함!!
+  // 답글 삭제
   const { mutateAsync: deleteSubComment } = subCommentApi.deleteSubComment();
 
   const onDeletesubComment = () => {
@@ -142,6 +144,7 @@ export const PostsSubComment = ({
                 className="text-sm text-gray-400/100 hover:text-brandBlue"
                 onClick={() => {
                   setEditSubCommentToggle(!editSubCommentToggle);
+                  setComment(false);
                 }}
               >
                 수정

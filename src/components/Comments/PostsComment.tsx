@@ -5,16 +5,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import { PostsSubComment } from "./PostsSubComment";
 import { CommentApi } from "../../APIs/CommentApi";
 import { subCommentApi } from "../../APIs/subCommentApi";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loginInfoState } from "../../store/loginInfoState";
 import convertDateText from "../../lib/convertDateText";
 import { getCookieToken } from "../../config/cookies";
+import { commentState } from "../../store/commentState";
 
 export const PostsComment = ({ co }: { co: CommentGet }) => {
   const queryClient = useQueryClient();
   const { id } = useParams();
   const userinfo = useRecoilValue(loginInfoState);
   const navigate = useNavigate();
+  // const setCommentState = useSetRecoilState(commentState);
+  const [comment, setComment] = useRecoilState(commentState);
 
   const [subComment, setSubcomment] = useState<string>(""); // 답글 추가
   const [editComment, seteditComment] = useState(""); // 댓글 수정
@@ -115,7 +118,7 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
             {co?.createdAt && convertDateText(co?.createdAt)}
           </p>
         </div>
-        <p className="mx-3 p-2 rounded-xl text-sm text-black mt-1 break-all">
+        <p className="whitespace-pre-wrap mx-3 p-2 rounded-xl text-sm text-black mt-1 break-all">
           {editCommentToggle ? !co.content : co.content}
         </p>
         {/* 댓글 수정 폼 */}
@@ -179,6 +182,7 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
               onClick={() => {
                 setSubCommentToggle(!subCommentToggle);
                 setEditCommentToggle(false);
+                setComment(comment);
               }}
             >
               답글 달기

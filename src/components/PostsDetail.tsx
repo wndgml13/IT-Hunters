@@ -98,8 +98,8 @@ export const PostsDetail = () => {
   const contentTab = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="w-full h-full overflow-y-scroll pb-[3.5rem] bg-[#f5f5f5]">
-      <div className="flex justify-between ml-6">
+    <div className=" w-full h-full overflow-y-scroll pb-[3.5rem] bg-[#f5f5f5]">
+      <div className="relative flex justify-between ml-6">
         <PageHeader pgTitle={"게시판"} />
         {quest?.nickname === userinfo?.nickname ? (
           <button
@@ -122,7 +122,27 @@ export const PostsDetail = () => {
             </svg>
           </button>
         ) : null}
+        {editDeleteToggle && (
+          <div className="absolute right-6 top-12 flex-col grid justify-items-end drop-shadow-lg">
+            <button
+              className="border-none text-brandBlue cursor-pointer inline-flex w-[90px] justify-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-100"
+              onClick={onEditPosts}
+            >
+              수정하기
+            </button>
+            <button
+              className=" border-none border text-red-400 cursor-pointer inline-flex w-[90px] justify-center bg-white px-4 py-2 text-sm font-medium  hover:bg-gray-100"
+              onClick={() => {
+                setDeleteModal(!deleteModal);
+                setEditDeleteToggle(!editDeleteToggle);
+              }}
+            >
+              삭제하기
+            </button>
+          </div>
+        )}
       </div>
+
       <div className="flex mx-6 mt-[28px] mb-[18px]">
         <div className="w-[59px] h-[59px] rounded-full">
           <img
@@ -212,7 +232,7 @@ export const PostsDetail = () => {
           </li>
         </ul>
       </div>
-      <div className="relative bg-white w-full mt-3 pt-7" ref={contentTab}>
+      <div className=" bg-white w-full mt-3 pt-7" ref={contentTab}>
         <p className="px-6">상세 정보</p>
         <div className="flex justify-between">
           <p className="text-xl font-normal font-cookie px-6 mt-[10px] break-all">
@@ -254,26 +274,8 @@ export const PostsDetail = () => {
             }
           })}
         </ul>
-        {editDeleteToggle && (
-          <div className="absolute right-6 -top-[480px] flex-col grid justify-items-end drop-shadow-lg">
-            <button
-              className="border-none text-brandBlue cursor-pointer inline-flex w-[90px] justify-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-100"
-              onClick={onEditPosts}
-            >
-              수정하기
-            </button>
-            <button
-              className=" border-none border text-red-400 cursor-pointer inline-flex w-[90px] justify-center bg-white px-4 py-2 text-sm font-medium  hover:bg-gray-100"
-              onClick={() => {
-                setDeleteModal(!deleteModal);
-                setEditDeleteToggle(!editDeleteToggle);
-              }}
-            >
-              삭제하기
-            </button>
-          </div>
-        )}
-        <p className="my-5 w-full border-b border-b-[#ebebeb] px-6 pb-6 break-all">
+
+        <p className="whitespace-pre-wrap break-all my-5 w-full border-b border-b-[#ebebeb] px-6 pb-6 ">
           {quest?.content}
         </p>
 
@@ -291,11 +293,7 @@ export const PostsDetail = () => {
       </div>
       {/* 댓글시작 */}
       {comments?.map((co: CommentGet) => (
-        <PostsComment
-          key={co.commentId}
-          co={co}
-          // setEditSubCommentToggle={setEditSubCommentToggle}
-        />
+        <PostsComment key={co.commentId} co={co} />
       ))}
       {/* 댓글 입력란 */}
       {getCookieToken() ? (
@@ -309,7 +307,7 @@ export const PostsDetail = () => {
           />
           <button
             type="button"
-            className="text-white w-20 h-[57px] bg-brandBlue font-bold rounded-lg  px-5 py-2.5 mr-2 mb-[20px] focus:outline-none shadow-[5px_5px_0_0_rgb(244,200,40)]"
+            className="text-white w-20 h-[57px] bg-brandBlue font-bold rounded-lg  px-5 py-2.5 mr-2  focus:outline-none shadow-[5px_5px_0_0_rgb(244,200,40)]"
             onClick={onSubmitComment}
           >
             댓글달기
