@@ -19,4 +19,5 @@ export interface IQuest {
   status: false;
   title: string;
   profileImg: string;
+  complete: boolean;
 }

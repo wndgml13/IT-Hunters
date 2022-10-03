@@ -8,8 +8,16 @@ import { FuIcon, DeIcon, FeIcon } from "../assets/icons";
 
 export const QuestInSearch = ({ quest }: { quest: IQuest }) => {
   const navigate = useNavigate();
-  const { questId, nickname, title, duration, classes, createdAt, profileImg } =
-    quest;
+  const {
+    questId,
+    nickname,
+    title,
+    duration,
+    classes,
+    createdAt,
+    profileImg,
+    status,
+  } = quest;
 
   interface LooseObject {
     [key: string]: number | string;
@@ -22,7 +30,9 @@ export const QuestInSearch = ({ quest }: { quest: IQuest }) => {
   return (
     <li
       onClick={() => navigate(`/posts/${questId}`)}
-      className="flex gap-x-[15px] bg-white p-6 my-3 border-b border-[#ebebeb] hover:bg-gray-100 cursor-pointer relative "
+      className={`flex gap-x-[15px]  p-6 my-3 border-b border-[#ebebeb]  cursor-pointer relative ${
+        !status ? "bg-white hover:bg-gray-100" : "bg-gray-200"
+      }`}
     >
       <div className="w-[66px]">
         <div className="rounded-[7px] mb-[6px] overflow-hidden">
@@ -42,7 +52,8 @@ export const QuestInSearch = ({ quest }: { quest: IQuest }) => {
         </p>
 
         <p className="text-xs mt-3">기간 - {duration}주</p>
-        <ul className="flex absolute left-0 bottom-0 justify-end">
+
+        <ul className="flex">
           {existStack.map(stack => {
             switch (stack) {
               case "frontend":
@@ -72,7 +83,12 @@ export const QuestInSearch = ({ quest }: { quest: IQuest }) => {
             }
           })}
         </ul>
-      </div>
+      </div>{" "}
+      {status ? (
+        <div className="absolute right-5 bottom-5">
+          <p className="text-gray-500 text-sm">모집완료</p>
+        </div>
+      ) : null}
     </li>
   );
 };
