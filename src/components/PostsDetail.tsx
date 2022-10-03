@@ -273,9 +273,9 @@ export const PostsDetail = () => {
             </button>
           </div>
         )}
-        <p className="my-5 w-full border-b border-b-[#ebebeb] px-6 pb-6 break-all">
-          {quest?.content}
-        </p>
+        <div className="my-5 w-full border-b border-b-[#ebebeb] px-6 pb-6">
+          <div className="whitespace-pre-line break-all">{quest?.content}</div>
+        </div>
 
         <div className="p-5">
           <button

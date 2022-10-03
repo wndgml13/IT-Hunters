@@ -33,7 +33,7 @@ export const QuestInSearch = ({ quest }: { quest: IQuest }) => {
         </p>
       </div>
       <div className="flex-1  flex flex-col gap-y-[3px] relative w-[60%]">
-        <h2 className="w-[70%] font-bold text-8 font-cookie mb-[2px] line-clamp-1 truncate">
+        <h2 className="w-[70%] font-bold text-8 font-cookie mb-[2px] line-clamp-1  text-ellipsis">
           {title}
         </h2>
 
