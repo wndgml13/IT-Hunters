@@ -40,6 +40,7 @@ export const PostsDetail = () => {
       const payload = { id: Number(id), comment: comment };
       addComment(payload).then(() => {
         queryClient.invalidateQueries(["comments"]);
+        queryClient.invalidateQueries(["Postsdetail"]); // 댓글 작성 시 개수 실시간 카운팅
       });
       setComment("");
     } else {
@@ -291,6 +292,9 @@ export const PostsDetail = () => {
       </div>
       {/* 댓글시작 */}
       <div className="mt-3">
+        <div className="p-5 bg-white text-gray-800">
+          댓글 {quest?.commentCnt}개
+        </div>
         {comments?.map((co: CommentGet) => (
           <PostsComment key={co.commentId} co={co} />
         ))}

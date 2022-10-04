@@ -72,6 +72,7 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
     };
     deleteComment(payload).then(() => {
       queryClient.invalidateQueries(["comments"]);
+      queryClient.invalidateQueries(["Postsdetail"]); // 댓글 삭제 시 개수 실시간 카운팅
     });
   };
 
