@@ -299,10 +299,9 @@ export const PostsDetail = () => {
       {getCookieToken() ? (
         <div className="flex row mt-5  gap-2 px-4">
           <img
-            className="mt-1 w-14 h-12 border rounded-full"
+            className="w-14 h-14 border rounded-full"
             src={userinfo.profileImage}
           />
-
           <div className="flex mb-[30px] bg-white  rounded-2xl border focus:border-brandBlue w-full h-14 mx-1">
             <input
               className="rounded-2xl px-2.5 w-full"
