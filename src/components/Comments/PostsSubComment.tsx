@@ -38,6 +38,8 @@ export const PostsSubComment = ({
         queryClient.invalidateQueries(["comments"]);
       });
       setEditsubComment("");
+    } else {
+      alert("내용을 입력해주세요!");
     }
   };
 
@@ -55,6 +57,8 @@ export const PostsSubComment = ({
       onEditsubComment();
       setEditsubComment("");
       setEditSubCommentToggle(!editSubCommentToggle); // 47번줄 editSubcomment 값이 있을 때만 인풋이 사라짐
+    } else {
+      alert("내용을 입력해주세요!");
     }
   };
 
