@@ -19,3 +19,8 @@ export const durationState = atom<number>({
   key: "durationState",
   default: 20,
 });
+
+export const titleState = atom<string>({
+  key: "titleState",
+  default: "",
+});
