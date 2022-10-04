@@ -1,6 +1,11 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { instance } from "../config/axios";
 import { chatData, chatlist } from "../types/chatType";
+
+interface IkickoutPayload {
+  channelId: number;
+  memberId: number;
+}
 
 export const chatApi = {
   getChatRoomlist: () => {
@@ -30,6 +35,24 @@ export const chatApi = {
   exitChatRoom: () => {
     return useMutation(async (channelId: number) => {
       const { data } = await instance.post(`/api/channels/${channelId}`, {});
+      return data;
+    });
+  },
+  kickOutMember: () => {
+    return useMutation(async (payload: IkickoutPayload) => {
+      const { data } = await instance.post(
+        `/api/channels/${payload.channelId}/${payload.memberId}`,
+        {},
+      );
+      return data;
+    });
+  },
+  getPastMessage: () => {
+    return useInfiniteQuery(["chatList"], async () => {
+      const data = await instance.post(
+        `/api/channels/21/test?page=0&size=10`,
+        {},
+      );
       return data;
     });
   },

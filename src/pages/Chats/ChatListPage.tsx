@@ -6,6 +6,9 @@ export const ChatListPage = () => {
 
   const { data: chat } = chatApi.getChatRoomlist();
 
+  const { data } = chatApi.getPastMessage();
+  console.log(data);
+
   return (
     <div className="w-full  min-h-screen pb-[4rem] overflow-x-hidden">
       {/* 채팅탭 헤더 */}

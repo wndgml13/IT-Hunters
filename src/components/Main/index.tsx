@@ -148,9 +148,9 @@ export const Main = () => {
           ))}
         </ul>
       </section>
-      <section className=" px-6">
+      <section>
         <div className="flex justify-between mb-[18px] items-end">
-          <h3 className="text-xl font-normal font-cookie">
+          <h3 className="text-xl px-6 font-normal font-cookie">
             <span className="text-brandBlue font-cookie">이달의 몬스터</span>
             다! 잘 확인하도록.
           </h3>

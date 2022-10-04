@@ -10,6 +10,12 @@ import { ReactComponent as Bell } from "./bell.svg";
 import { ReactComponent as FilterIcon } from "./filter.svg";
 import { ReactComponent as UpSignIcon } from "./upSign.svg";
 import { ReactComponent as SendIcon } from "./sendIcon.svg";
+import { ReactComponent as ChatExitIcon } from "./chatExitIcon.svg";
+import { ReactComponent as ExpandIcon } from "./expandIcon.svg";
+import { ReactComponent as GoBackIcon } from "./goBackIcon.svg";
+import { ReactComponent as PencilIcon } from "./pencil.svg";
+import { ReactComponent as PlusIcon } from "./plus.svg";
+import { ReactComponent as AlbumIcon } from "./albumIcon.svg";
 export {
   ChatIcon,
   HomeIcon,
@@ -23,4 +29,10 @@ export {
   FilterIcon,
   UpSignIcon,
   SendIcon,
+  ChatExitIcon,
+  ExpandIcon,
+  GoBackIcon,
+  PencilIcon,
+  PlusIcon,
+  AlbumIcon,
 };

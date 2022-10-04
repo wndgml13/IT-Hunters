@@ -11,7 +11,7 @@ import convertDateText from "../lib/convertDateText";
 import { loginInfoState } from "../store/loginInfoState";
 import { CommentGet } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
-import { DeletePostModal } from "./DeletePostMdoal";
+import { YesOrNoModal } from "./Modals/YesOrNoModal";
 import { OffersClassesModal } from "./OffersClassesModal";
 import { PageHeader } from "./PageHeader";
 
@@ -289,17 +289,20 @@ export const PostsDetail = () => {
           <div className="whitespace-pre-line break-all">{quest?.content}</div>
         </div>
 
-        <div className="p-5">
-          <button
-            type="button"
-            className="text-white w-full h-[57px] bg-brandBlue font-bold rounded-lg text-lg px-5 py-2.5 shadow-[5px_5px_0_0_rgb(244,200,40)]"
-            onClick={() => {
-              setOfferClassModal(!offerClassModal);
-            }}
-          >
-            참가하기
-          </button>
-        </div>
+        {quest?.offeredMember.includes(userinfo.id) ||
+        quest?.memberId === userinfo.id ? null : (
+          <div className="p-5">
+            <button
+              type="button"
+              className="text-white w-full h-[57px] bg-brandBlue font-bold rounded-lg text-lg px-5 py-2.5 shadow-[5px_5px_0_0_rgb(244,200,40)]"
+              onClick={() => {
+                setOfferClassModal(!offerClassModal);
+              }}
+            >
+              참가하기
+            </button>
+          </div>
+        )}
       </div>
       {/* 댓글시작 */}
       {comments?.map((co: CommentGet) => (
@@ -329,10 +332,11 @@ export const PostsDetail = () => {
         </div>
       ) : null}
       {deleteModal && (
-        <DeletePostModal
+        <YesOrNoModal
           tgVal={deleteModal}
           tg={setDeleteModal}
-          onDelete={onDeletepost}
+          onAction={onDeletepost}
+          modalTitle={"정말 삭제하겠는가 ?"}
         />
       )}
       {offerClassModal && (
