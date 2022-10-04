@@ -7,6 +7,8 @@ import { PostsApi } from "../APIs/PostsApi";
 import { NumMemberGet } from "./NumMemberGet";
 import { useQueryClient } from "@tanstack/react-query";
 import { PageHeader } from "./PageHeader";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { alertState, onAlertState } from "../store/alertState";
 
 export const AddPosts = () => {
   const navigate = useNavigate();
@@ -19,6 +21,9 @@ export const AddPosts = () => {
   const [frontend, setFrontend] = useState<number>(0);
   const [designer, setDesigner] = useState<number>(0);
   const [fullstack, setFullstack] = useState<number>(0);
+
+  const [tgVal, tg] = useRecoilState(onAlertState);
+  const setAlertContent = useSetRecoilState(alertState);
 
   const postInfo = {
     title,
@@ -41,22 +46,27 @@ export const AddPosts = () => {
         queryClient.invalidateQueries(["Postsdetail"]);
         queryClient.invalidateQueries(["filterlist"]);
       });
-      alert("게시글 작성 완료!");
+      setAlertContent("게시글 작성 완료!");
+      tg(!tgVal);
       navigate("/search");
       return;
     }
     if (!title) {
-      return alert("제목을 입력해 주세요!!");
+      setAlertContent("제목을 입력해주세요!");
+      tg(!tgVal);
     } else if (!content) {
-      return alert("프로젝트 내용을 입력해 주세요!!");
+      setAlertContent("프로젝트 내용을 입력해 주세요!!");
+      tg(!tgVal);
     } else if (backend + frontend + designer + fullstack === 0) {
-      return alert("프로젝트에 필요한 직군을 선택해주세요!");
+      setAlertContent("프로젝트에 필요한 직군을 선택해주세요!");
+      tg(!tgVal);
     }
   };
 
   return (
     <div className="w-full h-screen overflow-y-scroll pb-[5rem] px-6 ">
       <PageHeader pgTitle={"파티 모집 글쓰기"} />
+
       <h1 className="font-cookie my-6">
         좋은 <span className="text-brandBlue font-cookie">파티</span>를 구하길
         바란다
