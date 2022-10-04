@@ -3,9 +3,10 @@ import { SubCommentGet } from "../../types/postsDetailType";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { subCommentApi } from "../../APIs/subCommentApi";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loginInfoState } from "../../store/loginInfoState";
 import convertDateText from "../../lib/convertDateText";
+import { alertState, onAlertState } from "../../store/alertState";
 
 export const PostsSubComment = ({
   sc,
@@ -18,6 +19,9 @@ export const PostsSubComment = ({
   const { id } = useParams();
   const userinfo = useRecoilValue(loginInfoState);
   const navigate = useNavigate();
+
+  const [tgVal, tg] = useRecoilState(onAlertState); // 알러트 true/false
+  const setAlertContent = useSetRecoilState(alertState); // 알러트 내용
 
   const [editSubcomment, setEditsubComment] = useState(""); // 답글 수정
   const [editSubCommentToggle, setEditSubCommentToggle] = useState(false); // 답글 수정 토글
@@ -38,15 +42,17 @@ export const PostsSubComment = ({
         queryClient.invalidateQueries(["comments"]);
       });
       setEditsubComment("");
-    } else {
-      alert("내용을 입력해주세요!");
+    } else if (!editSubcomment) {
+      setAlertContent("내용을 입력해주세요!");
+      tg(!tgVal);
     }
   };
 
   const onInputEditSubComment = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditsubComment(e.target.value);
-    if (e.target.value.length > 255) {
-      alert("최대 255자까지 입력 가능합니다.");
+    if (e.target.value.length > 254) {
+      setAlertContent("최대 255자까지 입력 가능합니다.");
+      tg(!tgVal);
     }
   };
 
@@ -57,8 +63,9 @@ export const PostsSubComment = ({
       onEditsubComment();
       setEditsubComment("");
       setEditSubCommentToggle(!editSubCommentToggle); // 47번줄 editSubcomment 값이 있을 때만 인풋이 사라짐
-    } else {
-      alert("내용을 입력해주세요!");
+    } else if (!editSubcomment) {
+      setAlertContent("내용을 입력해주세요!");
+      tg(!tgVal);
     }
   };
 

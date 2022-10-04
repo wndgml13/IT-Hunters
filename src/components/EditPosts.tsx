@@ -7,6 +7,8 @@ import { PostsApi } from "../APIs/PostsApi";
 import { NumMemberGet } from "./NumMemberGet";
 import { useQueryClient } from "@tanstack/react-query";
 import { PageHeader } from "./PageHeader";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { alertState, onAlertState } from "../store/alertState";
 
 export const EditPosts = () => {
   const navigate = useNavigate();
@@ -22,6 +24,9 @@ export const EditPosts = () => {
   const [designer, setDesigner] = useState<number>(0);
   const [fullstack, setFullstack] = useState<number>(0);
   const [count, setCount] = useState<number>(0); // 프로젝트 내용 글자수 세기
+
+  const [tgVal, tg] = useRecoilState(onAlertState); // 알러트 true/false
+  const setAlertContent = useSetRecoilState(alertState); // 알러트 내용
 
   useEffect(() => {
     if (isSuccess) {
@@ -58,13 +63,24 @@ export const EditPosts = () => {
           queryClient.invalidateQueries(["Postsdetail"]);
           queryClient.invalidateQueries(["filterlist"]);
         });
-        alert("게시글 수정 완료!");
+        tg(!tgVal);
+        setAlertContent("게시글 수정 완료!");
         navigate("/search");
       } catch (error) {
-        alert("게시글 수정에 실패하셨습니다.");
+        setAlertContent("게시글 수정에 실패하셨습니다.");
+        tg(!tgVal);
+        console.log(error);
       }
-    } else {
-      alert("제목과 프로젝트 내용을 입력해 주세요!!");
+    }
+    if (!title) {
+      setAlertContent("제목을 입력해주세요!");
+      tg(!tgVal);
+    } else if (!content) {
+      setAlertContent("프로젝트 내용을 입력해 주세요!!");
+      tg(!tgVal);
+    } else if (backend + frontend + designer + fullstack === 0) {
+      setAlertContent("프로젝트에 필요한 직군을 선택해주세요!");
+      tg(!tgVal);
     }
   };
 
@@ -72,7 +88,8 @@ export const EditPosts = () => {
     setContent(e.target.value.slice(0, 999));
     setCount(e.target.value.length);
     if (e.target.value.length > 999) {
-      alert("최대 1000자까지 입력 가능합니다.");
+      tg(!tgVal);
+      setAlertContent("최대 1000자까지 입력 가능합니다.");
     }
   };
 

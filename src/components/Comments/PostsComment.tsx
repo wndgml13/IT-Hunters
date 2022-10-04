@@ -5,16 +5,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import { PostsSubComment } from "./PostsSubComment";
 import { CommentApi } from "../../APIs/CommentApi";
 import { subCommentApi } from "../../APIs/subCommentApi";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { loginInfoState } from "../../store/loginInfoState";
 import convertDateText from "../../lib/convertDateText";
 import { getCookieToken } from "../../config/cookies";
+import { alertState, onAlertState } from "../../store/alertState";
 
 export const PostsComment = ({ co }: { co: CommentGet }) => {
   const queryClient = useQueryClient();
   const { id } = useParams();
   const userinfo = useRecoilValue(loginInfoState);
   const navigate = useNavigate();
+
+  const [tgVal, tg] = useRecoilState(onAlertState); // 알러트 true/false
+  const setAlertContent = useSetRecoilState(alertState); // 알러트 내용
 
   const [subComment, setSubcomment] = useState<string>(""); // 답글 추가
   const [editComment, setEditComment] = useState(""); // 댓글 수정
@@ -36,15 +40,17 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
         queryClient.invalidateQueries(["comments"]);
       });
       setEditComment("");
-    } else {
-      alert("내용을 입력해주세요!");
+    } else if (!editComment) {
+      setAlertContent("내용을 입력해주세요!");
+      tg(!tgVal); // 알러트 창 닫기
     }
   };
 
   const onInputEditComment = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditComment(e.target.value);
-    if (e.target.value.length > 255) {
-      alert("최대 255자까지 입력 가능합니다.");
+    if (e.target.value.length > 254) {
+      setAlertContent("최대 255자까지 입력 가능합니다.");
+      tg(!tgVal);
     }
   };
 
@@ -53,8 +59,9 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
       onEditComment();
       setEditComment("");
       setEditCommentToggle(!editCommentToggle); // 43번째 줄 editComment 값이 있을 때만 인풋 창이 사라짐
-    } else {
-      alert("내용을 입력해주세요!");
+    } else if (!editComment) {
+      setAlertContent("내용을 입력해주세요!");
+      tg(!tgVal);
     }
   };
 
@@ -91,14 +98,16 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
       });
       setSubcomment("");
     } else {
-      alert("내용을 입력해주세요!");
+      setAlertContent("내용을 입력해주세요!");
+      tg(!tgVal);
     }
   };
 
   const onInputSubComment = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSubcomment(e.target.value);
-    if (e.target.value.length > 255) {
-      alert("최대 255자까지 입력 가능합니다.");
+    if (e.target.value.length > 254) {
+      setAlertContent("최대 255자까지 입력 가능합니다.");
+      tg(!tgVal);
     }
   };
 
