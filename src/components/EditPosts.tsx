@@ -6,6 +6,7 @@ import { StackListDropdwon } from "./StackListDropdown";
 import { PostsApi } from "../APIs/PostsApi";
 import { NumMemberGet } from "./NumMemberGet";
 import { useQueryClient } from "@tanstack/react-query";
+import { PageHeader } from "./PageHeader";
 
 export const EditPosts = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export const EditPosts = () => {
   const [frontend, setFrontend] = useState<number>(0);
   const [designer, setDesigner] = useState<number>(0);
   const [fullstack, setFullstack] = useState<number>(0);
+  const [count, setCount] = useState<number>(0); // 프로젝트 내용 글자수 세기
 
   useEffect(() => {
     if (isSuccess) {
@@ -31,6 +33,7 @@ export const EditPosts = () => {
       setFrontend(editInfo.classes.frontend);
       setDesigner(editInfo.classes.designer);
       setFullstack(editInfo.classes.fullstack);
+      setCount(editInfo.content.length);
     }
   }, [isSuccess]);
 
@@ -65,21 +68,23 @@ export const EditPosts = () => {
     }
   };
 
+  const onInputHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value.slice(0, 999));
+    setCount(e.target.value.length);
+    if (e.target.value.length > 999) {
+      alert("최대 1000자까지 입력 가능합니다.");
+    }
+  };
+
   return (
     <div className="w-full h-full overflow-y-scroll pb-[3.5rem] px-6 ">
-      <div className="flex mt-3">
-        <button
-          className="text-brandBlue text-2xl"
-          onClick={() => navigate(-1)}
-        >
-          &lt;
-        </button>
-        <p className="ml-4 text-lg">파티 모집 글수정</p>
-      </div>
+      <PageHeader pgTitle={"파티 모집 글수정"} />
       <h1 className="font-cookie my-6">좋은 파티를 구하길 바란다</h1>
       <div>
-        <h2 className="mb-4">필요직업군</h2>
-        <ul className="flex gap-x-[8px] overflow-x-scroll">
+        <h2 className="mb-4">
+          필요직업군 <span className="text-red-500">*</span>
+        </h2>
+        <ul className="flex justify-between">
           <NumMemberGet
             num={frontend}
             setNum={setFrontend}
@@ -104,25 +109,33 @@ export const EditPosts = () => {
       <StackListDropdwon stacks={stacks} setStacks={setStacks} />
 
       <div className="my-4">
-        <p className="mb-4">글쓰기</p>
+        <p className="mb-4">
+          글쓰기 <span className="text-red-500">*</span>
+        </p>
         <input
           className="w-full pl-2.5 py-2 border-b-[2px] outline-none focus:border-brandBlue"
           placeholder="제목을 입력해주세요."
           value={title}
           onChange={titleHandler}
         />
+        <div className="mt-7 flex justify-between text-sm">
+          <p>
+            내용 <span className="text-red-500">*</span>
+          </p>
+          <p>{count}자/1000자</p>
+        </div>
         <textarea
           id="message"
           rows={15}
-          className="block p-2.5 mt-6 w-full text-sm text-gray-900 bg-gray-100 rounded-lg focus:ring-blue-500 focus:border-blue-500 "
+          className="block p-2.5 mt-3 w-full text-sm text-gray-900 bg-gray-100 rounded-lg focus:ring-blue-500 focus:border-blue-500 "
           placeholder="프로젝트 내용을 입력해주세요."
           style={{ resize: "none" }}
           value={content}
-          onChange={e => setContent(e.target.value)}
+          onChange={onInputHandler}
         />
       </div>
 
-      <div className="w-full absolute bottom-0 left-0 right-0 z-50">
+      <div className="mb-6 w-full shadow-[5px_5px_0_0_rgb(244,200,40)]">
         <button
           type="button"
           onClick={onEditPostsHandler}

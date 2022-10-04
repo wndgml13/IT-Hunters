@@ -308,7 +308,7 @@ export const PostsDetail = () => {
           />
           <button
             type="button"
-            className="text-white text-[15px] w-20 h-[57px] bg-brandBlue font-bold rounded-lg mb-[30px] px-5 py-2.5 mr-2  focus:outline-none shadow-[5px_5px_0_0_rgb(244,200,40)]"
+            className="text-white text-sm w-20 h-[57px] bg-brandBlue font-bold rounded-lg mb-[30px] px-1 py-2.5 mr-2  focus:outline-none shadow-[5px_5px_0_0_rgb(244,200,40)]"
             onClick={onSubmitComment}
           >
             댓글달기
