@@ -5,7 +5,7 @@ import { useRecoilValue } from "recoil";
 // import { BookmarkApi } from "../APIs/BookmarkApi";
 import { CommentApi } from "../APIs/CommentApi";
 import { PostsApi } from "../APIs/PostsApi";
-import { DeIcon, Dot3, FeIcon, FuIcon } from "../assets/icons";
+import { DeIcon, Dot3, FeIcon, FuIcon, SendIcon } from "../assets/icons";
 import { getCookieToken } from "../config/cookies";
 import convertDateText from "../lib/convertDateText";
 import { loginInfoState } from "../store/loginInfoState";
@@ -28,7 +28,7 @@ export const PostsDetail = () => {
   const { id } = useParams();
   const [comment, setComment] = useState(""); // 댓글 작성
   const userinfo = useRecoilValue(loginInfoState); // 내 게시글 or 댓글에만 수정,삭제 버튼 보이게
-  console.log(userinfo);
+
   // 댓글, 답글 조회
   const { data: comments } = CommentApi.getComments(Number(id));
 
@@ -42,6 +42,8 @@ export const PostsDetail = () => {
         queryClient.invalidateQueries(["comments"]);
       });
       setComment("");
+    } else {
+      alert("내용을 입력해주세요!");
     }
   };
 
@@ -271,7 +273,7 @@ export const PostsDetail = () => {
           })}
         </ul>
 
-        <div className="my-5 w-full border-b border-b-[#ebebeb] px-6 pb-6">
+        <div className="my-2 w-full border-b px-6 pb-6">
           <div className="whitespace-pre-line break-all">{quest?.content}</div>
         </div>
 
@@ -288,31 +290,34 @@ export const PostsDetail = () => {
         </div>
       </div>
       {/* 댓글시작 */}
-      {comments?.map((co: CommentGet) => (
-        <PostsComment key={co.commentId} co={co} />
-      ))}
+      <div className="mt-3">
+        {comments?.map((co: CommentGet) => (
+          <PostsComment key={co.commentId} co={co} />
+        ))}
+      </div>
       {/* 댓글 입력란 */}
       {getCookieToken() ? (
-        <div className="flex row mt-5  gap-2 p-2">
+        <div className="flex row mt-5  gap-2 px-4">
           <img
-            className="mt-1 w-12 h-12 border rounded-full"
+            className="w-14 h-14 border rounded-full"
             src={userinfo.profileImage}
           />
-          <input
-            className="bg-gray-50 border border-black text-gray-900 text-sm rounded-2xl focus:ring-blue-500 focus:border-blue-500 w-full h-14 p-2.5 mx-1"
-            value={comment}
-            placeholder="댓글을 입력해주세요."
-            onChange={onInputComment}
-            onKeyPress={onEnterComment}
-            maxLength={255}
-          />
-          <button
-            type="button"
-            className="text-white text-sm w-20 h-[57px] bg-brandBlue font-bold rounded-lg mb-[30px] px-1 py-2.5 mr-2  focus:outline-none shadow-[5px_5px_0_0_rgb(244,200,40)]"
-            onClick={onSubmitComment}
-          >
-            댓글달기
-          </button>
+          <div className="flex mb-[30px] bg-white  rounded-2xl border focus:border-brandBlue w-full h-14 mx-1">
+            <input
+              className="rounded-2xl px-2.5 w-full"
+              value={comment}
+              placeholder="댓글을 입력해주세요."
+              onChange={onInputComment}
+              onKeyPress={onEnterComment}
+              maxLength={255}
+            />
+            <button
+              onClick={onSubmitComment}
+              className="rounded-full w-10 h-10 mr-1 px-3 my-2 bg-brandBlue"
+            >
+              <SendIcon />
+            </button>
+          </div>
         </div>
       ) : null}
       {deleteModal && (

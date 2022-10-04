@@ -36,6 +36,8 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
         queryClient.invalidateQueries(["comments"]);
       });
       setEditComment("");
+    } else {
+      alert("내용을 입력해주세요!");
     }
   };
 
@@ -51,6 +53,8 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
       onEditComment();
       setEditComment("");
       setEditCommentToggle(!editCommentToggle); // 43번째 줄 editComment 값이 있을 때만 인풋 창이 사라짐
+    } else {
+      alert("내용을 입력해주세요!");
     }
   };
 
@@ -85,6 +89,8 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
         queryClient.invalidateQueries(["comments"]);
       });
       setSubcomment("");
+    } else {
+      alert("내용을 입력해주세요!");
     }
   };
 
@@ -198,12 +204,10 @@ export const PostsComment = ({ co }: { co: CommentGet }) => {
             </button>
           ) : null}
         </div>
-
         {/* 답글 추가 */}
         {co?.subCommentList.map(sc => (
           <PostsSubComment key={sc.subCommentId} sc={sc} coId={co.commentId} />
         ))}
-
         {/* 답글 달기 버튼 */}
         {subCommentToggle && (
           <div className="gap-1">
