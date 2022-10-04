@@ -217,16 +217,28 @@ export const PostsDetail = () => {
         <p>남은 직업군</p>
         <ul className="grid gap-2 w-full grid-cols-2 mt-6 px-5">
           <li className="grid gap-2 grid-cols-2">
-            <p>프론트엔드</p> <p>: {quest?.classes.frontend} 명</p>
+            <p>프론트엔드</p>{" "}
+            <p>
+              : <span className="font-bold">{quest?.classes.frontend}</span> 명
+            </p>
           </li>
           <li className="grid gap-2 grid-cols-2">
-            <p>백엔드 </p> <p>: {quest?.classes.backend} 명</p>
+            <p>백엔드 </p>{" "}
+            <p>
+              : <span className="font-bold">{quest?.classes.frontend}</span> 명
+            </p>
           </li>
           <li className="grid gap-2 grid-cols-2">
-            <p>디자이너 </p> <p>: {quest?.classes.designer} 명</p>
+            <p>디자이너 </p>{" "}
+            <p>
+              : <span className="font-bold">{quest?.classes.frontend}</span> 명
+            </p>
           </li>
           <li className="grid gap-2 grid-cols-2">
-            <p>풀스택 </p> <p>: {quest?.classes.fullstack} 명</p>
+            <p>풀스택 </p>{" "}
+            <p>
+              : <span className="font-bold">{quest?.classes.frontend}</span> 명
+            </p>
           </li>
         </ul>
       </div>

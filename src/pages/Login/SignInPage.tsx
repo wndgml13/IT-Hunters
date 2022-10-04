@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { instance } from "../../config/axios";
 import { setAccessToken } from "../../config/cookies";
+import { alertState, onAlertState } from "../../store/alertState";
 import { validError, validSuccess } from "./formStyle";
 
 export const SignInPage = () => {
@@ -9,6 +11,8 @@ export const SignInPage = () => {
   const [password, setPassword] = useState("");
   const [emailValid, setEmailValid] = useState(false);
   const [passwordValid, setPasswordValid] = useState(false);
+  const [tgVal, tg] = useRecoilState(onAlertState);
+  const setAlertContent = useSetRecoilState(alertState);
 
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`;
   const naverURL =
@@ -42,15 +46,20 @@ export const SignInPage = () => {
           password,
         });
         setAccessToken(data.headers.authorization);
-        alert("로그인 성공");
+        tg(!tgVal);
+        setAlertContent("로그인성공");
         setEmail("");
         setPassword("");
         window.location.replace("/");
       } catch (error) {
-        alert("아이디 혹은 비밀번호가 맞지않습니다. 다시한번 확인해주세요.");
+        tg(!tgVal);
+        setAlertContent(
+          "아이디 혹은 비밀번호가 맞지않습니다. 다시한번 확인해주세요.",
+        );
       }
     } else {
-      alert("입력이 잘못되었습니다");
+      tg(!tgVal);
+      setAlertContent("입력이 잘못되었습니다");
     }
   };
 

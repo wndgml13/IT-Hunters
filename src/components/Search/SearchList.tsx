@@ -43,7 +43,7 @@ export const SearchList = () => {
 
   return (
     <div className="h-screen overflow-y-scroll pb-[5rem]">
-      <div className="absolute top-0 left-0 right-0 z-50 bg-white shadow-md">
+      <div className="absolute top-0 left-0 right-0 z-40 bg-white shadow-md">
         <div className="flex px-6 mt-4">
           <h1 className="mr-5 text-2xl w-14 font-cookie">파티</h1>{" "}
           <div className="flex w-full rounded-2xl border focus-within:border-brandBlue">
