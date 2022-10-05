@@ -1,24 +1,20 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import classNames from "classnames";
 import { useRecoilState } from "recoil";
+
 import { questApi } from "../../APIs/QuestApi";
-import { modalState } from "../../store/modalState";
+
 import { SearchFilter } from "./SearchFilter";
 import { FilterIcon, SearchIcon, UpSignIcon } from "../../assets/icons";
 import { QuestInSearch } from "../QuestInSearch";
-import { IFilter } from "../../types/search";
-import classNames from "classnames";
 
+import { modalState } from "../../store/modalState";
+import { filterState } from "../../store/filterState";
+
+import { IFilter } from "../../types/search";
 export const SearchList = () => {
   const [modal, setModal] = useRecoilState(modalState);
-  const selectedClass = useLocation().state;
-  const [filters, setFilters] = useState<IFilter>({
-    classType: [],
-    stack: [],
-    duration: 20,
-    title: "",
-  });
-
+  const [filters, setFilters] = useRecoilState<IFilter>(filterState);
   const [pfilter, setPfilter] = useState(
     [
       ...filters.classType.map(c => "classType=" + c),
@@ -37,12 +33,6 @@ export const SearchList = () => {
       ].join("&"),
     );
   }, [filters]);
-
-  useEffect(() => {
-    if (selectedClass) {
-      selectedClass;
-    }
-  }, [selectedClass]);
 
   const listRef = useRef<HTMLDivElement>(null);
 

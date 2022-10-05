@@ -1,8 +1,14 @@
 import { atom } from "recoil";
+import { IFilter } from "../types/search";
 
-export const filterState = atom<string | unknown>({
+export const filterState = atom<IFilter>({
   key: "filterState",
-  default: "",
+  default: {
+    classType: [],
+    stack: [],
+    duration: 20,
+    title: "",
+  },
 });
 
 export const classesState = atom<string[]>({
