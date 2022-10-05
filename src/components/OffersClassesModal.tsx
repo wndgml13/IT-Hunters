@@ -59,7 +59,7 @@ export const OffersClassesModal = ({
 
   useModal({ node, tgVal, tg });
   return (
-    <div className="h-full w-full absolute top-0 right-0 left-0 z-50 flex justify-center items-center bg-[#c2c2c2] bg-opacity-80">
+    <div className="absolute top-0 right-0 left-0 h-full w-full z-50 flex justify-center items-center bg-[#c2c2c2] bg-opacity-80">
       <div className="bg-white px-8 py-3 rounded-lg shadow-lg" ref={node}>
         <p className="text-xl font-normal font-cookie text-center mt-4">
           직군 선택

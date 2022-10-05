@@ -38,6 +38,15 @@ export const PostsSubComment = ({
         queryClient.invalidateQueries(["comments"]);
       });
       setEditsubComment("");
+    } else {
+      alert("내용을 입력해주세요!");
+    }
+  };
+
+  const onInputEditSubComment = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditsubComment(e.target.value);
+    if (e.target.value.length > 255) {
+      alert("최대 255자까지 입력 가능합니다.");
     }
   };
 
@@ -48,6 +57,8 @@ export const PostsSubComment = ({
       onEditsubComment();
       setEditsubComment("");
       setEditSubCommentToggle(!editSubCommentToggle); // 47번줄 editSubcomment 값이 있을 때만 인풋이 사라짐
+    } else {
+      alert("내용을 입력해주세요!");
     }
   };
 
@@ -55,7 +66,7 @@ export const PostsSubComment = ({
     setEditsubComment(sc.content);
   }, [editSubCommentToggle]); // 수정 토글이 열릴 때마다 기존 답글 내용이 보임
 
-  // 답글 삭제 -- api파일로 옮겨야함!!
+  // 답글 삭제
   const { mutateAsync: deleteSubComment } = subCommentApi.deleteSubComment();
 
   const onDeletesubComment = () => {
@@ -106,10 +117,9 @@ export const PostsSubComment = ({
                 className="bg-gray-50 border border-gary text-gray-900 text-sm rounded-3xl w-full h-14 my-1 p-2.5 focus:outline-none"
                 placeholder="답글 수정"
                 value={editSubcomment}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setEditsubComment(e.target.value);
-                }}
+                onChange={onInputEditSubComment}
                 onKeyPress={onEntereditSubComment}
+                maxLength={255}
               />
               <div className="my-3 flex flex-row-reverse gap-2">
                 <button
