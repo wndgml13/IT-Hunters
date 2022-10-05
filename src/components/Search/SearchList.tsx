@@ -15,7 +15,7 @@ export const SearchList = () => {
   const [filters, setFilters] = useState<IFilter>({
     classType: [],
     stack: [],
-    duration: "20",
+    duration: 20,
     title: "",
   });
 
@@ -60,20 +60,6 @@ export const SearchList = () => {
     }
   };
 
-  const onHandleClassFilters = (className: string) => {
-    if (filters.classType.includes(className)) {
-      setFilters(prev => ({
-        ...prev,
-        classType: prev.classType.filter(v => v !== className),
-      }));
-      return;
-    }
-    setFilters(prev => ({
-      ...prev,
-      classType: [...prev.classType, className],
-    }));
-  };
-
   const { data } = questApi.getFilteredQuests(pfilter);
 
   return (
@@ -85,8 +71,7 @@ export const SearchList = () => {
             <input
               type="text"
               onChange={e => {
-                const copyFilter = { ...filters, title: e.target.value };
-                setFilters(copyFilter);
+                setFilters(prev => ({ ...prev, title: e.target.value }));
               }}
               placeholder="파티를 찾아보겠는가!"
               // onKeyPress={onEnterInput}
@@ -139,10 +124,7 @@ export const SearchList = () => {
       </div>
 
       {modal ? (
-        <SearchFilter
-          onHandleClassFilters={onHandleClassFilters}
-          filters={filters}
-        />
+        <SearchFilter setFilters={setFilters} filters={filters} />
       ) : null}
       <div className="pt-28" ref={listRef}>
         {data?.map(quest => (

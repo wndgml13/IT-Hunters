@@ -1,49 +1,42 @@
-import { useRecoilState, useSetRecoilState } from "recoil";
-import {
-  classesState,
-  durationState,
-  filterState,
-  stacksState,
-} from "../../store/filterState";
+import { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import classNames from "classnames";
 import { modalState } from "../../store/modalState";
 import { DurationRange } from "../DurationRange";
 import { StackListDropdwon } from "../StackListDropdown";
 import { IFilter } from "../../types/search";
 
 export const SearchFilter = ({
-  onHandleClassFilters,
-  filters,
+  setFilters,
+  filters: { classType, stack, duration },
 }: {
-  onHandleClassFilters: (className: string) => void;
+  setFilters: React.Dispatch<React.SetStateAction<IFilter>>;
   filters: IFilter;
 }) => {
   const setModal = useSetRecoilState(modalState);
-  const [classes, setClasses] = useRecoilState(classesState);
-  const [stacks, setStacks] = useRecoilState(stacksState);
-  const [duration, setDuration] = useRecoilState(durationState);
-  const setFilter = useSetRecoilState(filterState);
+  const [classes, setClasses] = useState<string[]>([...classType]);
+  const [stacks, setStacks] = useState<string[]>([...stack]);
+  const [durationWeek, setDurationWeek] = useState<number>(duration);
 
   const onSubmitFilter = () => {
-    const classQuery = classes.map(c => "classType=" + c);
-    const stackQuery = stacks.map(s => "stack=" + s);
-    const durationQuery = "duration=" + duration;
-    const queryString = [...classQuery, ...stackQuery, durationQuery].join("&");
-
-    setFilter(queryString);
+    setFilters(prev => ({
+      ...prev,
+      classType: classes,
+      stack: stacks,
+      duration: durationWeek,
+    }));
     setModal(false);
   };
 
-  const onSelectClass = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onHandleClassFilters(e.target.value);
-  };
-  const onSelectStack = () => {
-    console.log(123);
-  };
-  const onSelectDur = () => {
-    console.log(123);
+  const onSelectClass = (key: string) => {
+    if (classes.includes(key)) {
+      setClasses(prev => prev.filter(v => v !== key));
+      return;
+    }
+    setClasses(prev => [...prev, key]);
   };
   const classStyle =
-    "inline-flex item-center p-3 text-[14px] text-gray-300 w-full border border-gray-300 cursor-pointer peer-checked:text-blue-500 peer-checked:ring-blue-500 peer-checked:ring-[1px] peer-checked:border-transparent";
+    "inline-flex item-center p-3 text-[14px] text-gray-300 w-full border border-gray-300 cursor-pointer";
 
   return (
     <div className="h-full w-full absolute top-0 left-0 z-50 flex bg-white">
@@ -100,62 +93,61 @@ export const SearchFilter = ({
           <h1 className="text-[16px] font-medium">직업군</h1>
           <ul className="grid gap-2 w-full grid-cols-2">
             <li>
-              <input
-                type="checkbox"
-                className="sr-only peer"
+              <button
+                onClick={() => onSelectClass("frontend")}
+                className={classNames(classStyle, {
+                  "text-blue-500 ring-blue-500 ring-[1px] border-transparent":
+                    classes.includes("frontend"),
+                })}
                 value="frontend"
-                id="Frontend"
-                checked={classes.includes("frontend") ? true : false}
-                onChange={e => onSelectClass(e)}
-              />
-              <label className={classStyle} htmlFor="Frontend">
-                <p>프론트엔드</p>
-              </label>
+              >
+                프론트엔드
+              </button>
             </li>
             <li>
-              <input
-                type="checkbox"
-                className="sr-only peer"
+              <button
+                onClick={() => onSelectClass("Backend")}
+                className={classNames(classStyle, {
+                  "text-blue-500 ring-blue-500 ring-[1px] border-transparent":
+                    classes.includes("Backend"),
+                })}
                 value="backend"
-                id="Backend"
-                checked={classes.includes("backend") ? true : false}
-                onChange={e => onSelectClass(e)}
-              />
-              <label className={classStyle} htmlFor="Backend">
-                <p>백엔드</p>
-              </label>
+              >
+                백엔드
+              </button>
             </li>
             <li>
-              <input
-                type="checkbox"
-                className="sr-only peer"
+              <button
+                onClick={() => onSelectClass("designer")}
+                className={classNames(classStyle, {
+                  "text-blue-500 ring-blue-500 ring-[1px] border-transparent":
+                    classes.includes("designer"),
+                })}
                 value="designer"
-                id="Designer"
-                checked={classes.includes("designer") ? true : false}
-                onChange={e => onSelectClass(e)}
-              />
-              <label className={classStyle} htmlFor="Designer">
-                <p>디자이너</p>
-              </label>
+              >
+                디자이너
+              </button>
             </li>
             <li>
-              <input
-                type="checkbox"
-                className="sr-only peer"
+              <button
+                onClick={() => onSelectClass("fullstack")}
+                className={classNames(classStyle, {
+                  "text-blue-500 ring-blue-500 ring-[1px] border-transparent":
+                    classes.includes("fullstack"),
+                })}
                 value="fullstack"
-                id="Fullstack"
-                checked={classes.includes("fullstack") ? true : false}
-                onChange={e => onSelectClass(e)}
-              />
-              <label className={classStyle} htmlFor="Fullstack">
-                <p>풀스택</p>
-              </label>
+              >
+                풀스택
+              </button>
             </li>
           </ul>
         </div>
         <div className="px-6">
           <StackListDropdwon stacks={stacks} setStacks={setStacks} />
-          <DurationRange duration={duration} setDuration={setDuration} />
+          <DurationRange
+            duration={durationWeek}
+            setDuration={setDurationWeek}
+          />
         </div>
 
         <div className="absolute bottom-0 flex items-center w-full space-x-2 text-gray-200">
