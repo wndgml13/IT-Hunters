@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React, { useState } from "react";
 
 interface props {
@@ -9,7 +10,6 @@ export const StackListDropdwon = ({ stacks, setStacks }: props) => {
   const [FStoggle, setFStoggle] = useState(false);
   const [BStoggle, setBStoggle] = useState(false);
   const [DStoggle, setDStoggle] = useState(false);
-
   const frontStackData = [
     "React",
     "Vue Js",
@@ -37,11 +37,11 @@ export const StackListDropdwon = ({ stacks, setStacks }: props) => {
     "Photoshop",
   ];
 
-  const onStacksHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      setStacks(prev => [...prev, e.target.value]);
+  const onStacksHandler = (stack: string) => () => {
+    if (stacks.includes(stack)) {
+      setStacks(prev => prev.filter(v => v !== stack));
     } else {
-      setStacks(stacks.filter(el => el !== e.target.value));
+      setStacks(prev => [...prev, stack]);
     }
   };
   return (
@@ -76,20 +76,18 @@ export const StackListDropdwon = ({ stacks, setStacks }: props) => {
           <ul className="grid gap-1 w-full grid-cols-3">
             {frontStackData?.map((fsd, idx) => (
               <li key={idx}>
-                <input
-                  type="checkbox"
-                  className="sr-only peer"
-                  value={fsd}
-                  id={fsd}
-                  checked={stacks.includes(fsd) ? true : false}
-                  onChange={e => onStacksHandler(e)}
-                />
-                <label
-                  htmlFor={fsd}
-                  className="inline-flex p-2 w-full text-[14px] text-gray-300 border border-gray-300 cursor-pointer peer-checked:text-blue-500 peer-checked:ring-blue-500 peer-checked:ring-1 peer-checked:border-transparent"
+                <button
+                  className={classNames(
+                    "inline-flex p-2 w-full text-[14px] text-gray-300 border border-gray-300 cursor-pointer",
+                    {
+                      "text-blue-500 ring-blue-500 ring-[1px] border-transparent":
+                        stacks.includes(fsd),
+                    },
+                  )}
+                  onClick={onStacksHandler(fsd)}
                 >
-                  <p>{fsd}</p>
-                </label>
+                  {fsd}
+                </button>
               </li>
             ))}
           </ul>
@@ -123,22 +121,20 @@ export const StackListDropdwon = ({ stacks, setStacks }: props) => {
         </div>
         {BStoggle ? (
           <ul className="grid gap-1 w-full grid-cols-3">
-            {backStackData?.map((bsd, idx) => (
+            {backStackData?.map((fsd, idx) => (
               <li key={idx}>
-                <input
-                  type="checkbox"
-                  className="sr-only peer"
-                  value={bsd}
-                  id={bsd}
-                  checked={stacks.includes(bsd) ? true : false}
-                  onChange={e => onStacksHandler(e)}
-                />
-                <label
-                  htmlFor={bsd}
-                  className="inline-flex p-2 w-full text-[14px] text-gray-300 border border-gray-300 cursor-pointer peer-checked:text-blue-500 peer-checked:ring-blue-500 peer-checked:ring-1 peer-checked:border-transparent"
+                <button
+                  className={classNames(
+                    "inline-flex p-2 w-full text-[14px] text-gray-300 border border-gray-300 cursor-pointer",
+                    {
+                      "text-blue-500 ring-blue-500 ring-[1px] border-transparent":
+                        stacks.includes(fsd),
+                    },
+                  )}
+                  onClick={onStacksHandler(fsd)}
                 >
-                  <p>{bsd}</p>
-                </label>
+                  {fsd}
+                </button>
               </li>
             ))}
           </ul>
@@ -172,22 +168,20 @@ export const StackListDropdwon = ({ stacks, setStacks }: props) => {
         </div>
         {DStoggle ? (
           <ul className="grid gap-1 w-full grid-cols-3">
-            {designStackData?.map((dsd, idx) => (
+            {designStackData?.map((fsd, idx) => (
               <li key={idx}>
-                <input
-                  type="checkbox"
-                  className="sr-only peer"
-                  value={dsd}
-                  id={dsd}
-                  checked={stacks.includes(dsd) ? true : false}
-                  onChange={e => onStacksHandler(e)}
-                />
-                <label
-                  htmlFor={dsd}
-                  className="inline-flex p-2 w-full text-[14px] text-gray-300 border border-gray-300 cursor-pointer peer-checked:text-blue-500 peer-checked:ring-blue-500 peer-checked:ring-1 peer-checked:border-transparent"
+                <button
+                  className={classNames(
+                    "inline-flex p-2 w-full text-[14px] text-gray-300 border border-gray-300 cursor-pointer",
+                    {
+                      "text-blue-500 ring-blue-500 ring-[1px] border-transparent":
+                        stacks.includes(fsd),
+                    },
+                  )}
+                  onClick={onStacksHandler(fsd)}
                 >
-                  <p>{dsd}</p>
-                </label>
+                  {fsd}
+                </button>
               </li>
             ))}
           </ul>
