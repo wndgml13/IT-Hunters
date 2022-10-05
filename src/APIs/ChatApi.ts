@@ -1,6 +1,11 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { instance } from "../config/axios";
 import { chatData, chatlist } from "../types/chatType";
+
+interface IkickoutPayload {
+  channelId: number;
+  memberId: number;
+}
 
 export const chatApi = {
   getChatRoomlist: () => {
@@ -33,4 +38,54 @@ export const chatApi = {
       return data;
     });
   },
+  kickOutMember: () => {
+    return useMutation(async (payload: IkickoutPayload) => {
+      const { data } = await instance.post(
+        `/api/channels/${payload.channelId}/${payload.memberId}`,
+        {},
+      );
+      return data;
+    });
+  },
+  getPastMessage: (channelId: number) => {
+    return useInfiniteQuery<IchatInifite, Error, IchatInifite, [string]>(
+      ["chatList"],
+      async ({ pageParam = 0 }) => {
+        const { data } = await instance.post(
+          `/api/channels/${channelId}/test?page=${pageParam}&size=20`,
+          {},
+        );
+        const { content, last } = data;
+        return { content, nextPage: pageParam + 1, last };
+      },
+      {
+        getNextPageParam: lastPage =>
+          !lastPage.last ? lastPage.nextPage : undefined,
+      },
+    );
+  },
 };
+
+// const fetchPostList = async (pageParam: number) => {
+//   const { data } = await instance.post(
+//     `/api/channels/83/test?page=${pageParam}&size=20`,
+//     {},
+//   );
+//   const { content, last } = data;
+//   return { content, nextPage: pageParam + 1, last };
+// };
+
+interface IchatInifite {
+  content: chatData[];
+  nextPage: number;
+  last: boolean;
+}
+
+// useInfiniteQuery<IchatInifite, Error, IchatInifite, [string]>(
+//   ["chatList"],
+//   ({ pageParam = 0 }) => fetchPostList(pageParam),
+//   // {
+//   //   getNextPageParam: lastPage =>
+//   //     !lastPage.last ? lastPage.nextPage : undefined,
+//   // },
+// );

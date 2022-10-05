@@ -12,7 +12,7 @@ export const MonthMonsterList = ({
     className: "center",
     infinite: true,
     centerMode: true,
-    centerPadding: "15%",
+    centerPadding: "23%",
     slidesToShow: 1,
     speed: 1000,
     // autoplay: true,
