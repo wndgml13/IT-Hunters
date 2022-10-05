@@ -1,13 +1,14 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 // import { BookmarkApi } from "../APIs/BookmarkApi";
 import { CommentApi } from "../APIs/CommentApi";
 import { PostsApi } from "../APIs/PostsApi";
 import { DeIcon, Dot3, FeIcon, FuIcon, SendIcon } from "../assets/icons";
 import { getCookieToken } from "../config/cookies";
 import convertDateText from "../lib/convertDateText";
+import { alertState, onAlertState } from "../store/alertState";
 import { loginInfoState } from "../store/loginInfoState";
 import { CommentGet } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
@@ -17,6 +18,9 @@ import { PageHeader } from "./PageHeader";
 
 export const PostsDetail = () => {
   const navigate = useNavigate();
+
+  const [tgVal, tg] = useRecoilState(onAlertState); // 알러트 true/false
+  const setAlertContent = useSetRecoilState(alertState); // 알러트 내용
 
   const [editDeleteToggle, setEditDeleteToggle] = useState(false); // 수정,삭제 점 3개 토글
   const [classes, setClasses] = useState({}); // 직군 아이콘
@@ -40,17 +44,24 @@ export const PostsDetail = () => {
       const payload = { id: Number(id), comment: comment };
       addComment(payload).then(() => {
         queryClient.invalidateQueries(["comments"]);
+        queryClient.invalidateQueries(["Postsdetail"]); // 댓글 작성 시 개수 실시간 카운팅
       });
       setComment("");
     } else {
-      alert("내용을 입력해주세요!");
+      setAlertContent("내용을 입력해주세요!");
+      tg(!tgVal);
     }
   };
 
+  // const onSubmitCommentUseMemo = useMemo(() => {
+  //   return onSubmitComment();
+  // }, [comment]);
+
   const onInputComment = (e: React.ChangeEvent<HTMLInputElement>) => {
     setComment(e.target.value);
-    if (e.target.value.length > 255) {
-      alert("최대 255자까지 입력 가능합니다.");
+    if (e.target.value.length > 254) {
+      setAlertContent("최대 255자까지 입력 가능합니다.");
+      tg(!tgVal);
     }
   };
 
@@ -306,15 +317,18 @@ export const PostsDetail = () => {
       </div>
       {/* 댓글시작 */}
       <div className="mt-3">
+        <div className="p-5 bg-white text-gray-800">
+          댓글 {quest?.commentCnt}개
+        </div>
         {comments?.map((co: CommentGet) => (
           <PostsComment key={co.commentId} co={co} />
         ))}
       </div>
       {/* 댓글 입력란 */}
       {getCookieToken() ? (
-        <div className="flex row mt-5  gap-2 px-4">
+        <div className="flex flex-row mt-5 gap-2 px-4">
           <img
-            className="w-14 h-14 border rounded-full"
+            className="w-16 h-14 border rounded-full"
             src={userinfo.profileImage}
           />
           <div className="flex mb-[30px] bg-white  rounded-2xl border focus:border-brandBlue w-full h-14 mx-1">
@@ -345,8 +359,8 @@ export const PostsDetail = () => {
       )}
       {offerClassModal && (
         <OffersClassesModal
-          tgVal={offerClassModal}
-          tg={setOfferClassModal}
+          cmTg={offerClassModal}
+          setCmTg={setOfferClassModal}
           questId={quest?.questId}
         />
       )}
