@@ -16,6 +16,8 @@ import { ReactComponent as GoBackIcon } from "./goBackIcon.svg";
 import { ReactComponent as PencilIcon } from "./pencil.svg";
 import { ReactComponent as PlusIcon } from "./plus.svg";
 import { ReactComponent as AlbumIcon } from "./albumIcon.svg";
+import { ReactComponent as Spinner } from "./spinner.svg";
+import { ReactComponent as MessageIcon } from "./messageIcon.svg";
 export {
   ChatIcon,
   HomeIcon,
@@ -35,4 +37,6 @@ export {
   PencilIcon,
   PlusIcon,
   AlbumIcon,
+  Spinner,
+  MessageIcon,
 };

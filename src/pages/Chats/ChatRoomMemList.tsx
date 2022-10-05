@@ -1,12 +1,13 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import { chatApi } from "../../APIs/ChatApi";
-import { UserInfoApi } from "../../APIs/UserInfoApi";
 import { ChatExitIcon } from "../../assets/icons";
 import { YesOrNoModal } from "../../components/Modals/YesOrNoModal";
 
 import { useModal } from "../../hooks/useModal";
+import { loginInfoState } from "../../store/loginInfoState";
 import { chatRoominfo } from "../../types/chatType";
 
 export const ChatRoomMemList = ({
@@ -44,7 +45,7 @@ export const ChatRoomMemList = ({
 
   const node = useRef<null | HTMLDivElement>(null);
 
-  const { data: userinfo } = UserInfoApi.getUserInfo();
+  const { id: userid } = useRecoilValue(loginInfoState);
 
   useModal({ node, tgVal, tg });
 
@@ -82,7 +83,7 @@ export const ChatRoomMemList = ({
                 />
               </div>
               <h1 className="ml-2 my-2">
-                {sqm.memberId === userinfo?.id ? (
+                {sqm.memberId === userid ? (
                   <span className="text-xs mx-1">나</span>
                 ) : null}
                 {sqm.nickname}{" "}
@@ -91,7 +92,7 @@ export const ChatRoomMemList = ({
                     팀장
                   </span>
                 ) : null}
-                {roomInfo.leaderId === userinfo.id ? (
+                {roomInfo.leaderId === userid ? (
                   sqm.memberId !== roomInfo.leaderId ? (
                     <button
                       onClick={() => {
