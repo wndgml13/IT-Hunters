@@ -8,22 +8,20 @@ import {
 import { modalState } from "../../store/modalState";
 import { DurationRange } from "../DurationRange";
 import { StackListDropdwon } from "../StackListDropdown";
+import { IFilter } from "../../types/search";
 
-export const SearchFilter = () => {
+export const SearchFilter = ({
+  onHandleClassFilters,
+  filters,
+}: {
+  onHandleClassFilters: (className: string) => void;
+  filters: IFilter;
+}) => {
   const setModal = useSetRecoilState(modalState);
-
   const [classes, setClasses] = useRecoilState(classesState);
   const [stacks, setStacks] = useRecoilState(stacksState);
   const [duration, setDuration] = useRecoilState(durationState);
   const setFilter = useSetRecoilState(filterState);
-
-  const onClassesHandelr = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      setClasses(prev => [...prev, e.target.value]);
-    } else {
-      setClasses(classes.filter(el => el !== e.target.value));
-    }
-  };
 
   const onSubmitFilter = () => {
     const classQuery = classes.map(c => "classType=" + c);
@@ -35,6 +33,15 @@ export const SearchFilter = () => {
     setModal(false);
   };
 
+  const onSelectClass = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onHandleClassFilters(e.target.value);
+  };
+  const onSelectStack = () => {
+    console.log(123);
+  };
+  const onSelectDur = () => {
+    console.log(123);
+  };
   const classStyle =
     "inline-flex item-center p-3 text-[14px] text-gray-300 w-full border border-gray-300 cursor-pointer peer-checked:text-blue-500 peer-checked:ring-blue-500 peer-checked:ring-[1px] peer-checked:border-transparent";
 
@@ -99,7 +106,7 @@ export const SearchFilter = () => {
                 value="frontend"
                 id="Frontend"
                 checked={classes.includes("frontend") ? true : false}
-                onChange={e => onClassesHandelr(e)}
+                onChange={e => onSelectClass(e)}
               />
               <label className={classStyle} htmlFor="Frontend">
                 <p>프론트엔드</p>
@@ -112,7 +119,7 @@ export const SearchFilter = () => {
                 value="backend"
                 id="Backend"
                 checked={classes.includes("backend") ? true : false}
-                onChange={e => onClassesHandelr(e)}
+                onChange={e => onSelectClass(e)}
               />
               <label className={classStyle} htmlFor="Backend">
                 <p>백엔드</p>
@@ -125,7 +132,7 @@ export const SearchFilter = () => {
                 value="designer"
                 id="Designer"
                 checked={classes.includes("designer") ? true : false}
-                onChange={e => onClassesHandelr(e)}
+                onChange={e => onSelectClass(e)}
               />
               <label className={classStyle} htmlFor="Designer">
                 <p>디자이너</p>
@@ -138,7 +145,7 @@ export const SearchFilter = () => {
                 value="fullstack"
                 id="Fullstack"
                 checked={classes.includes("fullstack") ? true : false}
-                onChange={e => onClassesHandelr(e)}
+                onChange={e => onSelectClass(e)}
               />
               <label className={classStyle} htmlFor="Fullstack">
                 <p>풀스택</p>

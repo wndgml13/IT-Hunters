@@ -1,45 +1,80 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { questApi } from "../../APIs/QuestApi";
-import {
-  classesState,
-  filterState,
-  stacksState,
-} from "../../store/filterState";
 import { modalState } from "../../store/modalState";
 import { SearchFilter } from "./SearchFilter";
 import { FilterIcon, SearchIcon, UpSignIcon } from "../../assets/icons";
 import { QuestInSearch } from "../QuestInSearch";
+import { IFilter } from "../../types/search";
 import classNames from "classnames";
 
 export const SearchList = () => {
   const [modal, setModal] = useRecoilState(modalState);
-  const [filterParam, setFilterParam] = useRecoilState(filterState);
-  const [title, setTitle] = useState("");
-  const selectClass = useLocation().state;
-  const { data } = questApi.getFilteredQuests(filterParam);
+  const selectedClass = useLocation().state;
+  const [filters, setFilters] = useState<IFilter>({
+    classType: [],
+    stack: [],
+    duration: "20",
+    title: "",
+  });
 
-  const searchParam = filterParam + "&title=" + title;
+  const [pfilter, setPfilter] = useState(
+    [
+      ...filters.classType.map(c => "classType=" + c),
+      ...filters.stack.map(c => "stack=" + c),
+      "duration=" + filters.duration,
+      "title=" + filters.title,
+    ].join("&"),
+  );
+  useEffect(() => {
+    setPfilter(
+      [
+        ...filters.classType.map(c => "classType=" + c),
+        ...filters.stack.map(c => "stack=" + c),
+        "duration=" + filters.duration,
+        "title=" + filters.title,
+      ].join("&"),
+    );
+  }, [filters]);
 
-  const onEnterInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      setFilterParam(searchParam);
+  useEffect(() => {
+    if (selectedClass) {
+      selectedClass;
     }
-  };
-
-  const classes = useRecoilValue(classesState);
-  const stacks = useRecoilValue(stacksState);
-
-  const filteredResultList = [...classes, ...stacks];
+  }, [selectedClass]);
 
   const listRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (selectClass) {
-      setFilterParam(selectClass);
+  const dlelteFitler = (key: string) => () => {
+    if (filters.classType.includes(key)) {
+      const copy = {
+        ...filters,
+        classType: filters.classType.filter(v => v !== key),
+      };
+      setFilters(copy);
     }
-  }, [selectClass]);
+    if (filters.stack.includes(key)) {
+      const copy = { ...filters, stack: filters.stack.filter(v => v !== key) };
+      setFilters(copy);
+    }
+  };
+
+  const onHandleClassFilters = (className: string) => {
+    if (filters.classType.includes(className)) {
+      setFilters(prev => ({
+        ...prev,
+        classType: prev.classType.filter(v => v !== className),
+      }));
+      return;
+    }
+    setFilters(prev => ({
+      ...prev,
+      classType: [...prev.classType, className],
+    }));
+  };
+
+  const { data } = questApi.getFilteredQuests(pfilter);
 
   return (
     <div className="h-screen overflow-y-scroll pb-[5rem]">
@@ -48,12 +83,13 @@ export const SearchList = () => {
           <h1 className="mr-5 text-2xl w-14 font-cookie">파티</h1>{" "}
           <div className="flex w-full rounded-2xl border focus-within:border-brandBlue">
             <input
-              value={title}
+              type="text"
               onChange={e => {
-                setTitle(e.target.value);
+                const copyFilter = { ...filters, title: e.target.value };
+                setFilters(copyFilter);
               }}
               placeholder="파티를 찾아보겠는가!"
-              onKeyPress={onEnterInput}
+              // onKeyPress={onEnterInput}
               className="w-full pl-2.5 py-2 outline-none rounded-2xl "
             />
             <button className="mb-1 text-sm px-2 py-1 ">
@@ -65,7 +101,8 @@ export const SearchList = () => {
           <div className="bg-white w-[5rem]">
             <button
               className={classNames("flex gap-x-2  px-2 py-1 rounded-lg", {
-                "bg-brandYellow": filteredResultList.length > 0,
+                "bg-brandYellow":
+                  filters.classType.length > 0 || filters.stack.length > 0,
               })}
               onClick={() => {
                 setModal(true);
@@ -77,21 +114,36 @@ export const SearchList = () => {
               </div>
             </button>
           </div>{" "}
-          <div className="flex w-[75%] gap-x-2 overflow-x-scroll whitespace-nowrap">
-            {filteredResultList?.map((frl, idx) => (
-              <p
-                key={idx}
-                className="bg-brandBlue py-1 px-3 rounded-xl text-white"
+          <ul className="scroll flex w-[75%] gap-x-2 overflow-x-scroll whitespace-nowrap">
+            {filters.classType?.map(frl => (
+              <li
+                key={frl}
+                onClick={dlelteFitler(frl)}
+                className="bg-brandBlue py-1 px-3 rounded-xl text-white cursor-pointer"
               >
                 {frl}
-              </p>
+              </li>
             ))}
-          </div>
+            {filters.stack?.map(frl => (
+              <li
+                key={frl}
+                onClick={dlelteFitler(frl)}
+                className="bg-brandBlue py-1 px-3 rounded-xl text-white cursor-pointer"
+              >
+                {frl}
+              </li>
+            ))}
+          </ul>
           <div className="w-[3rem] text-center ">{data?.length} 건</div>
         </div>
       </div>
 
-      {modal ? <SearchFilter /> : null}
+      {modal ? (
+        <SearchFilter
+          onHandleClassFilters={onHandleClassFilters}
+          filters={filters}
+        />
+      ) : null}
       <div className="pt-28" ref={listRef}>
         {data?.map(quest => (
           <QuestInSearch key={quest.questId} quest={quest} />
