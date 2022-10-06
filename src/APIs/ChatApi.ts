@@ -48,8 +48,13 @@ export const chatApi = {
     });
   },
   getPastMessage: (channelId: number) => {
-    return useInfiniteQuery<IchatInifite, Error, IchatInifite, [string]>(
-      ["chatList"],
+    return useInfiniteQuery<
+      IchatInifite,
+      Error,
+      IchatInifite,
+      [string, number]
+    >(
+      ["chatList", channelId],
       async ({ pageParam = 0 }) => {
         const { data } = await instance.post(
           `/api/channels/${channelId}/test?page=${pageParam}&size=20`,

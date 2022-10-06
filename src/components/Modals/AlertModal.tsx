@@ -12,7 +12,7 @@ export const AlertModal = ({ alertContent, tg, tgVal }: alertPropsType) => {
 
   useModal({ node, tgVal, tg });
   return (
-    <div className="h-full w-full absolute top-0 right-0 left-0 z-50 flex justify-center bg-[#c2c2c2] bg-opacity-50">
+    <div className="h-full w-full absolute top-0 right-0 left-0 z-[9999] flex justify-center bg-[#c2c2c2] bg-opacity-50">
       <div
         className="bg-[#ffffff] mt-5 px-6 w-[90%]  border rounded-xl absolute shadow-2xl "
         ref={node}
