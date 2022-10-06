@@ -14,7 +14,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ChatRoomMemList } from "./ChatRoomMemList";
 import { SendIcon } from "../../assets/icons";
 
-export const ChatRoomPage = ({ client }: { client: Stomp.Client }) => {
+const ChatRoomPage = ({ client }: { client: Stomp.Client }) => {
   const textRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -233,3 +233,5 @@ export const ChatRoomPage = ({ client }: { client: Stomp.Client }) => {
     </div>
   );
 };
+
+export default ChatRoomPage;

@@ -5,7 +5,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { instance } from "../../config/axios";
 import { alertState, onAlertState } from "../../store/alertState";
 
-export const FindMyEmail = () => {
+const FindMyEmail = () => {
   const navigate = useNavigate();
   const [phoneNum, setPhoneNum] = useState("");
   const [phoneNumValidToggle, setPhoneNumValidToggle] = useState(false);
@@ -129,3 +129,5 @@ export const FindMyEmail = () => {
     </div>
   );
 };
+
+export default FindMyEmail;

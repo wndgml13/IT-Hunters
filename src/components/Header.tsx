@@ -3,7 +3,7 @@ import { notificationApi } from "../APIs/NotificationApi";
 import { Bell } from "../assets/icons";
 import { getCookieToken } from "../config/cookies";
 
-export const Header = () => {
+const Header = () => {
   const token = getCookieToken();
   const navigate = useNavigate();
   const { data: notifications } = notificationApi.getQuestOffer();
@@ -32,3 +32,5 @@ export const Header = () => {
     </header>
   );
 };
+
+export default Header;

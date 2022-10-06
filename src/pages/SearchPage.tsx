@@ -1,9 +1,11 @@
 import { SearchList } from "../components/Search/SearchList";
 
-export const SearchPage = () => {
+const SearchPage = () => {
   return (
     <>
       <SearchList />
     </>
   );
 };
+
+export default SearchPage;

@@ -4,7 +4,7 @@ import { OAuthAPI } from "../../APIs/OAuthApi";
 import { alertState, onAlertState } from "../../store/alertState";
 import { LoginLoading } from "./LoginLoading";
 
-export const OAuthKakao = () => {
+const OAuthKakao = () => {
   const kakaoToken = new URL(window.location.href).searchParams.get("code");
 
   const [tgVal, tg] = useRecoilState(onAlertState); // 알러트 true/false
@@ -26,3 +26,5 @@ export const OAuthKakao = () => {
     </>
   );
 };
+
+export default OAuthKakao;

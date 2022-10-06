@@ -1,11 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { instance } from "../config/axios";
-import { getCookieToken } from "../config/cookies";
 import { CommentGet } from "../types/postsDetailType";
-
-const userToken = {
-  headers: { authorization: getCookieToken() },
-};
 
 interface CommentPayload {
   id: number;
@@ -29,7 +24,6 @@ export const CommentApi = {
     return useQuery<CommentGet[]>(["comments", id], async () => {
       const { data } = await instance.get<CommentGet[]>(
         `api/quests/${id}/comments`,
-        userToken,
       );
       return data;
     });
@@ -42,7 +36,6 @@ export const CommentApi = {
       const { data } = await instance.post(
         `/api/quests/${payload.id}/comments`,
         { content: payload.comment },
-        userToken,
       );
       return data;
     });
@@ -51,13 +44,9 @@ export const CommentApi = {
   // 댓글 수정
   modifiedComment: () => {
     return useMutation((payload: ModifiedPayload) =>
-      instance.put(
-        `/api/quests/${payload.id}/comments/${payload.commentId}`,
-        {
-          content: payload.editComment,
-        },
-        userToken,
-      ),
+      instance.put(`/api/quests/${payload.id}/comments/${payload.commentId}`, {
+        content: payload.editComment,
+      }),
     );
   },
 
@@ -66,7 +55,6 @@ export const CommentApi = {
     return useMutation((payload: DeletePayload) =>
       instance.delete(
         `/api/quests/${payload.id}/comments/${payload.commentId}`,
-        userToken,
       ),
     );
   },
