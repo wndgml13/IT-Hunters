@@ -1,10 +1,14 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { chatApi } from "../../APIs/ChatApi";
-import { UserInfoApi } from "../../APIs/UserInfoApi";
+import { ChatExitIcon } from "../../assets/icons";
+import { YesOrNoModal } from "../../components/Modals/YesOrNoModal";
 
 import { useModal } from "../../hooks/useModal";
+import { alertState, onAlertState } from "../../store/alertState";
+import { loginInfoState } from "../../store/loginInfoState";
 import { chatRoominfo } from "../../types/chatType";
 
 export const ChatRoomMemList = ({
@@ -19,19 +23,35 @@ export const ChatRoomMemList = ({
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  const [crTg, setCrTg] = useRecoilState(onAlertState); // 알러트 true/false
+  const setAlertContent = useSetRecoilState(alertState); // 알러트 내용
+
   const { mutateAsync: exitChatroom } = chatApi.exitChatRoom();
+  const { mutateAsync: kickOutMember } = chatApi.kickOutMember();
+
+  const [getOutTg, setGetOutTg] = useState(false);
 
   const onExitChatroom = () => {
     exitChatroom(roomInfo.channelId).then(() => {
       queryClient.invalidateQueries(["chatlist"]);
-      alert("스쿼드를 나갑니다");
+      setAlertContent("스쿼드를 나갑니다");
+      setCrTg(crTg);
       navigate("/chats");
+    });
+  };
+
+  const onKickoutMember = (memberId: number) => {
+    const channelId = roomInfo.channelId;
+    kickOutMember({ channelId, memberId }).then(() => {
+      queryClient.invalidateQueries(["chatinfo"]);
+      setAlertContent("강퇴");
+      setCrTg(crTg);
     });
   };
 
   const node = useRef<null | HTMLDivElement>(null);
 
-  const { data: userinfo } = UserInfoApi.getUserInfo();
+  const { id: userid } = useRecoilValue(loginInfoState);
 
   useModal({ node, tgVal, tg });
 
@@ -58,61 +78,61 @@ export const ChatRoomMemList = ({
         <div className="mx-3 bg-white px-4 py-4 rounded-lg shadow-md overflow-y-scroll">
           <h3 className="mb-2">대화 상대</h3>
           {roomInfo.squadMembers.map((sqm, idx) => (
-            <div
-              className="flex py-3 border-b"
-              key={idx}
-              onClick={() => navigate(`/user/${sqm.memberId}`)}
-            >
-              <div className="w-[40px] h-[40px]">
+            <div className="flex py-3 border-b relative" key={idx}>
+              <div
+                className="w-[40px] h-[40px] cursor-pointer"
+                onClick={() => navigate(`/user/${sqm.memberId}`)}
+              >
                 <img
                   src={sqm.profileImg}
                   className="w-full h-full rounded-2xl"
                 />
               </div>
               <h1 className="ml-2 my-2">
-                {sqm.memberId === userinfo?.id ? (
+                {sqm.memberId === userid ? (
                   <span className="text-xs mx-1">나</span>
                 ) : null}
-                {sqm.nickname}
+                {sqm.nickname}{" "}
+                {sqm.memberId === roomInfo.leaderId ? (
+                  <span className="text-xs mx-3 absolute right-0 text-center py-1 rounded-lg">
+                    팀장
+                  </span>
+                ) : null}
+                {roomInfo.leaderId === userid ? (
+                  sqm.memberId !== roomInfo.leaderId ? (
+                    <button
+                      onClick={() => {
+                        onKickoutMember(sqm.memberId);
+                      }}
+                      className="absolute mx-3 right-0 text-xs"
+                    >
+                      강퇴
+                    </button>
+                  ) : null
+                ) : null}
               </h1>
             </div>
           ))}
         </div>
         <div className="absolute bottom-0 w-full p-3 bg-white">
           {" "}
-          <button onClick={onExitChatroom}>
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M21.6011 11.9067L8.27091 11.9067"
-                stroke="#4B23B8"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M16.7538 17.9658L22.813 11.9067L16.7538 5.84749"
-                stroke="#4B23B8"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M1 22.813L0.999998 0.999999"
-                stroke="#4B23B8"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+          <button
+            onClick={() => {
+              setGetOutTg(!getOutTg);
+            }}
+          >
+            <ChatExitIcon />
           </button>
         </div>
       </div>
+      {getOutTg && (
+        <YesOrNoModal
+          tgVal={getOutTg}
+          tg={setGetOutTg}
+          onAction={onExitChatroom}
+          modalTitle={"정말 나가시겠습니까?"}
+        />
+      )}
     </div>
   );
 };

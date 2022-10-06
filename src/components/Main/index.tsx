@@ -11,7 +11,7 @@ import { IQuest } from "../../types/questType";
 import { getCookieToken } from "../../config/cookies";
 import { Link } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import { classesState } from "../../store/filterState";
+import { filterState } from "../../store/filterState";
 
 export const Main = () => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export const Main = () => {
   const { data: monthMonster }: { data: undefined | IMonthMonster[] } =
     mainPageAPis.getMonthMonter();
 
-  const setClasses = useSetRecoilState(classesState);
+  const setFilters = useSetRecoilState(filterState);
 
   return (
     <main className="w-full h-full overflow-x-hidden mt-[3.5rem]">
@@ -61,7 +61,7 @@ export const Main = () => {
           <li
             className="w-[20%] text-center cursor-pointer"
             onClick={() => {
-              setClasses(["backend"]);
+              setFilters(prev => ({ ...prev, classType: ["backgroun"] }));
               navigate("search");
             }}
           >
@@ -77,7 +77,7 @@ export const Main = () => {
           <li
             className="w-[20%] text-center cursor-pointer"
             onClick={() => {
-              setClasses(["frontend"]);
+              setFilters(prev => ({ ...prev, classType: ["frontend"] }));
               navigate("search");
             }}
           >
@@ -93,7 +93,7 @@ export const Main = () => {
           <li
             className="w-[20%] text-center cursor-pointer"
             onClick={() => {
-              setClasses(["designer"]);
+              setFilters(prev => ({ ...prev, classType: ["designer"] }));
               navigate("search");
             }}
           >
@@ -108,7 +108,7 @@ export const Main = () => {
           <li
             className="w-[20%] text-center cursor-pointer"
             onClick={() => {
-              setClasses(["fullstack"]);
+              setFilters(prev => ({ ...prev, classType: ["fullstack"] }));
               navigate("search");
             }}
           >
@@ -148,9 +148,9 @@ export const Main = () => {
           ))}
         </ul>
       </section>
-      <section className=" px-6">
+      <section>
         <div className="flex justify-between mb-[18px] items-end">
-          <h3 className="text-xl font-normal font-cookie">
+          <h3 className="text-xl px-6 font-normal font-cookie">
             <span className="text-brandBlue font-cookie">이달의 몬스터</span>
             다! 잘 확인하도록.
           </h3>

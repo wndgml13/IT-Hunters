@@ -1,7 +1,9 @@
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { instance } from "../../config/axios";
+import { alertState, onAlertState } from "../../store/alertState";
 
 export const FindMyEmail = () => {
   const navigate = useNavigate();
@@ -11,6 +13,9 @@ export const FindMyEmail = () => {
   const [myemail, setMyemail] = useState("");
   const [error, setError] = useState("");
 
+  const [tgVal, tg] = useRecoilState(onAlertState); // 알러트 true/false
+  const setAlertContent = useSetRecoilState(alertState); // 알러트 내용
+
   const checkPhoneNum = async () => {
     try {
       const { data } = await instance.post("/api/members/sendAuth", {
@@ -19,7 +24,8 @@ export const FindMyEmail = () => {
       setPhoneNumValidToggle(true);
       return data;
     } catch (err) {
-      alert("인증번호 발송에 실패하였습니다. 다시 시도해주세요");
+      setAlertContent("인증번호 발송에 실패하였습니다. 다시 시도해주세요");
+      tg(!tgVal);
       return err;
     }
   };

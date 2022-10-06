@@ -16,7 +16,7 @@ export const MonthMonster = ({ monster }: { monster: IMonthMonster }) => {
     >
       <div className="w-full flex flex-col items-center rounded-[16px] shadow-[4px_4px_4px_4px_rgba(0,0,0,0.1)] px-[20px]">
         <div
-          className="w-[100px] h-[100px] mt-[30px]"
+          className="w-[100px] h-[100px] mt-[30px] rounded-2xl border "
           style={{
             background: `center / contain no-repeat url(${profileImage})`,
           }}

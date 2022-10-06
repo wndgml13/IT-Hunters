@@ -17,6 +17,7 @@ export interface chatData {
 export interface chatRoominfo {
   channelId: number;
   channelName: string;
+  leaderId: number;
   squadMembers: chatRoomSquads[];
 }
 
