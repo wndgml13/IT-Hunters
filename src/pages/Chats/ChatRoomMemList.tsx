@@ -1,12 +1,13 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { chatApi } from "../../APIs/ChatApi";
 import { ChatExitIcon } from "../../assets/icons";
 import { YesOrNoModal } from "../../components/Modals/YesOrNoModal";
 
 import { useModal } from "../../hooks/useModal";
+import { alertState, onAlertState } from "../../store/alertState";
 import { loginInfoState } from "../../store/loginInfoState";
 import { chatRoominfo } from "../../types/chatType";
 
@@ -22,6 +23,9 @@ export const ChatRoomMemList = ({
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  const [crTg, setCrTg] = useRecoilState(onAlertState); // 알러트 true/false
+  const setAlertContent = useSetRecoilState(alertState); // 알러트 내용
+
   const { mutateAsync: exitChatroom } = chatApi.exitChatRoom();
   const { mutateAsync: kickOutMember } = chatApi.kickOutMember();
 
@@ -30,7 +34,8 @@ export const ChatRoomMemList = ({
   const onExitChatroom = () => {
     exitChatroom(roomInfo.channelId).then(() => {
       queryClient.invalidateQueries(["chatlist"]);
-      alert("스쿼드를 나갑니다");
+      setAlertContent("스쿼드를 나갑니다");
+      setCrTg(crTg);
       navigate("/chats");
     });
   };
@@ -39,7 +44,8 @@ export const ChatRoomMemList = ({
     const channelId = roomInfo.channelId;
     kickOutMember({ channelId, memberId }).then(() => {
       queryClient.invalidateQueries(["chatinfo"]);
-      alert("강퇴");
+      setAlertContent("강퇴");
+      setCrTg(crTg);
     });
   };
 

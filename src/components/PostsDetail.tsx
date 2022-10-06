@@ -66,8 +66,8 @@ export const PostsDetail = () => {
   };
 
   // const onSubmitCommentUseMemo = useMemo(() => {
-  //   return onSubmitComment();
-  // }, [comment]);
+  //   return onSubmitComment;
+  // }, []);
 
   const onInputComment = (e: React.ChangeEvent<HTMLInputElement>) => {
     setComment(e.target.value);
@@ -359,14 +359,17 @@ export const PostsDetail = () => {
           <PostsComment key={co.commentId} co={co} />
         ))}
       </div>
+
       {/* 댓글 입력란 */}
       {getCookieToken() ? (
-        <div className="flex flex-row mt-5 gap-2 px-4">
-          <img
-            className="w-16 h-14 border rounded-full"
-            src={userinfo.profileImage}
-          />
-          <div className="flex mb-[30px] bg-white  rounded-2xl border focus:border-brandBlue w-full h-14 mx-1">
+        <div className="flex flex-row gap-2 px-4">
+          <div className="mt-5 w-16 h-14">
+            <img
+              className="w-full h-full border rounded-full"
+              src={userinfo.profileImage}
+            />
+          </div>
+          <div className="flex mt-5 mb-[30px] bg-white  rounded-2xl border focus:border-brandBlue w-full h-14 mx-1">
             <input
               className="rounded-2xl px-2.5 w-full"
               value={comment}
@@ -384,6 +387,7 @@ export const PostsDetail = () => {
           </div>
         </div>
       ) : null}
+
       {deleteModal && (
         <YesOrNoModal
           tgVal={deleteModal}
@@ -392,6 +396,7 @@ export const PostsDetail = () => {
           modalTitle={"정말 삭제하겠는가 ?"}
         />
       )}
+
       {offerClassModal && (
         <OffersClassesModal
           cmTg={offerClassModal}

@@ -61,7 +61,7 @@ export const Main = () => {
           <li
             className="w-[20%] text-center cursor-pointer"
             onClick={() => {
-              setFilters(prev => ({ ...prev, classType: ["backgroun"] }));
+              setFilters(prev => ({ ...prev, classType: ["backend"] }));
               navigate("search");
             }}
           >
