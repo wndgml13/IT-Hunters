@@ -12,20 +12,23 @@ export const AlertModal = ({ alertContent, tg, tgVal }: alertPropsType) => {
 
   useModal({ node, tgVal, tg });
   return (
-    <div className="h-full w-full absolute top-0 right-0 left-0 z-50 flex justify-center items-center bg-[#c2c2c2] bg-opacity-80">
-      <div className="bg-white px-4 py-3 rounded-lg relative" ref={node}>
-        <div className="flex my-10 gap-3 px-10">
-          {/* <span className="bg-red-400 text-white px-4 py-1 font-bold text-lg rounded-full">
-            !
-          </span> */}
-          <p className="text-xl font-normal font-cookie">{alertContent}</p>
+    <div className="h-full w-full absolute top-0 right-0 left-0 z-50 flex justify-center bg-[#c2c2c2] bg-opacity-50">
+      <div
+        className="bg-[#ffffff] mt-5 px-6 w-[90%]  border rounded-xl absolute shadow-2xl "
+        ref={node}
+      >
+        <p className="text-[18px] font-normal font-cookie mt-5 ">
+          {alertContent}
+        </p>
+
+        <div className="flex justify-end">
+          <button
+            className="font-cookie text-brandBlue my-3"
+            onClick={() => tg(!tgVal)}
+          >
+            확인
+          </button>
         </div>
-        <button
-          className="absolute right-2 top-2 font-cookie"
-          onClick={() => tg(!tgVal)}
-        >
-          X
-        </button>
       </div>
     </div>
   );
