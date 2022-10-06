@@ -21,6 +21,7 @@ import { ReactComponent as Spinner } from "./spinner.svg";
 import { ReactComponent as MessageIcon } from "./messageIcon.svg";
 import { ReactComponent as BookmarkFill } from "./bookmarkFill.svg";
 import { ReactComponent as BookmarkNoFill } from "./bookmarkNoFill.svg";
+import { ReactComponent as AlramIcon } from "./alramIcon.svg";
 
 export {
   ChatIcon,
@@ -46,4 +47,5 @@ export {
   MessageIcon,
   BookmarkFill,
   BookmarkNoFill,
+  AlramIcon,
 };

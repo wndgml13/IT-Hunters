@@ -33,4 +33,12 @@ export const notificationApi = {
       return data;
     });
   },
+  deleteNotification: () => {
+    return useMutation(async (offerId: number) => {
+      const { data } = await instance.delete(
+        `/api/offers/alarmedOffer/${offerId}`,
+      );
+      return data;
+    });
+  },
 };
