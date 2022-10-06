@@ -38,7 +38,7 @@ client.heartbeat.incoming = 20000;
 
 client.connect(usertoken, f => f);
 
-// client.debug = f => f;
+client.debug = f => f;
 
 const AppRouter = () => {
   const usertoken = getCookieToken();
