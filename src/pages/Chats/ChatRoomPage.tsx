@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
 import classNames from "classnames";
 import moment from "moment";
 import "moment/locale/ko";
@@ -8,27 +7,17 @@ import Stomp from "stompjs";
 import { chatApi } from "../../APIs/ChatApi";
 import { UserInfoApi } from "../../APIs/UserInfoApi";
 import { getCookieToken } from "../../config/cookies";
-import { chatDataState } from "../../store/chatDataState";
 import { chatData } from "../../types/chatType";
 import { useQueryClient } from "@tanstack/react-query";
 import { ChatRoomMemList } from "./ChatRoomMemList";
 import { ExpandIcon, GoBackIcon, SendIcon, Spinner } from "../../assets/icons";
 import { useInView } from "react-intersection-observer";
 
-// const fetchPostList = async (pageParam: number) => {
-//   const { data } = await instance.post(
-//     `/api/channels/83/test?page=${pageParam}&size=20`,
-//     {},
-//   );
-//   const { content, last } = data;
-//   return { content, nextPage: pageParam + 1, last };
-// };
-
 export const ChatRoomPage = ({ client }: { client: Stomp.Client }) => {
   const textRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  const [chatdata, setChatData] = useRecoilState<chatData[]>(chatDataState);
+  const [chatdata, setChatData] = useState<chatData[]>([]);
   const { id } = useParams();
   const [chatInfosToggle, setChatInfosToggle] = useState(false);
   const channelNum = Number(id);
@@ -37,16 +26,6 @@ export const ChatRoomPage = ({ client }: { client: Stomp.Client }) => {
   const { data: thisChatRoom } = chatApi.getChatRoomInfo(Number(id));
 
   const { data: userinfo } = UserInfoApi.getUserInfo();
-
-  // const { data, status, fetchNextPage, isFetchingNextPage, hasNextPage } =
-  //   useInfiniteQuery<IchatInifite, Error, IchatInifite, [string]>(
-  //     ["chatList"],
-  //     ({ pageParam = 0 }) => fetchPostList(pageParam),
-  //     {
-  //       getNextPageParam: lastPage =>
-  //         !lastPage.last ? lastPage.nextPage : undefined,
-  //     },
-  //   );
 
   const { data, status, fetchNextPage, isFetchingNextPage, hasNextPage } =
     chatApi.getPastMessage(channelNum);
@@ -98,6 +77,7 @@ export const ChatRoomPage = ({ client }: { client: Stomp.Client }) => {
   const chatDisconnect = () => {
     if (client !== null) {
       if (client.connected) client.unsubscribe(`${id}`);
+      setChatData([]);
     }
   };
 
@@ -132,7 +112,7 @@ export const ChatRoomPage = ({ client }: { client: Stomp.Client }) => {
 
   useEffect(() => {
     scrollToBottom();
-  }, []);
+  }, [id]);
 
   // 스크롤 해서 이전 채팅 불러오기.
   const { ref, inView } = useInView({
@@ -223,18 +203,23 @@ export const ChatRoomPage = ({ client }: { client: Stomp.Client }) => {
               ),
             )
           )}
+
           {/* 여기 수정 필요  */}
-          {isFetchingNextPage ? (
-            <div
-              className="flex justify-center w-14 h-14"
+          <div className="flex justify-center ">
+            <button
               ref={ref}
               onClick={() => fetchNextPage()}
+              disabled={!hasNextPage || isFetchingNextPage}
             >
-              <Spinner />
-            </div>
-          ) : hasNextPage ? (
-            <div ref={ref} onClick={() => fetchNextPage()}></div>
-          ) : null}
+              {isFetchingNextPage ? (
+                <Spinner />
+              ) : hasNextPage ? (
+                "load newer"
+              ) : (
+                "no more old chats"
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
