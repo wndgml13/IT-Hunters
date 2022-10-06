@@ -14,7 +14,6 @@ export const NotificationPage = () => {
     approveQuestoffer(offerId).then(() => {
       queryClient.invalidateQueries(["questoffer"]);
     });
-    console.log(offerId);
   };
 
   const { mutateAsync: cancelQuestoffer } = notificationApi.cancelQuestOffer();

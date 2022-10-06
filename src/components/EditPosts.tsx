@@ -69,7 +69,6 @@ export const EditPosts = () => {
       } catch (error) {
         setAlertContent("게시글 수정에 실패하셨습니다.");
         tg(!tgVal);
-        console.log(error);
       }
     }
     if (!title) {
