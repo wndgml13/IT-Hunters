@@ -21,7 +21,7 @@ export const questApi = {
     return data;
   },
   getFilteredQuests: (filterval: string | unknown) => {
-    return useQuery<IQuest[]>(["filterlist", filterval], () =>
+    return useQuery<IQuest[]>(["filteredlist", filterval], () =>
       instance
         .get<IQuest[]>(`api/quests/search?${filterval}`)
         .then(res => res.data),
@@ -34,7 +34,7 @@ export const questApi = {
       IQuestInifite,
       [string, string]
     >(
-      ["filteredList", filterval],
+      ["filterlist", filterval],
       async ({ pageParam = 0 }) => {
         const { data } = await instance.get(
           `/api/quests/searches?page=${pageParam}&size=15&${filterval}`,
