@@ -7,7 +7,7 @@ import { instance } from "../../config/axios";
 import { alertState, onAlertState } from "../../store/alertState";
 import { validSuccess, validError } from "./formStyle";
 
-export const SignUpPage = () => {
+const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -314,3 +314,5 @@ export const SignUpPage = () => {
     </div>
   );
 };
+
+export default SignUpPage;

@@ -5,7 +5,7 @@ import { OAuthAPI } from "../../APIs/OAuthApi";
 import { alertState, onAlertState } from "../../store/alertState";
 import { LoginLoading } from "./LoginLoading";
 
-export const OAuthNaver = () => {
+const OAuthNaver = () => {
   const [searchParams] = useSearchParams();
 
   const [tgVal, tg] = useRecoilState(onAlertState); // 알러트 true/false
@@ -30,3 +30,5 @@ export const OAuthNaver = () => {
     </>
   );
 };
+
+export default OAuthNaver;

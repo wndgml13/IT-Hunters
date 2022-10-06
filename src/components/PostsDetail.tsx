@@ -26,7 +26,7 @@ import { YesOrNoModal } from "./Modals/YesOrNoModal";
 import { OffersClassesModal } from "./OffersClassesModal";
 import { PageHeader } from "./PageHeader";
 
-export const PostsDetail = () => {
+const PostsDetail = () => {
   const navigate = useNavigate();
 
   const [tgVal, tg] = useRecoilState(onAlertState); // 알러트 true/false
@@ -407,3 +407,5 @@ export const PostsDetail = () => {
     </div>
   );
 };
+
+export default PostsDetail;

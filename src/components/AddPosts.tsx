@@ -10,7 +10,7 @@ import { PageHeader } from "./PageHeader";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { alertState, onAlertState } from "../store/alertState";
 
-export const AddPosts = () => {
+const AddPosts = () => {
   const navigate = useNavigate();
 
   const [title, titleHandler] = useInput("");
@@ -147,3 +147,5 @@ export const AddPosts = () => {
     </div>
   );
 };
+
+export default AddPosts;

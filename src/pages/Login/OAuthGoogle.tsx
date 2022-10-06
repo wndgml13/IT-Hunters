@@ -5,7 +5,7 @@ import { setAccessToken } from "../../config/cookies";
 import { alertState, onAlertState } from "../../store/alertState";
 import { LoginLoading } from "./LoginLoading";
 
-export const OAuthGoogle = () => {
+const OAuthGoogle = () => {
   const [searchParams] = useSearchParams();
 
   const [tgVal, tg] = useRecoilState(onAlertState); // 알러트 true/false
@@ -28,3 +28,5 @@ export const OAuthGoogle = () => {
     </>
   );
 };
+
+export default OAuthGoogle;

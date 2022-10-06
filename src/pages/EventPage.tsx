@@ -1,6 +1,6 @@
 import { PageHeader } from "../components/PageHeader";
 
-export const EventPage = () => {
+const EventPage = () => {
   return (
     <div className="w-full h-screen overflow-y-scroll pb-20">
       <div className="px-6">
@@ -14,3 +14,5 @@ export const EventPage = () => {
     </div>
   );
 };
+
+export default EventPage;

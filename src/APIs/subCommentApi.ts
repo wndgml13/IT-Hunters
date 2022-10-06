@@ -1,10 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import { instance } from "../config/axios";
-import { getCookieToken } from "../config/cookies";
-
-const userToken = {
-  headers: { authorization: getCookieToken() },
-};
 
 interface SubCommentPayload {
   id: number;
@@ -33,7 +28,6 @@ export const subCommentApi = {
       const { data } = await instance.post(
         `/api/quests/${payload.id}/comments/${payload.commentId}/subComments`,
         { content: payload.subComment },
-        userToken,
       );
       return data;
     });
@@ -46,7 +40,6 @@ export const subCommentApi = {
         {
           content: payload.editSubComment,
         },
-        userToken,
       ),
     );
   },
@@ -55,7 +48,6 @@ export const subCommentApi = {
     return useMutation((payload: SubDeletePayload) =>
       instance.delete(
         `/api/quests/${payload.id}/comments/${payload.commentId}/subComments/${payload.subCommentId}`,
-        userToken,
       ),
     );
   },
