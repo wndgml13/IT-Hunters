@@ -8,13 +8,13 @@ import { editedInfoType, UserInfoApi } from "../APIs/UserInfoApi";
 import { AlbumIcon, PencilIcon, PlusIcon } from "../assets/icons";
 import { YesOrNoModal } from "../components/Modals/YesOrNoModal";
 import { PageHeader } from "../components/PageHeader";
-// import { PortfolioApi } from "../APIs/PortfolioAPI";
 import { removeCookieToken } from "../config/cookies";
 import { useUploadImg } from "../hooks/useUploadImg";
 import { loginInfoState } from "../store/loginInfoState";
 import { LoginInfoType } from "../types/loginInfoType";
 import { EditPortFolio } from "./EditPortfoilio";
 import { EditStackPage } from "./EditStackPage";
+import { bookMarkState } from "../store/bookMarkState";
 
 interface squad {
   memberId: number;
@@ -43,6 +43,8 @@ export const MyPage = () => {
   const editedInfo: editedInfoType = { editedNickname, myClasses, profileImg };
 
   const { data: myfolio } = PortfolioApi.getPortfolio(userinfo.id);
+
+  const myBookmarks = useRecoilValue(bookMarkState);
 
   const onSubmitUserInfo = () => {
     const editedData = { ...editedInfo };
@@ -309,6 +311,16 @@ export const MyPage = () => {
               <div className="py-2" key={m.squadId}>
                 <h3 className="text-xl text-brandBlue">
                   <Link to={`/posts/${m.questId}`}>{m.questTitle}</Link>
+                </h3>
+              </div>
+            ))}
+          </div>
+          <div className="mt-8 mb-6 py-2">
+            <h2 className="text-lg font-bold">나의 북마크</h2>
+            {myBookmarks?.map(b => (
+              <div className="py-2" key={b.questId}>
+                <h3 className="text-xl text-brandBlue">
+                  <Link to={`/posts/${b.questId}`}>{b.questTitle}</Link>
                 </h3>
               </div>
             ))}

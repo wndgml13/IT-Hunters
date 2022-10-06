@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { useRecoilState } from "recoil";
 
@@ -12,6 +12,9 @@ import { modalState } from "../../store/modalState";
 import { filterState } from "../../store/filterState";
 
 import { IFilter } from "../../types/search";
+import { useInView } from "react-intersection-observer";
+import { PulseQuestCard } from "../PulseQuestCard";
+
 export const SearchList = () => {
   const [modal, setModal] = useRecoilState(modalState);
   const [filters, setFilters] = useRecoilState<IFilter>(filterState);
@@ -50,10 +53,21 @@ export const SearchList = () => {
     }
   };
 
-  const { data } = questApi.getFilteredQuests(pfilter);
+  // const { data } = questApi.getFilteredQuests(pfilter);
+
+  const { ref, inView } = useInView();
+
+  const { data, status, fetchNextPage, isFetchingNextPage } =
+    questApi.getInfiniteFilteredQuests(pfilter);
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
 
   return (
-    <div className="h-screen overflow-y-scroll pb-[5rem]">
+    <div className="h-full overflow-y-scroll pb-[5rem]">
       <div className="absolute top-0 left-0 right-0 z-40 bg-white shadow-md">
         <div className="flex px-6 mt-4">
           <h1 className="mr-5 text-2xl w-14 font-cookie">파티</h1>{" "}
@@ -109,17 +123,31 @@ export const SearchList = () => {
               </li>
             ))}
           </ul>
-          <div className="w-[3rem] text-center ">{data?.length} 건</div>
+          <div className="w-[3rem] text-center ">
+            {data?.pages[0].totalElements} 건
+          </div>
         </div>
       </div>
 
       {modal ? (
         <SearchFilter setFilters={setFilters} filters={filters} />
       ) : null}
+
       <div className="pt-28" ref={listRef}>
-        {data?.map(quest => (
-          <QuestInSearch key={quest.questId} quest={quest} />
-        ))}
+        {status === "loading" ? (
+          <PulseQuestCard />
+        ) : status === "error" ? (
+          <p>알수없는 오류로 데이터를 불러올수없습니다.</p>
+        ) : (
+          data?.pages.map(page => (
+            <React.Fragment key={page.nextPage}>
+              {page.content.map(quest => (
+                <QuestInSearch key={quest.questId} quest={quest} />
+              ))}
+            </React.Fragment>
+          ))
+        )}
+        <div ref={ref}>{isFetchingNextPage ? <PulseQuestCard /> : null}</div>
       </div>
       <button
         onClick={() => listRef.current?.scrollIntoView({ behavior: "smooth" })}

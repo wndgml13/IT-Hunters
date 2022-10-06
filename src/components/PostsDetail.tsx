@@ -2,13 +2,23 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { BookmarkApi } from "../APIs/BookmarkApi";
 // import { BookmarkApi } from "../APIs/BookmarkApi";
 import { CommentApi } from "../APIs/CommentApi";
 import { PostsApi } from "../APIs/PostsApi";
-import { DeIcon, Dot3, FeIcon, FuIcon, SendIcon } from "../assets/icons";
+import {
+  BookmarkFill,
+  BookmarkNoFill,
+  DeIcon,
+  Dot3,
+  FeIcon,
+  FuIcon,
+  SendIcon,
+} from "../assets/icons";
 import { getCookieToken } from "../config/cookies";
 import convertDateText from "../lib/convertDateText";
 import { alertState, onAlertState } from "../store/alertState";
+import { bookMarkState } from "../store/bookMarkState";
 import { loginInfoState } from "../store/loginInfoState";
 import { CommentGet } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
@@ -32,6 +42,8 @@ export const PostsDetail = () => {
   const { id } = useParams();
   const [comment, setComment] = useState(""); // 댓글 작성
   const userinfo = useRecoilValue(loginInfoState); // 내 게시글 or 댓글에만 수정,삭제 버튼 보이게
+
+  const myBookmark = useRecoilValue(bookMarkState);
 
   // 댓글, 답글 조회
   const { data: comments } = CommentApi.getComments(Number(id));
@@ -91,11 +103,17 @@ export const PostsDetail = () => {
   };
 
   // 게시글 북마크 POST
-  // const { mutateAsync: bookMarkpost } = BookmarkApi.bookMarkpost();
+  const { mutateAsync: bookMarkpost } = BookmarkApi.bookMarkpost();
 
-  // const onBookMarkHandler = () => {
-  //   bookMarkpost(Number(id));
-  // };
+  const onBookmarkQuest = () => {
+    bookMarkpost(Number(id)).then(() => {
+      queryClient.invalidateQueries(["bookmarks"]);
+    });
+  };
+
+  const bookmarked = myBookmark.filter(f => {
+    if (f.questId === quest?.questId) return true;
+  });
 
   // 직군 아이콘
   interface LooseObject {
@@ -254,7 +272,24 @@ export const PostsDetail = () => {
         </ul>
       </div>
       <div className=" bg-white w-full mt-3 pt-7" ref={contentTab}>
-        <p className="px-6">상세 정보</p>
+        <div className="flex justify-between">
+          <p className="px-6">상세 정보</p>
+          {getCookieToken() ? (
+            <div className="mr-8">
+              {bookmarked.length > 0 ? (
+                <>
+                  <button onClick={onBookmarkQuest}>
+                    <BookmarkFill />
+                  </button>
+                </>
+              ) : (
+                <button onClick={onBookmarkQuest}>
+                  <BookmarkNoFill />
+                </button>
+              )}
+            </div>
+          ) : null}
+        </div>
         <div className="flex justify-between">
           <p className="text-xl font-normal font-cookie px-6 mt-[10px] break-all">
             {quest?.title}

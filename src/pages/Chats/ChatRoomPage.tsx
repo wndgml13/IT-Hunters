@@ -171,7 +171,9 @@ export const ChatRoomPage = ({ client }: { client: Stomp.Client }) => {
       <div>
         <div className="flex flex-col-reverse mt-16 pb-10 px-4">
           {status === "loading" ? (
-            <Spinner />
+            <div className="flex justify-center w-14 h-14">
+              <Spinner />
+            </div>
           ) : status === "error" ? (
             <p>메세지를 가져오는데 실패했습니다.</p>
           ) : (
@@ -224,18 +226,14 @@ export const ChatRoomPage = ({ client }: { client: Stomp.Client }) => {
           {/* 여기 수정 필요  */}
           {isFetchingNextPage ? (
             <div
-              className="w-full flex justify-center "
+              className="flex justify-center w-14 h-14"
               ref={ref}
               onClick={() => fetchNextPage()}
             >
               <Spinner />
             </div>
           ) : hasNextPage ? (
-            <div
-              className="w-full flex justify-center"
-              ref={ref}
-              onClick={() => fetchNextPage()}
-            ></div>
+            <div ref={ref} onClick={() => fetchNextPage()}></div>
           ) : null}
         </div>
       </div>

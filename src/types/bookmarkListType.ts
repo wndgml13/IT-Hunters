@@ -1,3 +1,4 @@
 export interface bookmarkListType {
-  lo: string;
+  questId: number | undefined;
+  questTitle: string | undefined;
 }

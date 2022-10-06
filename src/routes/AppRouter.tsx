@@ -25,6 +25,7 @@ import Stomp from "stompjs";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { alertState, onAlertState } from "../store/alertState";
 import { AlertModal } from "../components/Modals/AlertModal";
+// import { useEffect } from "react";
 
 const baseURL = process.env.REACT_APP_API_BASEURL;
 const usertoken = {
@@ -47,15 +48,24 @@ const AppRouter = () => {
   // useEffect(() => {
   //   const sse = new EventSource(`${baseURL}sub?token=${noBearer}`, {
   //     withCredentials: true,
-  //   });
-  //   sse.addEventListener(
-  //     "offer",
-  //     function (e) {
-  //       console.log(e.data);
+  //     headers: {
+  //       "content-type": "application/json;charset=UTF-8",
+  //       accept: "application/json,",
+  //       "Access-Control-Allow-Origin": "*",
   //     },
-  //     false,
-  //   );
-  //   console.log(sse);
+  //   });
+  //   sse.onmessage = e => console.log(e.data);
+  //   // sse.addEventListener(
+  //   //   "offer",
+  //   //   function (e) {
+  //   //     console.log(e.data);
+  //   //   },
+  //   //   false,
+  //   // );
+  //   // sse.addEventListener("connect", function (event) {
+  //   //   alert(event.data);
+  //   // });
+  //   // console.log(sse);
   // }, []);
 
   const [tgVal, tg] = useRecoilState(onAlertState);

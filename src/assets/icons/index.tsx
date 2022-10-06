@@ -19,6 +19,8 @@ import { ReactComponent as PlusIcon } from "./plus.svg";
 import { ReactComponent as AlbumIcon } from "./albumIcon.svg";
 import { ReactComponent as Spinner } from "./spinner.svg";
 import { ReactComponent as MessageIcon } from "./messageIcon.svg";
+import { ReactComponent as BookmarkFill } from "./bookmarkFill.svg";
+import { ReactComponent as BookmarkNoFill } from "./bookmarkNoFill.svg";
 
 export {
   ChatIcon,
@@ -42,4 +44,6 @@ export {
   AlbumIcon,
   Spinner,
   MessageIcon,
+  BookmarkFill,
+  BookmarkNoFill,
 };
