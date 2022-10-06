@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import AppRouter from "./routes/AppRouter";
 import _ from "lodash";
 
@@ -43,7 +43,9 @@ function App() {
         </div>
       </section>
       <section className="relative max-w-[480px] min-w-[320px] m-auto min_lg:ml-[57%] overflow-scroll bg-white shadow-2xl">
-        <AppRouter />
+        <Suspense fallback={<div className="w-full h-screen">loading</div>}>
+          <AppRouter />
+        </Suspense>
       </section>
     </main>
   );

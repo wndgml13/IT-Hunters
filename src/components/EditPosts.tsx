@@ -10,7 +10,7 @@ import { PageHeader } from "./PageHeader";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { alertState, onAlertState } from "../store/alertState";
 
-export const EditPosts = () => {
+const EditPosts = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const queryClient = useQueryClient();
@@ -163,3 +163,5 @@ export const EditPosts = () => {
     </div>
   );
 };
+
+export default EditPosts;

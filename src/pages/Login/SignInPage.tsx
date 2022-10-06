@@ -6,7 +6,7 @@ import { setAccessToken } from "../../config/cookies";
 import { alertState, onAlertState } from "../../store/alertState";
 import { validError, validSuccess } from "./formStyle";
 
-export const SignInPage = () => {
+const SignInPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailValid, setEmailValid] = useState(false);
@@ -176,3 +176,5 @@ export const SignInPage = () => {
     </div>
   );
 };
+
+export default SignInPage;

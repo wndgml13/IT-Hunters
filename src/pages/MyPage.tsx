@@ -23,7 +23,7 @@ interface squad {
   squadId: number;
 }
 
-export const MyPage = () => {
+const MyPage = () => {
   const [userProfile, setUserProfile] = useState<LoginInfoType>();
   const [EUItoggle, setEUItoggle] = useState(false);
   const [folioToggle, setFolioToggle] = useState(false);
@@ -358,3 +358,5 @@ export const MyPage = () => {
     </>
   );
 };
+
+export default MyPage;

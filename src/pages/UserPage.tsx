@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { PortfolioApi } from "../APIs/PortfolioAPI";
 import { PageHeader } from "../components/PageHeader";
 
-export const UserPage = () => {
+const UserPage = () => {
   const { id } = useParams();
   const { data: userFolio } = PortfolioApi.getPortfolio(Number(id));
 
@@ -103,3 +103,5 @@ export const UserPage = () => {
     </div>
   );
 };
+
+export default UserPage;

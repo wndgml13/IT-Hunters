@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { instance } from "../../config/axios";
 
-export const FindMyEmail = () => {
+const FindMyEmail = () => {
   const navigate = useNavigate();
   const [phoneNum, setPhoneNum] = useState("");
   const [phoneNumValidToggle, setPhoneNumValidToggle] = useState(false);
@@ -123,3 +123,5 @@ export const FindMyEmail = () => {
     </div>
   );
 };
+
+export default FindMyEmail;

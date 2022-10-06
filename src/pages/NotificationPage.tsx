@@ -4,7 +4,7 @@ import { notificationApi } from "../APIs/NotificationApi";
 import { AlramIcon } from "../assets/icons";
 import { notiType } from "../types/notificationType";
 
-export const NotificationPage = () => {
+const NotificationPage = () => {
   const { data: notifications } = notificationApi.getQuestOffer();
   const queryClient = useQueryClient();
 
@@ -121,3 +121,5 @@ export const NotificationPage = () => {
     </div>
   );
 };
+
+export default NotificationPage;

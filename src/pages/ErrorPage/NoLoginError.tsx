@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export const NoLoginError = () => {
+const NoLoginError = () => {
   return (
     <div className="border flex justify-center items-center  w-full h-screen text-center">
       <div>
@@ -21,3 +21,5 @@ export const NoLoginError = () => {
     </div>
   );
 };
+
+export default NoLoginError;

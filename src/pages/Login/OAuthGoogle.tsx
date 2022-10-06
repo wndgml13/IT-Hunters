@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { setAccessToken } from "../../config/cookies";
 import { LoginLoading } from "./LoginLoading";
 
-export const OAuthGoogle = () => {
+const OAuthGoogle = () => {
   const [searchParams] = useSearchParams();
 
   const googleToken = searchParams.get("accessToken");
@@ -22,3 +22,5 @@ export const OAuthGoogle = () => {
     </>
   );
 };
+
+export default OAuthGoogle;

@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { OAuthAPI } from "../../APIs/OAuthApi";
 import { LoginLoading } from "./LoginLoading";
 
-export const OAuthNaver = () => {
+const OAuthNaver = () => {
   const [searchParams] = useSearchParams();
 
   const naverToken = searchParams.get("code");
@@ -24,3 +24,5 @@ export const OAuthNaver = () => {
     </>
   );
 };
+
+export default OAuthNaver;

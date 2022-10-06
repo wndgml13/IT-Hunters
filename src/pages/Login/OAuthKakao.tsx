@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { OAuthAPI } from "../../APIs/OAuthApi";
 import { LoginLoading } from "./LoginLoading";
 
-export const OAuthKakao = () => {
+const OAuthKakao = () => {
   const kakaoToken = new URL(window.location.href).searchParams.get("code");
 
   useEffect(() => {
@@ -20,3 +20,5 @@ export const OAuthKakao = () => {
     </>
   );
 };
+
+export default OAuthKakao;

@@ -15,7 +15,7 @@ import { LoginInfoType } from "../types/loginInfoType";
 import { BookmarkApi } from "../APIs/BookmarkApi";
 import { bookMarkState } from "../store/bookMarkState";
 
-export const FooterNavBar = () => {
+const FooterNavBar = () => {
   const { data: userinfo, isSuccess } = UserInfoApi.getUserInfo();
   const setLoginInfo = useSetRecoilState<LoginInfoType>(loginInfoState);
   useEffect(() => {
@@ -89,3 +89,5 @@ export const FooterNavBar = () => {
     </footer>
   );
 };
+
+export default FooterNavBar;

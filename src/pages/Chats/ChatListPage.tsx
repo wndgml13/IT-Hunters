@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { chatApi } from "../../APIs/ChatApi";
 import { MessageIcon } from "../../assets/icons";
 
-export const ChatListPage = () => {
+const ChatListPage = () => {
   const navigate = useNavigate();
 
   const { data: chat } = chatApi.getChatRoomlist();
@@ -39,3 +39,5 @@ export const ChatListPage = () => {
     </div>
   );
 };
+
+export default ChatListPage;

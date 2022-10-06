@@ -106,10 +106,10 @@ export const SearchFilter = ({
             </li>
             <li>
               <button
-                onClick={() => onSelectClass("Backend")}
+                onClick={() => onSelectClass("backend")}
                 className={classNames(classStyle, {
                   "text-blue-500 ring-blue-500 ring-[1px] border-transparent":
-                    classes.includes("Backend"),
+                    classes.includes("backend"),
                 })}
                 value="backend"
               >
