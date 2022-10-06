@@ -54,8 +54,8 @@ export const PostsDetail = () => {
   };
 
   // const onSubmitCommentUseMemo = useMemo(() => {
-  //   return onSubmitComment();
-  // }, [comment]);
+  //   return onSubmitComment;
+  // }, []);
 
   const onInputComment = (e: React.ChangeEvent<HTMLInputElement>) => {
     setComment(e.target.value);
@@ -89,13 +89,6 @@ export const PostsDetail = () => {
     });
     navigate("/search");
   };
-
-  // 게시글 북마크 POST
-  // const { mutateAsync: bookMarkpost } = BookmarkApi.bookMarkpost();
-
-  // const onBookMarkHandler = () => {
-  //   bookMarkpost(Number(id));
-  // };
 
   // 직군 아이콘
   interface LooseObject {
@@ -321,6 +314,7 @@ export const PostsDetail = () => {
           <PostsComment key={co.commentId} co={co} />
         ))}
       </div>
+
       {/* 댓글 입력란 */}
       {getCookieToken() ? (
         <div className="flex flex-row mt-5 gap-2 px-4">
@@ -346,6 +340,7 @@ export const PostsDetail = () => {
           </div>
         </div>
       ) : null}
+
       {deleteModal && (
         <DeletePostModal
           tgVal={deleteModal}
@@ -353,6 +348,7 @@ export const PostsDetail = () => {
           onDelete={onDeletepost}
         />
       )}
+
       {offerClassModal && (
         <OffersClassesModal
           cmTg={offerClassModal}
