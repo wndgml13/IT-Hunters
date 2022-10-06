@@ -25,7 +25,7 @@ import Stomp from "stompjs";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { alertState, onAlertState } from "../store/alertState";
 import { AlertModal } from "../components/Modals/AlertModal";
-// import { useEffect } from "react";
+import { useAlert } from "../hooks/useAlert";
 
 const baseURL = process.env.REACT_APP_API_BASEURL;
 const usertoken = {
@@ -38,39 +38,15 @@ client.heartbeat.incoming = 20000;
 
 client.connect(usertoken, f => f);
 
-client.debug = f => f;
+// client.debug = f => f;
 
 const AppRouter = () => {
   const usertoken = getCookieToken();
-
-  // const noBearer = usertoken.replace("BEARER ", "");
-
-  // useEffect(() => {
-  //   const sse = new EventSource(`${baseURL}sub?token=${noBearer}`, {
-  //     withCredentials: true,
-  //     headers: {
-  //       "content-type": "application/json;charset=UTF-8",
-  //       accept: "application/json,",
-  //       "Access-Control-Allow-Origin": "*",
-  //     },
-  //   });
-  //   sse.onmessage = e => console.log(e.data);
-  //   // sse.addEventListener(
-  //   //   "offer",
-  //   //   function (e) {
-  //   //     console.log(e.data);
-  //   //   },
-  //   //   false,
-  //   // );
-  //   // sse.addEventListener("connect", function (event) {
-  //   //   alert(event.data);
-  //   // });
-  //   // console.log(sse);
-  // }, []);
-
   const [tgVal, tg] = useRecoilState(onAlertState);
 
   const alertContent = useRecoilValue(alertState);
+
+  useAlert({ client });
 
   return (
     <BrowserRouter>
