@@ -1,7 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { notificationApi } from "../APIs/NotificationApi";
 import { PortfolioApi } from "../APIs/PortfolioAPI";
 import { editedInfoType, UserInfoApi } from "../APIs/UserInfoApi";
@@ -15,6 +15,7 @@ import { LoginInfoType } from "../types/loginInfoType";
 import { EditPortFolio } from "./EditPortfoilio";
 import { EditStackPage } from "./EditStackPage";
 import { bookMarkState } from "../store/bookMarkState";
+import { alertState, onAlertState } from "../store/alertState";
 
 interface squad {
   memberId: number;
@@ -33,6 +34,9 @@ export const MyPage = () => {
   const [editedNickname, setEditedNickname] = useState<string | undefined>();
   const { data: mysquad } = notificationApi.getMySquads();
   const [logoutTg, setLogoutTg] = useState(false);
+
+  const [tgVal, tg] = useRecoilState(onAlertState); // 알러트 true/false
+  const setAlertContent = useSetRecoilState(alertState); // 알러트 내용
 
   const userinfo = useRecoilValue(loginInfoState);
 
@@ -58,7 +62,8 @@ export const MyPage = () => {
       });
       setEUItoggle(!EUItoggle);
     } else {
-      alert("직군을 선택해주세요!");
+      setAlertContent("직군을 선택해주세요!");
+      tg(!tgVal);
     }
   };
 

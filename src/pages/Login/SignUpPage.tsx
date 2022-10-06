@@ -1,8 +1,10 @@
 import { AxiosError } from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { PageHeader } from "../../components/PageHeader";
 import { instance } from "../../config/axios";
+import { alertState, onAlertState } from "../../store/alertState";
 import { validSuccess, validError } from "./formStyle";
 
 export const SignUpPage = () => {
@@ -18,6 +20,8 @@ export const SignUpPage = () => {
   const [nicknameValid, setNicknameValid] = useState(false);
 
   const [phoneNumValidToggle, setPhoneNumValidToggle] = useState(false);
+  const [tgVal, tg] = useRecoilState(onAlertState); // 알러트 true/false
+  const setAlertContent = useSetRecoilState(alertState); // 알러트 내용
 
   const [emailCheckMsg, setEmailCheckMsg] = useState("");
   const [nicknameCheckMsg, setNicknameCheckMsg] = useState("");
@@ -75,12 +79,14 @@ export const SignUpPage = () => {
       const { data } = await instance.post("/api/members/sendSmsForSignup", {
         phoneNumber: phoneNum,
       });
-      alert("인증번호 발송");
+      setAlertContent("인증번호 발송");
+      tg(!tgVal);
       setPhoneNumValidToggle(true);
       return data;
     } catch (err) {
       if (err instanceof AxiosError) {
-        alert(err.response?.data.message);
+        setAlertContent(err.response?.data.message);
+        tg(!tgVal);
       }
     }
   };
@@ -91,11 +97,13 @@ export const SignUpPage = () => {
         phoneNumber: phoneNum,
         authNumber: authPhoneNum,
       });
-      alert("인증성공");
+      setAlertContent("인증성공");
+      tg(!tgVal);
       return data;
     } catch (err) {
       if (err instanceof AxiosError) {
-        alert(err.response?.data.message);
+        setAlertContent(err.response?.data.message);
+        tg(!tgVal);
       }
     }
   };
@@ -109,7 +117,8 @@ export const SignUpPage = () => {
           nickname,
           phoneNumber: phoneNum,
         });
-        alert("회원가입 성공");
+        setAlertContent("회원가입 성공");
+        tg(!tgVal);
         setEmail("");
         setPassword("");
         setPasswordConfirm("");
@@ -117,10 +126,12 @@ export const SignUpPage = () => {
         navigate("/signin");
         return data;
       } catch (error) {
-        alert("회원가입에 실패하였습니다.");
+        setAlertContent("회원가입에 실패하였습니다.");
+        tg(!tgVal);
       }
     } else {
-      alert("입력이 잘못되었습니다");
+      setAlertContent("입력이 잘못되었습니다");
+      tg(!tgVal);
     }
   };
 
