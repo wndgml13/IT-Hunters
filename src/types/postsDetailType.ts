@@ -19,6 +19,7 @@ export interface IQuestDetail {
   id: number;
   profileImg: string;
   memberId: number;
+  offeredMember: number[];
 }
 export interface SubCommentGet {
   memberId: number;

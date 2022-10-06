@@ -22,6 +22,10 @@ import { NoLoginError } from "../pages/ErrorPage/NoLoginError";
 import { EventPage } from "../pages/EventPage";
 import SockJs from "sockjs-client";
 import Stomp from "stompjs";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { alertState, onAlertState } from "../store/alertState";
+import { AlertModal } from "../components/Modals/AlertModal";
+import { useAlert } from "../hooks/useAlert";
 
 const baseURL = process.env.REACT_APP_API_BASEURL;
 const usertoken = {
@@ -34,14 +38,23 @@ client.heartbeat.incoming = 20000;
 
 client.connect(usertoken, f => f);
 
-client.debug = f => f;
+// client.debug = f => f;
 
 const AppRouter = () => {
   const usertoken = getCookieToken();
+  const [tgVal, tg] = useRecoilState(onAlertState);
+
+  const alertContent = useRecoilValue(alertState);
+
+  useAlert({ client });
 
   return (
     <BrowserRouter>
       <div className="h-screen relative">
+        {tgVal && (
+          <AlertModal alertContent={alertContent} tg={tg} tgVal={tgVal} />
+        )}
+
         <Routes>
           <Route
             path="/"

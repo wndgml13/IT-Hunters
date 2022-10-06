@@ -5,10 +5,12 @@ import { portfolioType, profilePortfolioType } from "../types/profileType";
 export const PortfolioApi = {
   getPortfolio: (memberId: number) => {
     return useQuery(["portfolio", memberId], async () => {
-      const { data } = await instance.get<profilePortfolioType>(
-        `api/myPage/${memberId}`,
-      );
-      return data;
+      if (memberId !== 0) {
+        const { data } = await instance.get<profilePortfolioType>(
+          `api/myPage/${memberId}`,
+        );
+        return data;
+      }
     });
   },
   editPortfolio: () => {

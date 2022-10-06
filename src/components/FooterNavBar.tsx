@@ -12,6 +12,8 @@ import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { loginInfoState } from "../store/loginInfoState";
 import { LoginInfoType } from "../types/loginInfoType";
+import { BookmarkApi } from "../APIs/BookmarkApi";
+import { bookMarkState } from "../store/bookMarkState";
 
 export const FooterNavBar = () => {
   const { data: userinfo, isSuccess } = UserInfoApi.getUserInfo();
@@ -22,6 +24,16 @@ export const FooterNavBar = () => {
     }
   }, [isSuccess, userinfo]);
   const { pathname } = useLocation();
+
+  const { data: myBookmark, isSuccess: isBMsuccess } =
+    BookmarkApi.getMyBookmark();
+  const setMyBookmarks = useSetRecoilState(bookMarkState);
+
+  useEffect(() => {
+    if (isBMsuccess) {
+      setMyBookmarks(myBookmark);
+    }
+  }, [isBMsuccess, myBookmark]);
 
   return (
     <footer

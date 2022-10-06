@@ -1,20 +1,26 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { instance } from "../config/axios";
 import { getCookieToken } from "../config/cookies";
-
-const userToken = {
-  headers: { authorization: getCookieToken() },
-};
 
 export const BookmarkApi = {
   bookMarkpost: () => {
     return useMutation(async (id: number) => {
-      const { data } = await instance.post(
-        `api/quests/${id}/bookmark`,
-        {},
-        userToken,
-      );
+      const { data } = await instance.post(`api/quests/${id}/bookmark`, {});
       return data;
     });
+  },
+  getMyBookmark: () => {
+    return useQuery(
+      ["bookmarks"],
+      async () => {
+        const { data } = await instance.get("api/myPage/bookmark");
+        return data;
+      },
+      {
+        enabled: !!getCookieToken(),
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+      },
+    );
   },
 };

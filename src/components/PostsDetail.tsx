@@ -1,22 +1,36 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { BookmarkApi } from "../APIs/BookmarkApi";
 // import { BookmarkApi } from "../APIs/BookmarkApi";
 import { CommentApi } from "../APIs/CommentApi";
 import { PostsApi } from "../APIs/PostsApi";
-import { DeIcon, Dot3, FeIcon, FuIcon, SendIcon } from "../assets/icons";
+import {
+  BookmarkFill,
+  BookmarkNoFill,
+  DeIcon,
+  Dot3,
+  FeIcon,
+  FuIcon,
+  SendIcon,
+} from "../assets/icons";
 import { getCookieToken } from "../config/cookies";
 import convertDateText from "../lib/convertDateText";
+import { alertState, onAlertState } from "../store/alertState";
+import { bookMarkState } from "../store/bookMarkState";
 import { loginInfoState } from "../store/loginInfoState";
 import { CommentGet } from "../types/postsDetailType";
 import { PostsComment } from "./Comments/PostsComment";
-import { DeletePostModal } from "./DeletePostMdoal";
+import { YesOrNoModal } from "./Modals/YesOrNoModal";
 import { OffersClassesModal } from "./OffersClassesModal";
 import { PageHeader } from "./PageHeader";
 
 export const PostsDetail = () => {
   const navigate = useNavigate();
+
+  const [tgVal, tg] = useRecoilState(onAlertState); // 알러트 true/false
+  const setAlertContent = useSetRecoilState(alertState); // 알러트 내용
 
   const [editDeleteToggle, setEditDeleteToggle] = useState(false); // 수정,삭제 점 3개 토글
   const [classes, setClasses] = useState({}); // 직군 아이콘
@@ -29,6 +43,8 @@ export const PostsDetail = () => {
   const [comment, setComment] = useState(""); // 댓글 작성
   const userinfo = useRecoilValue(loginInfoState); // 내 게시글 or 댓글에만 수정,삭제 버튼 보이게
 
+  const myBookmark = useRecoilValue(bookMarkState);
+
   // 댓글, 답글 조회
   const { data: comments } = CommentApi.getComments(Number(id));
 
@@ -40,17 +56,24 @@ export const PostsDetail = () => {
       const payload = { id: Number(id), comment: comment };
       addComment(payload).then(() => {
         queryClient.invalidateQueries(["comments"]);
+        queryClient.invalidateQueries(["Postsdetail"]); // 댓글 작성 시 개수 실시간 카운팅
       });
       setComment("");
     } else {
-      alert("내용을 입력해주세요!");
+      setAlertContent("내용을 입력해주세요!");
+      tg(!tgVal);
     }
   };
 
+  // const onSubmitCommentUseMemo = useMemo(() => {
+  //   return onSubmitComment();
+  // }, [comment]);
+
   const onInputComment = (e: React.ChangeEvent<HTMLInputElement>) => {
     setComment(e.target.value);
-    if (e.target.value.length > 255) {
-      alert("최대 255자까지 입력 가능합니다.");
+    if (e.target.value.length > 254) {
+      setAlertContent("최대 255자까지 입력 가능합니다.");
+      tg(!tgVal);
     }
   };
 
@@ -80,11 +103,17 @@ export const PostsDetail = () => {
   };
 
   // 게시글 북마크 POST
-  // const { mutateAsync: bookMarkpost } = BookmarkApi.bookMarkpost();
+  const { mutateAsync: bookMarkpost } = BookmarkApi.bookMarkpost();
 
-  // const onBookMarkHandler = () => {
-  //   bookMarkpost(Number(id));
-  // };
+  const onBookmarkQuest = () => {
+    bookMarkpost(Number(id)).then(() => {
+      queryClient.invalidateQueries(["bookmarks"]);
+    });
+  };
+
+  const bookmarked = myBookmark.filter(f => {
+    if (f.questId === quest?.questId) return true;
+  });
 
   // 직군 아이콘
   interface LooseObject {
@@ -217,21 +246,50 @@ export const PostsDetail = () => {
         <p>남은 직업군</p>
         <ul className="grid gap-2 w-full grid-cols-2 mt-6 px-5">
           <li className="grid gap-2 grid-cols-2">
-            <p>프론트엔드</p> <p>: {quest?.classes.frontend} 명</p>
+            <p>프론트엔드</p>{" "}
+            <p>
+              : <span className="font-bold">{quest?.classes.frontend}</span> 명
+            </p>
           </li>
           <li className="grid gap-2 grid-cols-2">
-            <p>백엔드 </p> <p>: {quest?.classes.backend} 명</p>
+            <p>백엔드 </p>{" "}
+            <p>
+              : <span className="font-bold">{quest?.classes.frontend}</span> 명
+            </p>
           </li>
           <li className="grid gap-2 grid-cols-2">
-            <p>디자이너 </p> <p>: {quest?.classes.designer} 명</p>
+            <p>디자이너 </p>{" "}
+            <p>
+              : <span className="font-bold">{quest?.classes.frontend}</span> 명
+            </p>
           </li>
           <li className="grid gap-2 grid-cols-2">
-            <p>풀스택 </p> <p>: {quest?.classes.fullstack} 명</p>
+            <p>풀스택 </p>{" "}
+            <p>
+              : <span className="font-bold">{quest?.classes.frontend}</span> 명
+            </p>
           </li>
         </ul>
       </div>
       <div className=" bg-white w-full mt-3 pt-7" ref={contentTab}>
-        <p className="px-6">상세 정보</p>
+        <div className="flex justify-between">
+          <p className="px-6">상세 정보</p>
+          {getCookieToken() ? (
+            <div className="mr-8">
+              {bookmarked.length > 0 ? (
+                <>
+                  <button onClick={onBookmarkQuest}>
+                    <BookmarkFill />
+                  </button>
+                </>
+              ) : (
+                <button onClick={onBookmarkQuest}>
+                  <BookmarkNoFill />
+                </button>
+              )}
+            </div>
+          ) : null}
+        </div>
         <div className="flex justify-between">
           <p className="text-xl font-normal font-cookie px-6 mt-[10px] break-all">
             {quest?.title}
@@ -277,29 +335,35 @@ export const PostsDetail = () => {
           <div className="whitespace-pre-line break-all">{quest?.content}</div>
         </div>
 
-        <div className="p-5">
-          <button
-            type="button"
-            className="text-white w-full h-[57px] bg-brandBlue font-bold rounded-lg text-lg px-5 py-2.5 shadow-[5px_5px_0_0_rgb(244,200,40)]"
-            onClick={() => {
-              setOfferClassModal(!offerClassModal);
-            }}
-          >
-            참가하기
-          </button>
-        </div>
+        {quest?.offeredMember.includes(userinfo.id) ||
+        quest?.memberId === userinfo.id ? null : (
+          <div className="p-5">
+            <button
+              type="button"
+              className="text-white w-full h-[57px] bg-brandBlue font-bold rounded-lg text-lg px-5 py-2.5 shadow-[5px_5px_0_0_rgb(244,200,40)]"
+              onClick={() => {
+                setOfferClassModal(!offerClassModal);
+              }}
+            >
+              참가하기
+            </button>
+          </div>
+        )}
       </div>
       {/* 댓글시작 */}
       <div className="mt-3">
+        <div className="p-5 bg-white text-gray-800">
+          댓글 {quest?.commentCnt}개
+        </div>
         {comments?.map((co: CommentGet) => (
           <PostsComment key={co.commentId} co={co} />
         ))}
       </div>
       {/* 댓글 입력란 */}
       {getCookieToken() ? (
-        <div className="flex row mt-5  gap-2 px-4">
+        <div className="flex flex-row mt-5 gap-2 px-4">
           <img
-            className="w-14 h-14 border rounded-full"
+            className="w-16 h-14 border rounded-full"
             src={userinfo.profileImage}
           />
           <div className="flex mb-[30px] bg-white  rounded-2xl border focus:border-brandBlue w-full h-14 mx-1">
@@ -321,16 +385,17 @@ export const PostsDetail = () => {
         </div>
       ) : null}
       {deleteModal && (
-        <DeletePostModal
+        <YesOrNoModal
           tgVal={deleteModal}
           tg={setDeleteModal}
-          onDelete={onDeletepost}
+          onAction={onDeletepost}
+          modalTitle={"정말 삭제하겠는가 ?"}
         />
       )}
       {offerClassModal && (
         <OffersClassesModal
-          tgVal={offerClassModal}
-          tg={setOfferClassModal}
+          cmTg={offerClassModal}
+          setCmTg={setOfferClassModal}
           questId={quest?.questId}
         />
       )}

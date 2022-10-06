@@ -50,7 +50,7 @@ export const EditStackPage = ({
     <div
       className={`${
         tgVal
-          ? "h-full w-full absolute top-0 right-0 left-0 z-40 flex justify-center items-center bg-[#c2c2c2] bg-opacity-50"
+          ? "h-full w-full absolute top-0 right-0 left-0 z-[9999] flex justify-center items-center bg-[#c2c2c2] bg-opacity-50"
           : "hidden"
       }`}
     >
@@ -77,7 +77,7 @@ export const EditStackPage = ({
 
         <button
           onClick={onSubmitStack}
-          className="text-white z-50 bg-brandBlue focus:ring-4 focus:outline-none font-medium absolute bottom-0 w-full h-[3.5rem] text-XL px-5 py-2.5 text-center"
+          className="text-white z-[9999] bg-brandBlue focus:ring-4 focus:outline-none font-medium absolute bottom-0 w-full h-[3.5rem] text-XL px-5 py-2.5 text-center"
         >
           수정완료
         </button>

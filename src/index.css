@@ -36,6 +36,12 @@
   display: none; /* Chrome, Safari, Opera*/
 }
 
+.scroll::-webkit-scrollbar {
+  width: 5px;
+  height: 50px;
+  background-color: #aaa;
+}
+
 html,
 body {
   margin: 0;
