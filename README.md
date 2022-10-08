@@ -1,5 +1,5 @@
 
-![로고](public/imgs/github_프론트엔드.png)
+![image](https://user-images.githubusercontent.com/96467579/194682633-4a081a80-bb24-4ebe-b32c-33c680f049c3.png)
 
 # IT 몬스터즈 (IT MONSTERS)
 
